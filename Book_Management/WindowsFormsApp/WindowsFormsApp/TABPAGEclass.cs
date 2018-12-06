@@ -68,7 +68,7 @@ namespace WindowsFormsApp
         public int PY
         {
             get { return pY; }
-        }
+        }  
     }
 }
 
