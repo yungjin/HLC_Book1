@@ -12,6 +12,11 @@ namespace WindowsFormsApp
 {
     public partial class Main_Form : Form
     {
+        // MDI 자식폼 테스트 
+        Sample_Form Child1 = new Sample_Form();
+        
+
+
 
         int sX = 1160, sY = 680; // 폼 사이즈 지정.
 
@@ -19,7 +24,7 @@ namespace WindowsFormsApp
         static ToolStripStatusLabel StripLb;
         StatusStrip statusStrip;
         ///////////////////////////////////
-        
+
 
         public Main_Form()
         {
@@ -29,7 +34,7 @@ namespace WindowsFormsApp
         }
 
         private void Form1_Load(object sender, EventArgs e)
-        {           
+        {
 
             ClientSize = new Size(sX, sY);  // 폼 사이즈 지정.
             this.IsMdiContainer = true;     // MDI 설정.
@@ -38,32 +43,85 @@ namespace WindowsFormsApp
             Point_Print();
 
             // 컨트롤 객체생성. 
-            COMMON_Create_Ctl create_ctl = new COMMON_Create_Ctl();
+            COMMON_Create_Ctl comm_create_ctl = new COMMON_Create_Ctl();
 
             // 생성할 패널 정보 객체 생성.
-            PANELclass pn1 = new PANELclass(this, "panel1", "panel_main~", 1160, 530, 0, 90, panel_MouseMove);
+            PANELclass pn1 = new PANELclass(this, "panel1", "panel_main~", 1160, 530, 0, 100, panel_MouseMove);
 
-            Panel panel = create_ctl.panel(pn1);  // ex) 판넬만들기 :  create_ctl.CTL명(CTL값);           
-            Controls.Add(panel);  // 원하는 컨트롤에 추가함.
+            Panel panel1 = comm_create_ctl.panel(pn1);  // ex) 판넬만들기 :  create_ctl.CTL명(CTL값);           
+            Controls.Add(panel1);  // 원하는 컨트롤에 추가함.
 
 
-            Sample_Form Child1 = new Sample_Form();
+
+            BTNclass bt1 = new BTNclass(this, "유저1", "도서정보", 200, 100, 0, 0, btn_Click);
+            BTNclass bt2 = new BTNclass(this, "유저2", "대여목록", 200, 100, 200, 0, btn_Click);
+            BTNclass bt3 = new BTNclass(this, "유저3", "나의정보", 200, 100, 400, 0, btn_Click);
+            BTNclass bt4 = new BTNclass(this, "유저4", "도서위치MAP", 200, 100, 600, 0, btn_Click);
+            BTNclass bt5 = new BTNclass(this, "관리1", "도서정보", 200, 100, 0, 0, btn_Click);
+            BTNclass bt6 = new BTNclass(this, "관리2", "회원정보", 200, 100, 200, 0, btn_Click);
+            BTNclass bt7 = new BTNclass(this, "관리3", "도서관리", 200, 100, 400, 0, btn_Click);
+            BTNclass bt8 = new BTNclass(this, "관리4", "연체관리", 200, 100, 600, 0, btn_Click);
+
+
+
+            Button btn = comm_create_ctl.btn(bt1);
+            Button btn1 = comm_create_ctl.btn(bt2);
+            Button btn2 = comm_create_ctl.btn(bt3);
+            Button btn3 = comm_create_ctl.btn(bt4);
+            //Button btn4 = comm_create_ctl.btn(bt5);
+            //Button btn5 = comm_create_ctl.btn(bt6);
+            //Button btn6 = comm_create_ctl.btn(bt7);
+            //Button btn7 = comm_create_ctl.btn(bt8);
+            Controls.Add(btn);
+            Controls.Add(btn1);
+            Controls.Add(btn2);
+            Controls.Add(btn3);
+
             // Set the Parent Form of the Child window.
             Child1.TopLevel = false;
             //Child1.TopMost = true;
             Child1.MdiParent = this;
             Child1.Dock = DockStyle.Fill; //판넬크기에 맞게 사이즈 늘림.
-            panel.Controls.Add(Child1);
-            Child1.Show();
+            panel1.Controls.Add(Child1);
 
-            
+
+
+            //Child2.Show();
+            //Child1.Show();
+            //Child1.Dispose();
+
+
+            Logo_Load();//로고 이미지
+
+
 
         }
+        private void Logo_Load()
+        {
+            PictureBox pictureBox = new PictureBox();
 
+            pictureBox.Image = (Bitmap)WindowsFormsApp.Properties.Resources.ResourceManager.GetObject("hlc11");
+            pictureBox.Location = new Point(800, 0);
+            pictureBox.Size = new Size(358, 100);
+            pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
+
+            Controls.Add(pictureBox);
+        }
 
         private void btn_Click(Object o, EventArgs e)
         {
-            MessageBox.Show("동작확인 : btn_Click");
+            //MessageBox.Show("동작확인 : btn_Click");
+            //if (Child1.Visible)
+            //{
+            //    Child1.Hide();
+                
+            //}
+            //else
+            //{
+                
+            //    Child1.Show();
+            //}
+
         }
 
         private void label_Click(Object o, EventArgs e)
@@ -117,7 +175,7 @@ namespace WindowsFormsApp
         {
             StripLb.Text = "(" + e.X + ", " + e.Y + ")";
         }
-                     
+
 
         ///////////////////////// 좌표 체크시 추가 /////////////////////////////
 
@@ -140,7 +198,7 @@ namespace WindowsFormsApp
         }
 
         private void button1_Click(object sender, EventArgs e)
-        {            
+        {
 
         }
 
