@@ -14,9 +14,8 @@ namespace WindowsFormsApp
     {
         // MDI 자식폼 테스트 
         Sample_Form Child1 = new Sample_Form();
-        
 
-
+        int user_rank = 4;
 
         int sX = 1160, sY = 680; // 폼 사이즈 지정.
 
@@ -39,30 +38,26 @@ namespace WindowsFormsApp
             ClientSize = new Size(sX, sY);  // 폼 사이즈 지정.
             this.IsMdiContainer = true;     // MDI 설정.
 
-            /// 좌표 체크시 추가 ///
+            //좌표 체크시 추가  
             Point_Print();
 
             // 컨트롤 객체생성. 
             COMMON_Create_Ctl comm_create_ctl = new COMMON_Create_Ctl();
 
             // 생성할 패널 정보 객체 생성.
-            PANELclass pn1 = new PANELclass(this, "panel1", "panel_main~", 1160, 530, 0, 100, panel_MouseMove);
+            PANELclass pn1 = new PANELclass(this, "panel1", "panel_main", 1160, 530, 0, 100, panel_MouseMove);
 
             Panel panel1 = comm_create_ctl.panel(pn1);  // ex) 판넬만들기 :  create_ctl.CTL명(CTL값);           
             Controls.Add(panel1);  // 원하는 컨트롤에 추가함.
 
-
-
-            BTNclass bt1 = new BTNclass(this, "유저1", "도서정보", 200, 100, 0, 0, btn_Click);
-            BTNclass bt2 = new BTNclass(this, "유저2", "대여목록", 200, 100, 200, 0, btn_Click);
-            BTNclass bt3 = new BTNclass(this, "유저3", "나의정보", 200, 100, 400, 0, btn_Click);
-            BTNclass bt4 = new BTNclass(this, "유저4", "도서위치MAP", 200, 100, 600, 0, btn_Click);
-            BTNclass bt5 = new BTNclass(this, "관리1", "도서정보", 200, 100, 0, 0, btn_Click);
-            BTNclass bt6 = new BTNclass(this, "관리2", "회원정보", 200, 100, 200, 0, btn_Click);
-            BTNclass bt7 = new BTNclass(this, "관리3", "도서관리", 200, 100, 400, 0, btn_Click);
-            BTNclass bt8 = new BTNclass(this, "관리4", "연체관리", 200, 100, 600, 0, btn_Click);
-
-
+            BTNclass bt1 = new BTNclass(this, "유저1", "도서정보", 200, 100, 0, 0, btn1_Click);
+            BTNclass bt2 = new BTNclass(this, "유저2", "대여목록", 200, 100, 200, 0, btn2_Click);
+            BTNclass bt3 = new BTNclass(this, "유저3", "나의정보", 200, 100, 400, 0, btn3_Click);
+            BTNclass bt4 = new BTNclass(this, "유저4", "도서위치MAP", 200, 100, 600, 0, btn4_Click);
+            BTNclass bt5 = new BTNclass(this, "관리1", "도서정보", 200, 100, 0, 0, btn5_Click);
+            BTNclass bt6 = new BTNclass(this, "관리2", "회원정보", 200, 100, 200, 0, btn6_Click);
+            BTNclass bt7 = new BTNclass(this, "관리3", "도서관리", 200, 100, 400, 0, btn7_Click);
+            BTNclass bt8 = new BTNclass(this, "관리4", "연체관리", 200, 100, 600, 0, btn8_Click);
 
             Button btn = comm_create_ctl.btn(bt1);
             Button btn1 = comm_create_ctl.btn(bt2);
@@ -76,25 +71,21 @@ namespace WindowsFormsApp
             Controls.Add(btn1);
             Controls.Add(btn2);
             Controls.Add(btn3);
+            
+
 
             // Set the Parent Form of the Child window.
-            Child1.TopLevel = false;
+            //Child1.TopLevel = false;
             //Child1.TopMost = true;
-            Child1.MdiParent = this;
-            Child1.Dock = DockStyle.Fill; //판넬크기에 맞게 사이즈 늘림.
-            panel1.Controls.Add(Child1);
-
-
+            //Child1.MdiParent = this;
+            //Child1.Dock = DockStyle.Fill; //판넬크기에 맞게 사이즈 늘림.
+            //panel1.Controls.Add(Child1);
 
             //Child2.Show();
             //Child1.Show();
             //Child1.Dispose();
 
-
             Logo_Load();//로고 이미지
-
-
-
         }
         private void Logo_Load()
         {
@@ -102,13 +93,13 @@ namespace WindowsFormsApp
 
             pictureBox.Image = (Bitmap)WindowsFormsApp.Properties.Resources.ResourceManager.GetObject("hlc11");
             pictureBox.Location = new Point(800, 0);
-            pictureBox.Size = new Size(358, 100);
+            pictureBox.Size = new Size(360, 100);
             pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
 
             Controls.Add(pictureBox);
         }
 
-        private void btn_Click(Object o, EventArgs e)
+        private void btn1_Click(Object o, EventArgs e)
         {
             //MessageBox.Show("동작확인 : btn_Click");
             //if (Child1.Visible)
@@ -119,6 +110,119 @@ namespace WindowsFormsApp
             //else
             //{
                 
+            //    Child1.Show();
+            //}
+
+        }
+
+        private void btn2_Click(Object o, EventArgs e)
+        {
+            
+            //MessageBox.Show("동작확인 : btn_Click");
+            //if (Child1.Visible)
+            //{
+            //    Child1.Hide();
+
+            //}
+            //else
+            //{
+
+            //    Child1.Show();
+            //}
+
+        }
+
+        private void btn3_Click(Object o, EventArgs e)
+        {
+            //MessageBox.Show("동작확인 : btn_Click");
+            //if (Child1.Visible)
+            //{
+            //    Child1.Hide();
+
+            //}
+            //else
+            //{
+
+            //    Child1.Show();
+            //}
+
+        }
+
+        private void btn4_Click(Object o, EventArgs e)
+        {
+            //MessageBox.Show("동작확인 : btn_Click");
+            //if (Child1.Visible)
+            //{
+            //    Child1.Hide();
+
+            //}
+            //else
+            //{
+
+            //    Child1.Show();
+            //}
+
+        }
+
+        private void btn5_Click(Object o, EventArgs e)
+        {
+            //MessageBox.Show("동작확인 : btn_Click");
+            //if (Child1.Visible)
+            //{
+            //    Child1.Hide();
+
+            //}
+            //else
+            //{
+
+            //    Child1.Show();
+            //}
+
+        }
+
+        private void btn6_Click(Object o, EventArgs e)
+        {
+            //MessageBox.Show("동작확인 : btn_Click");
+            //if (Child1.Visible)
+            //{
+            //    Child1.Hide();
+
+            //}
+            //else
+            //{
+
+            //    Child1.Show();
+            //}
+
+        }
+
+        private void btn7_Click(Object o, EventArgs e)
+        {
+            //MessageBox.Show("동작확인 : btn_Click");
+            //if (Child1.Visible)
+            //{
+            //    Child1.Hide();
+
+            //}
+            //else
+            //{
+
+            //    Child1.Show();
+            //}
+
+        }
+
+        private void btn8_Click(Object o, EventArgs e)
+        {
+            //MessageBox.Show("동작확인 : btn_Click");
+            //if (Child1.Visible)
+            //{
+            //    Child1.Hide();
+
+            //}
+            //else
+            //{
+
             //    Child1.Show();
             //}
 
