@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -10,6 +14,10 @@ namespace WindowsFormsApp
 {
     class COMMON_Create_Ctl
     {
+        string targetFileURI = "ftp://ljh5432.iptime.org:1942/";
+        string userID = "hlc";
+        string password = "rneldkzkepal1942!";
+
         public ListView listView(LISTVIEWclass lstView_obj)
         {
             ListView listView = new ListView();
@@ -33,7 +41,7 @@ namespace WindowsFormsApp
             listView.Size = new Size(lstView_obj.SX, lstView_obj.SY);
             listView.TabIndex = 0;
             listView.UseCompatibleStateImageBehavior = false;
-            listView.View = View.Details;            
+            listView.View = View.Details;
 
             return listView;
         }
@@ -48,7 +56,7 @@ namespace WindowsFormsApp
 
             combobox.MouseClick += combox_obj.eh_combobox;
             combobox.Name = combox_obj.Name;
-            combobox.Location = new Point(combox_obj.PX, combox_obj.PY);            
+            combobox.Location = new Point(combox_obj.PX, combox_obj.PY);
             combobox.Size = new Size(combox_obj.SX, combox_obj.SY);
 
             return combobox;
@@ -112,7 +120,7 @@ namespace WindowsFormsApp
             chkbox.Name = btn_obj.Name;
             chkbox.Text = btn_obj.Text;
             chkbox.Size = new Size(btn_obj.SX, btn_obj.SY);
-            chkbox.Location = new Point(btn_obj.PX, btn_obj.PY);           
+            chkbox.Location = new Point(btn_obj.PX, btn_obj.PY);
             chkbox.Click += btn_obj.eh_chkbox;
             chkbox.UseVisualStyleBackColor = true;
             //chkbox.TabIndex = 0;  // 탭 눌를경우 인덱스 순서를 지정할때 사용.
@@ -133,7 +141,7 @@ namespace WindowsFormsApp
             return radio_button;
         }
 
-        public PictureBox picturebox(PICTUREBOXclass picturbox_obj)
+        public PictureBox static_PictureBox(PICTUREBOXclass picturbox_obj)
         {
             PictureBox picturebox = new PictureBox();
             picturebox.Name = picturbox_obj.Name;
@@ -141,8 +149,26 @@ namespace WindowsFormsApp
             picturebox.SizeMode = PictureBoxSizeMode.StretchImage;
             picturebox.Location = new Point(picturbox_obj.PX, picturbox_obj.PY);
             Image picturebox_myImage = (Image)Properties.Resources.ResourceManager.GetObject(picturbox_obj.Image_Name); // global::WindowsFormsHiWeather.Properties.Resources.config_image; 
-            picturebox.ClientSize = new Size(picturbox_obj.SX, picturbox_obj.SY);
+            //picturebox.ClientSize = new Size(picturbox_obj.SX, picturbox_obj.SY);
+            picturebox.Size = new Size(picturbox_obj.SX, picturbox_obj.SY);
             picturebox.Image = (Image)picturebox_myImage;
+            picturebox.Click += picturbox_obj.eh_picturbox;
+            //radio1.Checked = true;  // RadioButton 체크로 설정.
+
+            return picturebox;
+        }
+
+        public PictureBox load_PictureBox(PICTUREBOXclass picturbox_obj)
+        {
+            PictureBox picturebox = new PictureBox();
+            picturebox.Name = picturbox_obj.Name;
+            picturebox.Text = picturbox_obj.Text;
+            picturebox.SizeMode = PictureBoxSizeMode.StretchImage;
+            picturebox.Location = new Point(picturbox_obj.PX, picturbox_obj.PY);
+            //Image picturebox_myImage = (Image)Properties.Resources.ResourceManager.GetObject(picturbox_obj.Image_Name); // global::WindowsFormsHiWeather.Properties.Resources.config_image; 
+            //picturebox.ClientSize = new Size(picturbox_obj.SX, picturbox_obj.SY);
+            picturebox.Size = new Size(picturbox_obj.SX, picturbox_obj.SY);
+            picturebox.ImageLocation = "http://ljh5432.iptime.org:81/ImageCollection/" + picturbox_obj.Image_Name; // FTP에서불러올파일이름;
             picturebox.Click += picturbox_obj.eh_picturbox;
             //radio1.Checked = true;  // RadioButton 체크로 설정.
 
@@ -157,7 +183,7 @@ namespace WindowsFormsApp
             panel.Text = panel_obj.Text;
             panel.Size = new Size(panel_obj.SX, panel_obj.SY);
             panel.Location = new Point(panel_obj.PX, panel_obj.PY);
-            if(panel_obj.eh_panel != null)
+            if (panel_obj.eh_panel != null)
             { panel.MouseMove += panel_obj.eh_panel; }  // MouseEventHandler 있는경우 추가.           
             panel.BackColor = Color.AliceBlue;   // 배경에 색상 지정.
 
@@ -194,6 +220,80 @@ namespace WindowsFormsApp
 
             return tabpage;
         }
+
+
+        public bool UploadFTPFile(string sourceFilePath, string FileName)
+        {
+            try
+            {
+
+                targetFileURI = targetFileURI + FileName;
+
+                //MessageBox.Show("@sourceFilePath : " + @sourceFilePath + ", targetFileURI : " + targetFileURI);
+
+                Uri targetFileUri = new Uri(targetFileURI);
+
+                FtpWebRequest ftpWebRequest = WebRequest.Create(targetFileUri) as FtpWebRequest;
+
+                ftpWebRequest.Credentials = new NetworkCredential(userID, password);
+                ftpWebRequest.Method = WebRequestMethods.Ftp.UploadFile;
+
+                FileStream sourceFileStream = new FileStream(@sourceFilePath, FileMode.Open, FileAccess.Read);
+                Stream targetStream = ftpWebRequest.GetRequestStream();
+
+                byte[] bufferByteArray = new byte[1024];
+
+                while (true)
+                {
+                    int byteCount = sourceFileStream.Read(bufferByteArray, 0, bufferByteArray.Length);
+
+                    if (byteCount == 0)
+                    {
+                        break;
+                    }
+                    targetStream.Write(bufferByteArray, 0, byteCount);
+                }
+                targetStream.Close();
+                sourceFileStream.Close();
+                MessageBox.Show("이미지 업로드 성공");
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("이미지 업로드 실패");
+                MessageBox.Show("원인 : " + e);
+                return false;
+            }
+
+            return true;
+
+        }
+
+
+        public Image ResizeImage(Image image, int width, int height)
+        {
+            var destRect = new Rectangle(0, 0, width, height);
+            var destImage = new Bitmap(width, height);
+
+            destImage.SetResolution(image.HorizontalResolution, image.VerticalResolution);
+
+            using (var graphics = Graphics.FromImage(destImage))
+            {
+                graphics.CompositingMode = CompositingMode.SourceCopy;
+                graphics.CompositingQuality = CompositingQuality.HighQuality;
+                graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                graphics.SmoothingMode = SmoothingMode.HighQuality;
+                graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
+
+                using (var wrapMode = new ImageAttributes())
+                {
+                    wrapMode.SetWrapMode(WrapMode.TileFlipXY);
+                    graphics.DrawImage(image, destRect, 0, 0, image.Width, image.Height, GraphicsUnit.Pixel, wrapMode);
+                }
+            }
+
+            return (Image)destImage;
+        }
+
 
 
     }

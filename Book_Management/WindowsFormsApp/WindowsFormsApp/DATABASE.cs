@@ -24,10 +24,10 @@ namespace WindowsFormsApp
 
         private MySqlConnection GetConnection()
         {
-            string host = "192.168.3.52";
-            string user = "root";
-            string pwd = "1234";
-            string db = "test";
+            string host = "gudi.kr";
+            string user = "gdc3";
+            string pwd = "gdc3";
+            string db = "gdc3_2";
 
             string connStr = string.Format(@"server={0};user={1};password={2};database={3}", host, user, pwd, db);
             MySqlConnection conn = new MySqlConnection(connStr);
@@ -171,6 +171,28 @@ namespace WindowsFormsApp
             }
         }
 
+        public ArrayList RankSelect()
+        {
+            MySql my = new MySql();
+            string sql = "SELECT member_rank FROM signup";
+            MySqlDataReader sdr = my.Reader(sql);
+            //string result = "";
+            ArrayList list = new ArrayList();
+            while (sdr.Read())
+            {
+                Hashtable ht = new Hashtable();
+                for (int i = 0; i < sdr.FieldCount; i++)
+                {
+                    //result += string.Format("{0}\t:\t{1}\t", sdr.GetName(i), sdr.GetValue(i));
+                    ht.Add(sdr.GetName(i), sdr.GetValue(i));
+
+                }
+                //result += "\n";
+                list.Add(ht);
+                Console.WriteLine(list.ToString());
+            }
+            return list;
+        }
 
 
 
