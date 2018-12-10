@@ -53,6 +53,12 @@
   <ItemGroup>
     <Compile Include="BTNclass.cs" />
     <Compile Include="CHKBOXclass.cs" />
+    <Compile Include="Sample_Form2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Sample_Form2.Designer.cs">
+      <DependentUpon>Sample_Form2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Select.cs" />
     <Compile Include="COMBOBOXclass.cs" />
     <Compile Include="COMMON_Create_Ctl.cs" />
@@ -79,11 +85,11 @@
       <DependentUpon>Sample_Form.cs</DependentUpon>
     </Compile>
     <Compile Include="TXTBOXclass.cs" />
-    <Compile Include="user1.cs">
+    <Compile Include="BOOK_INFO_FORM.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="user1.Designer.cs">
-      <DependentUpon>user1.cs</DependentUpon>
+    <Compile Include="BOOK_INFO_FORM.Designer.cs">
+      <DependentUpon>BOOK_INFO_FORM.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Main_Form.resx">
       <DependentUpon>Main_Form.cs</DependentUpon>
@@ -114,6 +120,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\hlc11.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\upload.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,6 +1,6 @@
 ﻿namespace WindowsFormsApp
 {
-    partial class user1
+    partial class Sample_Form2
     {
         /// <summary>
         /// Required designer variable.
@@ -31,7 +31,7 @@
             this.components = new System.ComponentModel.Container();
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Text = "user1";
+            this.Text = "Sample_Form2";
         }
 
         #endregion
