@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace WindowsFormsApp
 {
-    public partial class Main_Form : Form
+    public partial class MAIN_FORM : Form
     {
         // MDI 자식폼 테스트 
         Sample_Form Child1 = new Sample_Form();
@@ -25,7 +25,7 @@ namespace WindowsFormsApp
         ///////////////////////////////////
 
 
-        public Main_Form()
+        public MAIN_FORM()
         {
             InitializeComponent();
 
