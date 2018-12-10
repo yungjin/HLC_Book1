@@ -1,6 +1,6 @@
 ﻿namespace WindowsFormsApp
 {
-    partial class Main_Form
+    partial class MAIN_FORM
     {
         /// <summary>
         /// 필수 디자이너 변수입니다.

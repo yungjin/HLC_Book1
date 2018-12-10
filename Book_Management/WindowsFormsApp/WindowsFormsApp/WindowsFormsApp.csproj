@@ -64,11 +64,11 @@
     <Compile Include="COMMON_Create_Ctl.cs" />
     <Compile Include="DATABASE.cs" />
     <Compile Include="LISTVIEWclass.cs" />
-    <Compile Include="Main_Form.cs">
+    <Compile Include="MAIN_FORM.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Main_Form.Designer.cs">
-      <DependentUpon>Main_Form.cs</DependentUpon>
+    <Compile Include="MAIN_FORM.Designer.cs">
+      <DependentUpon>MAIN_FORM.cs</DependentUpon>
     </Compile>
     <Compile Include="LBclass.cs" />
     <Compile Include="PANELclass.cs" />
@@ -91,8 +91,8 @@
     <Compile Include="BOOK_INFO_FORM.Designer.cs">
       <DependentUpon>BOOK_INFO_FORM.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Main_Form.resx">
-      <DependentUpon>Main_Form.cs</DependentUpon>
+    <EmbeddedResource Include="MAIN_FORM.resx">
+      <DependentUpon>MAIN_FORM.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
