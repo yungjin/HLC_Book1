@@ -16,7 +16,7 @@ namespace WindowsFormsApp
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Sample_Form2());
+            Application.Run(new SIGNUP_FORM());
         }
     }
 }
