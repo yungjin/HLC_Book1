@@ -39,8 +39,8 @@ namespace WindowsFormsApp
             ArrayList lbarray = new ArrayList();
             ArrayList Tbarray = new ArrayList();
             ArrayList btnArray = new ArrayList();
-            lbarray.Add(new LBclass(this, "lb1", "회원가입", 18, 200, 40,90, 10, label_Click));
-            lbarray.Add(new LBclass(this, "lb_ID", "아이디", 10, 150, 20, 20, 60, label_Click));
+            lbarray.Add(new LBclass(this, "lb1", "회원가입", 18, 200, 40,200, 10, label_Click));
+            lbarray.Add(new LBclass(this, "lb_ID", "아이디", 10, 150, 20, 60, 60, label_Click));
             lbarray.Add(new LBclass(this, "lb_Pass", "비밀번호", 10, 150, 20, 20, 120, label_Click));
             lbarray.Add(new LBclass(this, "lb_PassCon", "비밀번호 확인", 10, 50, 20, 20, 180, label_Click));
             lbarray.Add(new LBclass(this, "lb_Name", "이름", 10, 150, 20, 20, 240, label_Click));
@@ -50,15 +50,16 @@ namespace WindowsFormsApp
             lbarray.Add(new LBclass(this, "lb_Phon", "휴대폰 번호", 10, 150, 20, 20, 480, label_Click));
             lbarray.Add(new LBclass(this, "lb_addres", "주소", 10, 150, 20, 20, 540, label_Click));
 
-            Tbarray.Add(new TXTBOXclass(this, "ID", "", 150, 20, 40, 60, Tb_click));
-            Tbarray.Add(new TXTBOXclass(this, "Pass", "", 150, 20, 40, 60, Tb_click));
-            Tbarray.Add(new TXTBOXclass(this, "PassCon", "", 150, 20, 40, 60, Tb_click));
-            Tbarray.Add(new TXTBOXclass(this, "ID", "", 150, 20, 40, 60, Tb_click));
-            Tbarray.Add(new TXTBOXclass(this, "ID", "", 150, 20, 40, 60, Tb_click));
-            Tbarray.Add(new TXTBOXclass(this, "ID", "", 150, 20, 40, 60, Tb_click));
-            Tbarray.Add(new TXTBOXclass(this, "ID", "", 150, 20, 40, 60, Tb_click));
-            Tbarray.Add(new TXTBOXclass(this, "ID", "", 150, 20, 40, 60, Tb_click));
-            Tbarray.Add(new TXTBOXclass(this, "ID", "", 150, 20, 40, 60, Tb_click));
+            Tbarray.Add(new TXTBOXclass(this, "ID", "", 150, 20, 180, 60, Tb_click));
+            Tbarray.Add(new TXTBOXclass(this, "Pass", "", 150, 20, 180, 120, Tb_click));
+            Tbarray.Add(new TXTBOXclass(this, "PassCon", "", 150, 20, 180, 180, Tb_click));
+            Tbarray.Add(new TXTBOXclass(this, "Name", "", 150, 20, 180, 240, Tb_click));
+            Tbarray.Add(new TXTBOXclass(this, "Gender", "", 150, 20, 180, 300, Tb_click));
+            Tbarray.Add(new TXTBOXclass(this, "Birth", "", 150, 20, 180, 360, Tb_click));
+            Tbarray.Add(new TXTBOXclass(this, "email", "", 150, 20, 180, 420, Tb_click));
+            Tbarray.Add(new TXTBOXclass(this, "Phon", "", 150, 20, 180, 480, Tb_click));
+            Tbarray.Add(new TXTBOXclass(this, "addres", "", 150, 20, 180, 540, Tb_click));
+
 
 
             // BTNclass bt1 = new BTNclass(this, "버튼Name", "버튼Text", 가로사이즈, 세로사이즈, 가로포인트, 세로포인트, 버튼클릭이벤트);
@@ -85,6 +86,13 @@ namespace WindowsFormsApp
                     btn.BackColor = Color.ForestGreen;
                 }
                 Controls.Add(btn);
+            }
+
+            for (int i = 0; i < Tbarray.Count; i++)
+            {
+                TextBox tb = comm.txtbox((TXTBOXclass)Tbarray[i]);
+
+                Controls.Add(tb);
             }
 
             for (int i = 0; i < lbarray.Count; i++)
