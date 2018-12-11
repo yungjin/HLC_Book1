@@ -26,10 +26,18 @@ namespace WindowsFormsApp
         {
             string host = "gudi.kr";
             string user = "gdc3";
+            string port = "5002";
             string pwd = "gdc3";
             string db = "gdc3_2";
 
-            string connStr = string.Format(@"server={0};user={1};password={2};database={3}", host, user, pwd, db);
+            //string host = "ljh5432.iptime.org";
+            //string port = "3333";
+            //string user = "root";
+            //string pwd = "1234";
+            //string db = "test";
+
+            string connStr = string.Format(@"server={0};Port={1};user={2};password={3};database={4}", host, port, user, pwd, db);
+
             MySqlConnection conn = new MySqlConnection(connStr);
 
             try
@@ -40,6 +48,7 @@ namespace WindowsFormsApp
             }
             catch
             {
+                //MessageBox.Show("GetConnection 연결실패");
                 return null;
             }
         }
@@ -88,11 +97,13 @@ namespace WindowsFormsApp
                 }
                 else
                 {
+                    //MessageBox.Show("conn 실패");
                     return null;
                 }
             }
             catch
             {
+                
                 return null;
             }
         }
@@ -108,7 +119,7 @@ namespace WindowsFormsApp
         public ArrayList GetSelect()
         {
             MySql my = new MySql();
-            string sql = "select * from test;";
+            string sql = "select * from signup;";
             MySqlDataReader sdr = my.Reader(sql);
             //string result = "";
             ArrayList list = new ArrayList();

@@ -25,6 +25,7 @@ namespace WindowsFormsApp
             InitializeComponent();
             Load += SIGNUP_FORM_Load;
         }
+        TextBox Tb1, Tb2, Tb3, Tb4, Tb5, Tb6, Tb7, Tb8, Tb9 = new TextBox();
 
         private void SIGNUP_FORM_Load(object sender, EventArgs e)
         {
@@ -50,16 +51,35 @@ namespace WindowsFormsApp
             lbarray.Add(new LBclass(this, "lb_Phon", "휴대폰 번호", 10, 150, 20, 20, 480, label_Click));
             lbarray.Add(new LBclass(this, "lb_addres", "주소", 10, 150, 20, 20, 540, label_Click));
 
-            Tbarray.Add(new TXTBOXclass(this, "ID", "", 150, 20, 180, 60, Tb_click));
-            Tbarray.Add(new TXTBOXclass(this, "Pass", "", 150, 20, 180, 120, Tb_click));
-            Tbarray.Add(new TXTBOXclass(this, "PassCon", "", 150, 20, 180, 180, Tb_click));
-            Tbarray.Add(new TXTBOXclass(this, "Name", "", 150, 20, 180, 240, Tb_click));
-            Tbarray.Add(new TXTBOXclass(this, "Gender", "", 150, 20, 180, 300, Tb_click));
-            Tbarray.Add(new TXTBOXclass(this, "Birth", "", 150, 20, 180, 360, Tb_click));
-            Tbarray.Add(new TXTBOXclass(this, "email", "", 150, 20, 180, 420, Tb_click));
-            Tbarray.Add(new TXTBOXclass(this, "Phon", "", 150, 20, 180, 480, Tb_click));
-            Tbarray.Add(new TXTBOXclass(this, "addres", "", 150, 20, 180, 540, Tb_click));
+            //Tbarray.Add(new TXTBOXclass(this, "ID", "", 150, 20, 180, 60, Tb_click));
+            //Tbarray.Add(new TXTBOXclass(this, "Pass", "", 150, 20, 180, 120, Tb_click));
+            //Tbarray.Add(new TXTBOXclass(this, "PassCon", "", 150, 20, 180, 180, Tb_click));
+            //Tbarray.Add(new TXTBOXclass(this, "Name", "", 150, 20, 180, 240, Tb_click));
+            //Tbarray.Add(new TXTBOXclass(this, "Gender", "", 150, 20, 180, 300, Tb_click));
+            //Tbarray.Add(new TXTBOXclass(this, "Birth", "", 150, 20, 180, 360, Tb_click));
+            //Tbarray.Add(new TXTBOXclass(this, "email", "", 150, 20, 180, 420, Tb_click));
+            //Tbarray.Add(new TXTBOXclass(this, "Phon", "", 150, 20, 180, 480, Tb_click));
+            //Tbarray.Add(new TXTBOXclass(this, "addres", "", 150, 20, 180, 540, Tb_click));
 
+            Tb1 = comm.txtbox(new TXTBOXclass(this, "ID", "", 150, 20, 180, 60, Tb_click));
+            Tb2 = comm.txtbox(new TXTBOXclass(this, "Pass", "", 150, 20, 180, 120, Tb_click));
+            Tb3 = comm.txtbox(new TXTBOXclass(this, "PassCon", "", 150, 20, 180, 180, Tb_click));
+            Tb4 = comm.txtbox(new TXTBOXclass(this, "Name", "", 150, 20, 180, 240, Tb_click));
+            Tb5 = comm.txtbox(new TXTBOXclass(this, "Gender", "", 150, 20, 180, 300, Tb_click));
+            Tb6 = comm.txtbox(new TXTBOXclass(this, "Birth", "", 150, 20, 180, 360, Tb_click));
+            Tb7 = comm.txtbox(new TXTBOXclass(this, "email", "", 150, 20, 180, 420, Tb_click));
+            Tb8 = comm.txtbox(new TXTBOXclass(this, "Phon", "", 150, 20, 180, 480, Tb_click));
+            Tb9 = comm.txtbox(new TXTBOXclass(this, "addres", "", 150, 20, 180, 540, Tb_click));
+
+            Controls.Add(Tb1);
+            Controls.Add(Tb2);
+            Controls.Add(Tb3);
+            Controls.Add(Tb4);
+            Controls.Add(Tb5);
+            Controls.Add(Tb6);
+            Controls.Add(Tb7);
+            Controls.Add(Tb8);
+            Controls.Add(Tb9);
 
 
             // BTNclass bt1 = new BTNclass(this, "버튼Name", "버튼Text", 가로사이즈, 세로사이즈, 가로포인트, 세로포인트, 버튼클릭이벤트);
@@ -88,12 +108,12 @@ namespace WindowsFormsApp
                 Controls.Add(btn);
             }
 
-            for (int i = 0; i < Tbarray.Count; i++)
-            {
-                TextBox tb = comm.txtbox((TXTBOXclass)Tbarray[i]);
+            //for (int i = 0; i < Tbarray.Count; i++)
+            //{
+            //    tb = comm.txtbox((TXTBOXclass)Tbarray[i]);
 
-                Controls.Add(tb);
-            }
+            //    Controls.Add(tb);
+            //}
 
             for (int i = 0; i < lbarray.Count; i++)
             {
@@ -111,13 +131,19 @@ namespace WindowsFormsApp
 
         private void btn1_Click(object sender, EventArgs e)
         {
-            
+            if(Tb2.Text == Tb3.Text)
+            {
+                
+                GetInsert(Tb1.Text, Tb2.Text, Tb4.Text, Tb5.Text, Tb6.Text, Tb7.Text, Tb8.Text, Tb9.Text);
+            }
+            else MessageBox.Show("비밀번호 중복 확인");
+
         }
 
         private void btn2_Click(object sender, EventArgs e)
         {
-            
 
+            this.Close();
         }
 
         private void Point_Print()
@@ -146,6 +172,15 @@ namespace WindowsFormsApp
         private void label_Click(object sender, EventArgs e)
         {
             throw new NotImplementedException();
+        }
+
+        public void GetInsert(string ID, string Pass, string Name, string Gender, string Birth, string email, string Phon, string addres)
+        {
+            MySql my = new MySql();
+            string sql = string.Format("INSERT INTO signup(id,passwod,name,gender,birthday,email,phone_number,address) values ('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}');", ID, Pass, Name, Gender, Birth, email, Phon, addres);
+            
+            if (my.NonQuery(sql)) MessageBox.Show("회원가입 완료!");
+            else MessageBox.Show("가입실패");
         }
     }
 }

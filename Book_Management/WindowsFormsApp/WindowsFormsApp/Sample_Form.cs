@@ -58,7 +58,7 @@ namespace WindowsFormsApp
 
             COMMON_Create_Ctl comm = new COMMON_Create_Ctl();
 
-            LISTVIEWclass 리스트뷰1_값 = new LISTVIEWclass(this, "ListView1", 500, 500, 10, 10, listview_mousedoubleclick, 3, "id", 100, "name", 100, "passwd", 100);
+            LISTVIEWclass 리스트뷰1_값 = new LISTVIEWclass(this, "ListView1", 500, 500, 10, 10, listview_mousedoubleclick, 3, "id", 100, "passwod", 100, "name", 100);
             ListView 리스트뷰1 = comm.listView(리스트뷰1_값);
 
             MySql mysql = new MySql();
@@ -67,8 +67,8 @@ namespace WindowsFormsApp
             foreach (Hashtable ht in arry)
             {            
                 ListViewItem item = new ListViewItem(ht["id"].ToString());  
+                item.SubItems.Add(ht["passwod"].ToString());
                 item.SubItems.Add(ht["name"].ToString());
-                item.SubItems.Add(ht["passwd"].ToString());
                 리스트뷰1.Items.Add(item);
             }
             Controls.Add(리스트뷰1);
