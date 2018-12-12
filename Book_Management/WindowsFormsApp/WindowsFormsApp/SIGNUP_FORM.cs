@@ -13,7 +13,7 @@ namespace WindowsFormsApp
 {
     public partial class SIGNUP_FORM : Form
     {
-        int sX = 500, sY = 700; // 폼 사이즈 지정.
+        int sX = 1500, sY = 800; // 폼 사이즈 지정.
 
         ///////// 좌표 체크시 추가 /////////
         static ToolStripStatusLabel StripLb;
@@ -29,7 +29,7 @@ namespace WindowsFormsApp
 
         private void SIGNUP_FORM_Load(object sender, EventArgs e)
         {
-
+            this.BackColor = Color.FromArgb(201, 253, 223); //백컬러
 
             ClientSize = new Size(sX, sY);  // 폼 사이즈 지정.
 
