@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,23 +12,28 @@ using System.Windows.Forms;
 
 namespace WindowsFormsApp
 {
-    public partial class SIGNUP_FORM : Form
+    public partial class MY_INFO_FORM : Form
     {
+        public MY_INFO_FORM()
+        {
+            InitializeComponent();
+
+            Load += MY_INFO_FORM_Load;
+        }
+
         int sX = 1500, sY = 800; // 폼 사이즈 지정.
-       
+
         ///////// 좌표 체크시 추가 /////////
         static ToolStripStatusLabel StripLb;
         StatusStrip statusStrip;
         ///////////////////////////////////
 
-        public SIGNUP_FORM()
-        {
-            InitializeComponent();
-            Load += SIGNUP_FORM_Load;
-        }
         TextBox Tb1, Tb2, Tb3, Tb4, Tb5, Tb6, Tb7, Tb8, Tb9 = new TextBox();
         Panel pan1 = new Panel();
-        private void SIGNUP_FORM_Load(object sender, EventArgs e)
+
+        string User = "1";
+
+        private void MY_INFO_FORM_Load(object sender, EventArgs e)
         {
             this.BackColor = Color.FromArgb(201, 253, 223); //백컬러
 
@@ -40,16 +46,14 @@ namespace WindowsFormsApp
             ArrayList lbarray = new ArrayList();
             ArrayList Tbarray = new ArrayList();
             ArrayList btnArray = new ArrayList();
-            lbarray.Add(new LBclass(this, "lb1", "회원가입", 18, 200, 40,200, 10, label_Click));
-            lbarray.Add(new LBclass(this, "lb_ID", "아이디", 10, 150, 20, 60, 60, label_Click));
+            lbarray.Add(new LBclass(this, "lb_ID", "아이디", 10, 150, 20, 20, 60, label_Click));
             lbarray.Add(new LBclass(this, "lb_Pass", "비밀번호", 10, 150, 20, 20, 120, label_Click));
-            lbarray.Add(new LBclass(this, "lb_PassCon", "비밀번호 확인", 10, 50, 20, 20, 180, label_Click));
-            lbarray.Add(new LBclass(this, "lb_Name", "이름", 10, 150, 20, 20, 240, label_Click));
-            lbarray.Add(new LBclass(this, "lb_Gender", "성별", 10, 150, 20, 20, 300, label_Click));
-            lbarray.Add(new LBclass(this, "lb_Birth", "생일", 10, 150, 20, 20, 360, label_Click));
-            lbarray.Add(new LBclass(this, "lb_email", "이메일", 10, 150, 20, 20, 420, label_Click));
-            lbarray.Add(new LBclass(this, "lb_Phon", "휴대폰 번호", 10, 150, 20, 20, 480, label_Click));
-            lbarray.Add(new LBclass(this, "lb_addres", "주소", 10, 150, 20, 20, 540, label_Click));
+            lbarray.Add(new LBclass(this, "lb_PassCon", "이름", 10, 50, 20, 20, 180, label_Click));
+            lbarray.Add(new LBclass(this, "lb_Name", "성별", 10, 150, 20, 20, 240, label_Click));
+            lbarray.Add(new LBclass(this, "lb_Gender", "생일", 10, 150, 20, 20, 300, label_Click));
+            lbarray.Add(new LBclass(this, "lb_Birth", "이메일", 10, 150, 20, 20, 360, label_Click));
+            lbarray.Add(new LBclass(this, "lb_email", "휴대폰", 10, 150, 20, 20, 420, label_Click));
+            lbarray.Add(new LBclass(this, "lb_Phon", "주소", 10, 150, 20, 20, 480, label_Click));
 
             //Tbarray.Add(new TXTBOXclass(this, "ID", "", 150, 20, 180, 60, Tb_click));
             //Tbarray.Add(new TXTBOXclass(this, "Pass", "", 150, 20, 180, 120, Tb_click));
@@ -69,7 +73,7 @@ namespace WindowsFormsApp
             Tb6 = comm.txtbox(new TXTBOXclass(this, "Birth", "", 150, 20, 180, 360, Tb_click));
             Tb7 = comm.txtbox(new TXTBOXclass(this, "email", "", 150, 20, 180, 420, Tb_click));
             Tb8 = comm.txtbox(new TXTBOXclass(this, "Phon", "", 150, 20, 180, 480, Tb_click));
-            Tb9 = comm.txtbox(new TXTBOXclass(this, "addres", "", 150, 20, 180, 540, Tb_click));
+            
 
             pan1.Controls.Add(Tb1);
             pan1.Controls.Add(Tb2);
@@ -79,7 +83,7 @@ namespace WindowsFormsApp
             pan1.Controls.Add(Tb6);
             pan1.Controls.Add(Tb7);
             pan1.Controls.Add(Tb8);
-            pan1.Controls.Add(Tb9);
+            
 
             //=================================================================================================================================================
 
@@ -94,8 +98,8 @@ namespace WindowsFormsApp
 
             // BTNclass bt1 = new BTNclass(this, "버튼Name", "버튼Text", 가로사이즈, 세로사이즈, 가로포인트, 세로포인트, 버튼클릭이벤트);
 
-            btnArray.Add(new BTNclass(this, "가입", "가입", 100, 50, 100, 580, btn1_Click));
-            btnArray.Add(new BTNclass(this, "닫기", "닫기", 100, 50, 300, 580, btn2_Click));
+            btnArray.Add(new BTNclass(this, "비번수정", "비밀번호 변경", 100, 50, 100, 580, btn1_Click));
+            btnArray.Add(new BTNclass(this, "정보수정", "정보 수정", 100, 50, 300, 580, btn2_Click));
 
             for (int i = 0; i < btnArray.Count; i++)
             {
@@ -117,7 +121,25 @@ namespace WindowsFormsApp
                 }
                 pan1.Controls.Add(btn);
             }
+            //==================================================================================================================================================
+            //기본 띄어지는 유저정보
+            
 
+            foreach (Hashtable ht in GetSelect(User))
+            {
+                Tb1.Text = (ht["id"].ToString());
+                Tb2.Text = (ht["name"].ToString());
+                Tb3.Text = (ht["passwod"].ToString());
+                Tb4.Text = (ht["gender"].ToString());
+                Tb5.Text = (ht["birthday"].ToString());
+                Tb6.Text = (ht["email"].ToString());
+                Tb7.Text = (ht["phone_number"].ToString());
+                Tb8.Text = (ht["address"].ToString());
+            }
+
+            //==================================================================================================================================================
+
+            //==================================================================================================================================================
             //for (int i = 0; i < Tbarray.Count; i++)
             //{
             //    tb = comm.txtbox((TXTBOXclass)Tbarray[i]);
@@ -131,19 +153,19 @@ namespace WindowsFormsApp
 
                 pan1.Controls.Add(lb);
             }
-            
-        }
 
+
+        }
         private void Tb_click(object sender, EventArgs e)
         {
-            
+
         }
 
         private void btn1_Click(object sender, EventArgs e)
         {
-            if(Tb2.Text == Tb3.Text)
+            if (Tb2.Text == Tb3.Text)
             {
-                
+
                 GetInsert(Tb1.Text, Tb2.Text, Tb4.Text, Tb5.Text, Tb6.Text, Tb7.Text, Tb8.Text, Tb9.Text);
             }
             else MessageBox.Show("비밀번호 중복 확인");
@@ -188,9 +210,48 @@ namespace WindowsFormsApp
         {
             MySql my = new MySql();
             string sql = string.Format("INSERT INTO signup(id,passwod,name,gender,birthday,email,phone_number,address) values ('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}');", ID, Pass, Name, Gender, Birth, email, Phon, addres);
-            
+
             if (my.NonQuery(sql)) MessageBox.Show("회원가입 완료!");
             else MessageBox.Show("가입실패");
         }
+
+        public string user_Select(string PWtext)
+        {
+            string p = ".";
+            string sql;
+            MySql my = new MySql();
+            sql = string.Format("select id from signup where passwod = '{0}';", PWtext);
+            MySqlDataReader sdr = my.Reader(sql);
+            while (sdr.Read())
+            {
+                p = sdr.GetValue(0).ToString();
+            }
+
+
+            return p;
+        }
+        public ArrayList GetSelect(string user)
+        {
+            MySql my = new MySql();
+            string sql = string.Format("select * from signup where user_number = {0};", user);
+            MySqlDataReader sdr = my.Reader(sql);
+            //string result = "";
+            ArrayList list = new ArrayList();
+            while (sdr.Read())
+            {
+                Hashtable ht = new Hashtable();
+                for (int i = 0; i < sdr.FieldCount; i++)
+                {
+                    //result += string.Format("{0}\t:\t{1}\t", sdr.GetName(i), sdr.GetValue(i));
+                    ht.Add(sdr.GetName(i), sdr.GetValue(i));
+
+                }
+                //result += "\n";
+                list.Add(ht);
+                Console.WriteLine(list.ToString());
+            }
+            return list;
+        }
+
     }
 }

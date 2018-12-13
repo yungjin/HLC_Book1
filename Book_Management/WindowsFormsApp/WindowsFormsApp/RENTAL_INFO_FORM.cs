@@ -34,10 +34,52 @@ namespace WindowsFormsApp
             COMMON_Create_Ctl comm = new COMMON_Create_Ctl();
             MySql mysql = new MySql();
             this.BackColor = Color.FromArgb(201, 253, 223); //백컬러
-            //==============================================================================================================================
-            LISTVIEWclass lv_value = new LISTVIEWclass(this, "ListView1", 500, 500, 10, 10, listview_mousedoubleclick, 3, "id", 100, "passwod", 100, "name", 100);
+            //리스트뷰====================================================================================================================================================
+            LISTVIEWclass lv_value = new LISTVIEWclass(this, "ListView1", 1300, 600, 100, 50, listview_mousedoubleclick, 3, "id", 100, "passwod", 100, "name", 100);
             ListView lv = comm.listView(lv_value);
             Controls.Add(lv);
+
+            //버튼=========================================================================================================================================================
+
+            ArrayList btnArray = new ArrayList();
+            btnArray.Add(new BTNclass(this, "반납", "반납", 150, 80, 1250, 660, btn1_Click));
+
+            Button btn = comm.btn((BTNclass)btnArray[0]);
+            btn.Font = new Font("견명조", 24F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(129)));  // FontStyle.Regular
+            btn.FlatStyle = FlatStyle.Flat;
+            btn.ForeColor = Color.LawnGreen;
+            btn.BackColor = Color.ForestGreen;
+            Controls.Add(btn);
+            //라벨 ========================================================================================================================================================
+            ArrayList lbarray = new ArrayList();
+            lbarray.Add(new LBclass(this, "상태", "상태:", 30, 70, 50, 95, 660, label_Click));
+            lbarray.Add(new LBclass(this, "staitus", "대여가능", 15, 100, 20, 170, 668, label_Click));
+            lbarray.Add(new LBclass(this, "설명1", "※3회 연체, 7일이상 연체시 대여 불가상태가 됩니다.", 12, 390, 20, 830, 670, label_Click));
+            lbarray.Add(new LBclass(this, "설명2", "해당 도서를 선택후 반납 버튼을 클릭하여 주세요.", 12, 380, 20, 845 ,690, label_Click));
+
+            for (int i = 0; i < lbarray.Count; i++)
+            {
+
+                Label lb = comm.lb((LBclass)lbarray[i]);
+
+                if (lb.Name == "상태")
+                {
+                    lb.Font = new Font("견명조", 20F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(129)));
+                }
+
+                Controls.Add(lb);
+            }
+            //=================================================================================================================================================
+        }
+
+        private void label_Click(object sender, EventArgs e)
+        {
+         
+        }
+
+        private void btn1_Click(object sender, EventArgs e)
+        {
+            
         }
 
         private void listview_mousedoubleclick(object sender, MouseEventArgs e)

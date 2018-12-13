@@ -59,6 +59,12 @@
     <Compile Include="LOGIN_FORM.Designer.cs">
       <DependentUpon>LOGIN_FORM.cs</DependentUpon>
     </Compile>
+    <Compile Include="MY_INFO_FORM.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MY_INFO_FORM.Designer.cs">
+      <DependentUpon>MY_INFO_FORM.cs</DependentUpon>
+    </Compile>
     <Compile Include="RENTAL_INFO_FORM.cs">
       <SubType>Form</SubType>
     </Compile>
