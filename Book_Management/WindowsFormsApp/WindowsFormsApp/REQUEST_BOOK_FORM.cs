@@ -11,9 +11,9 @@ using System.Windows.Forms;
 
 namespace WindowsFormsApp
 {
-    public partial class Sample_Form : Form
+    public partial class REQUEST_BOOK_FORM : Form
     {
-        int sX = 1500, sY = 800; // 폼 사이즈 지정.
+        int sX = 700, sY = 500; // 폼 사이즈 지정.
 
         ///////// 좌표 체크시 추가 /////////
         static ToolStripStatusLabel StripLb;
@@ -21,16 +21,18 @@ namespace WindowsFormsApp
         ///////////////////////////////////
 
 
-        public Sample_Form()
+        public REQUEST_BOOK_FORM()
         {
             InitializeComponent();
 
-            Load += Sample_Form_Load;
+            Load += REQUEST_BOOK_FORM_Load;
         }
 
-        private void Sample_Form_Load(object sender, EventArgs e)
+        private void REQUEST_BOOK_FORM_Load(object sender, EventArgs e)
         {
-            //FormBorderStyle = FormBorderStyle.None; 폼 상단 표시줄 제거
+            FormBorderStyle = FormBorderStyle.None; //폼 상단 표시줄 제거
+
+            this.BackColor = Color.FromArgb(218, 234, 244);
 
             ClientSize = new Size(sX, sY);  // 폼 사이즈 지정.
 
@@ -58,21 +60,9 @@ namespace WindowsFormsApp
 
             COMMON_Create_Ctl comm = new COMMON_Create_Ctl();
 
-            LISTVIEWclass 리스트뷰1_값 = new LISTVIEWclass(this, "ListView1", 500, 500, 10, 10, listview_mousedoubleclick, 3, "id", 100, "name", 100, "passwd", 100);
-            ListView 리스트뷰1 = comm.listView(리스트뷰1_값);
-
-            MySql mysql = new MySql();
-
-            ArrayList arry = mysql.GetSelect();
-            foreach (Hashtable ht in arry)
-            {
-                ListViewItem item = new ListViewItem(ht["id"].ToString());
-                item.SubItems.Add(ht["name"].ToString());
-                item.SubItems.Add(ht["passwd"].ToString());
-                리스트뷰1.Items.Add(item);
-            }
-            Controls.Add(리스트뷰1);
-
+            LBclass 라벨_입고요청상단값 = new LBclass(this, "입고요청상단", "입고 요청", 26, 200, 40, 590, 95, label_Click);
+            Label 라벨_입고요청상단 = comm.lb(라벨_입고요청상단값);
+            Controls.Add(라벨_입고요청상단);
 
 
         }

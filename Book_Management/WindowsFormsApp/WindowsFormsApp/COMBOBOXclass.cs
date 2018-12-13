@@ -14,7 +14,7 @@ namespace WindowsFormsApp
         Form form;
         string name;
         int sX, sY, pX, pY;
-        public MouseEventHandler eh_combobox;
+        public EventHandler eh_combobox;
         private ArrayList list_array = new ArrayList();
 
         int total_list_count;
@@ -31,7 +31,7 @@ namespace WindowsFormsApp
 
 
         // List 1개
-        public COMBOBOXclass(Form form, string name, int sX, int sY, int pX, int pY, MouseEventHandler eh_combobox, int total_list_count, string list_name_1)
+        public COMBOBOXclass(Form form, string name, int sX, int sY, int pX, int pY, EventHandler eh_combobox, int total_list_count, string list_name_1)
         {
             this.form = form;
             this.name = name;
@@ -48,7 +48,7 @@ namespace WindowsFormsApp
         }
 
         // List 2개
-        public COMBOBOXclass(Form form, string name, int sX, int sY, int pX, int pY, MouseEventHandler eh_combobox, int total_list_count, string list_name_1, string list_name_2)
+        public COMBOBOXclass(Form form, string name, int sX, int sY, int pX, int pY, EventHandler eh_combobox, int total_list_count, string list_name_1, string list_name_2)
         {
             this.form = form;
             this.name = name;
@@ -67,7 +67,7 @@ namespace WindowsFormsApp
         }
 
         // List 3개
-        public COMBOBOXclass(Form form, string name, int sX, int sY, int pX, int pY, MouseEventHandler eh_combobox, int total_list_count, string list_name_1, string list_name_2, string list_name_3)
+        public COMBOBOXclass(Form form, string name, int sX, int sY, int pX, int pY, EventHandler eh_combobox, int total_list_count, string list_name_1, string list_name_2, string list_name_3)
         {
             this.form = form;
             this.name = name;
@@ -88,7 +88,7 @@ namespace WindowsFormsApp
         }
 
         // List 4개
-        public COMBOBOXclass(Form form, string name, int sX, int sY, int pX, int pY, MouseEventHandler eh_combobox, int total_list_count, string list_name_1, string list_name_2, string list_name_3, string list_name_4)
+        public COMBOBOXclass(Form form, string name, int sX, int sY, int pX, int pY, EventHandler eh_combobox, int total_list_count, string list_name_1, string list_name_2, string list_name_3, string list_name_4)
         {
             this.form = form;
             this.name = name;
@@ -111,7 +111,7 @@ namespace WindowsFormsApp
         }
 
         // List 4개
-        public COMBOBOXclass(Form form, string name, int sX, int sY, int pX, int pY, MouseEventHandler eh_combobox, int total_list_count, string list_name_1, string list_name_2, string list_name_3, string list_name_4, string list_name_5)
+        public COMBOBOXclass(Form form, string name, int sX, int sY, int pX, int pY, EventHandler eh_combobox, int total_list_count, string list_name_1, string list_name_2, string list_name_3, string list_name_4, string list_name_5)
         {
             this.form = form;
             this.name = name;
@@ -136,7 +136,7 @@ namespace WindowsFormsApp
 
         }
 
-        public COMBOBOXclass(Form form, string name, int sX, int sY, int pX, int pY, MouseEventHandler eh_combobox, int total_list_count, string list_name_1, string list_name_2, string list_name_3, string list_name_4, string list_name_5, string list_name_6)
+        public COMBOBOXclass(Form form, string name, int sX, int sY, int pX, int pY, EventHandler eh_combobox, int total_list_count, string list_name_1, string list_name_2, string list_name_3, string list_name_4, string list_name_5, string list_name_6)
         {
             this.form = form;
             this.name = name;
@@ -162,7 +162,7 @@ namespace WindowsFormsApp
             list_array.Add(list_name_6);
         }
 
-        public COMBOBOXclass(Form form, string name, int sX, int sY, int pX, int pY, MouseEventHandler eh_combobox, int total_list_count, string list_name_1, string list_name_2, string list_name_3, string list_name_4, string list_name_5, string list_name_6, string list_name_7)
+        public COMBOBOXclass(Form form, string name, int sX, int sY, int pX, int pY, EventHandler eh_combobox, int total_list_count, string list_name_1, string list_name_2, string list_name_3, string list_name_4, string list_name_5, string list_name_6, string list_name_7)
         {
             this.form = form;
             this.name = name;
@@ -190,7 +190,7 @@ namespace WindowsFormsApp
             list_array.Add(list_name_7);
         }
 
-        public COMBOBOXclass(Form form, string name, int sX, int sY, int pX, int pY, MouseEventHandler eh_combobox, int total_list_count, string list_name_1, string list_name_2, string list_name_3, string list_name_4, string list_name_5, string list_name_6, string list_name_7, string list_name_8)
+        public COMBOBOXclass(Form form, string name, int sX, int sY, int pX, int pY, EventHandler eh_combobox, int total_list_count, string list_name_1, string list_name_2, string list_name_3, string list_name_4, string list_name_5, string list_name_6, string list_name_7, string list_name_8)
         {
             this.form = form;
             this.name = name;
@@ -220,7 +220,7 @@ namespace WindowsFormsApp
             list_array.Add(list_name_8);
         }
 
-        public COMBOBOXclass(Form form, string name, int sX, int sY, int pX, int pY, MouseEventHandler eh_combobox, int total_list_count, string list_name_1, string list_name_2, string list_name_3, string list_name_4, string list_name_5, string list_name_6, string list_name_7, string list_name_8, string list_name_9)
+        public COMBOBOXclass(Form form, string name, int sX, int sY, int pX, int pY, EventHandler eh_combobox, int total_list_count, string list_name_1, string list_name_2, string list_name_3, string list_name_4, string list_name_5, string list_name_6, string list_name_7, string list_name_8, string list_name_9)
         {
             this.form = form;
             this.name = name;
@@ -252,7 +252,7 @@ namespace WindowsFormsApp
             list_array.Add(list_name_9);
         }
 
-        public COMBOBOXclass(Form form, string name, int sX, int sY, int pX, int pY, MouseEventHandler eh_combobox, int total_list_count, string list_name_1, string list_name_2, string list_name_3, string list_name_4, string list_name_5, string list_name_6, string list_name_7, string list_name_8, string list_name_9, string list_name_10)
+        public COMBOBOXclass(Form form, string name, int sX, int sY, int pX, int pY, EventHandler eh_combobox, int total_list_count, string list_name_1, string list_name_2, string list_name_3, string list_name_4, string list_name_5, string list_name_6, string list_name_7, string list_name_8, string list_name_9, string list_name_10)
         {
             this.form = form;
             this.name = name;
@@ -366,7 +366,7 @@ namespace WindowsFormsApp
         public string getList_Name_10
         {
             get { return list_name_10; }
-        }                
+        }
 
         public ArrayList List_ArrayList
         {

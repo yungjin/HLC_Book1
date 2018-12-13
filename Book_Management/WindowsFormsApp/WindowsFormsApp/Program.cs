@@ -16,7 +16,7 @@ namespace WindowsFormsApp
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MY_INFO_FORM());
+            Application.Run(new BOOK_INFO_FORM());
         }
     }
 }

@@ -119,7 +119,7 @@ namespace WindowsFormsApp
         public ArrayList GetSelect()
         {
             MySql my = new MySql();
-            string sql = "select * from signup;";
+            string sql = "select * from book_info;";
             MySqlDataReader sdr = my.Reader(sql);
             //string result = "";
             ArrayList list = new ArrayList();
@@ -206,7 +206,28 @@ namespace WindowsFormsApp
         }
 
 
+        public ArrayList Select(string val)
+        {
+            MySql my = new MySql();
+            string sql = val;
+            MySqlDataReader sdr = my.Reader(sql);
+            //string result = "";
+            ArrayList list = new ArrayList();
+            while (sdr.Read())
+            {
+                Hashtable ht = new Hashtable();
+                for (int i = 0; i < sdr.FieldCount; i++)
+                {
+                    //result += string.Format("{0}\t:\t{1}\t", sdr.GetName(i), sdr.GetValue(i));
+                    ht.Add(sdr.GetName(i), sdr.GetValue(i));
 
+                }
+                //result += "\n";
+                list.Add(ht);
+                Console.WriteLine(list.ToString());
+            }
+            return list;
+        }
 
 
     }

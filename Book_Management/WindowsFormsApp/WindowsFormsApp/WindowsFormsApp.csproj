@@ -71,6 +71,12 @@
     <Compile Include="RENTAL_INFO_FORM.Designer.cs">
       <DependentUpon>RENTAL_INFO_FORM.cs</DependentUpon>
     </Compile>
+    <Compile Include="REQUEST_BOOK_FORM.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="REQUEST_BOOK_FORM.Designer.cs">
+      <DependentUpon>REQUEST_BOOK_FORM.cs</DependentUpon>
+    </Compile>
     <Compile Include="Sample_Form2.cs">
       <SubType>Form</SubType>
     </Compile>

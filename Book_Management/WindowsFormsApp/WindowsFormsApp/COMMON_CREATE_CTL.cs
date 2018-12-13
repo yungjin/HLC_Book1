@@ -6,6 +6,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -14,7 +15,6 @@ namespace WindowsFormsApp
 {
     class COMMON_Create_Ctl
     {
-        string targetFileURI = "ftp://ljh5432.iptime.org:1942/";
         string userID = "hlc";
         string password = "rneldkzkepal1942!";
 
@@ -24,24 +24,28 @@ namespace WindowsFormsApp
             for (int i = 0; i < lstView_obj.ToTal_CNT; i++)
             {
                 ColumnHeader columnHeader = new ColumnHeader();
-                listView.Columns.Add(columnHeader);
-
                 columnHeader.Text = lstView_obj.ColName_ArrayList[i].ToString();
                 columnHeader.Width = Convert.ToInt32(lstView_obj.ColWidth_ArrayList[i]);
                 columnHeader.TextAlign = HorizontalAlignment.Center;
+
+                listView.Columns.Add(columnHeader);
 
                 // lv.Columns.Add("No", 100, HorizontalAlignment.Center); // 위 3줄 대체 가능.
 
             }
 
-            listView.MouseDoubleClick += lstView_obj.eh_listview;
+
+            //listView.BackColor = Color.White;                    
             listView.GridLines = true;
+            listView.FullRowSelect = true;
             listView.Location = new Point(lstView_obj.PX, lstView_obj.PY);
             listView.Name = lstView_obj.Name;
             listView.Size = new Size(lstView_obj.SX, lstView_obj.SY);
             listView.TabIndex = 0;
             listView.UseCompatibleStateImageBehavior = false;
             listView.View = View.Details;
+            listView.MouseClick += lstView_obj.eh_listview;
+            //listView.MouseDoubleClick += lstView_obj.eh_listview;
 
             return listView;
         }
@@ -54,7 +58,7 @@ namespace WindowsFormsApp
                 combobox.Items.Add(combox_obj.List_ArrayList[i]);
             }
 
-            combobox.MouseClick += combox_obj.eh_combobox;
+            combobox.SelectedIndexChanged += combox_obj.eh_combobox;
             combobox.Name = combox_obj.Name;
             combobox.Location = new Point(combox_obj.PX, combox_obj.PY);
             combobox.Size = new Size(combox_obj.SX, combox_obj.SY);
@@ -226,7 +230,7 @@ namespace WindowsFormsApp
         {
             try
             {
-
+                string targetFileURI = "ftp://ljh5432.iptime.org:1942/";
                 targetFileURI = targetFileURI + FileName;
 
                 //MessageBox.Show("@sourceFilePath : " + @sourceFilePath + ", targetFileURI : " + targetFileURI);
@@ -295,6 +299,17 @@ namespace WindowsFormsApp
         }
 
 
+        [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]            //Dll임포트
+        public static extern IntPtr CreateRoundRectRgn                            //파라미터
+        (
+            //(좌측상단여백, 우측상단여백, 컨트롤 넓이, 컨트롤 높이, 가로 모서리 원기울기, 세로 모서리 원기울기)
+            int nLeftRect,      // x-coordinate of upper-left corner
+            int nTopRect,       // y-coordinate of upper-left corner
+            int nRightRect,     // x-coordinate of lower-right corner
+            int nBottomRect,    // y-coordinate of lower-right corner   
+            int nWidthEllipse,  // height of ellipse
+            int nHeightEllipse  // width of ellipse  
+        );
 
     }
 }
