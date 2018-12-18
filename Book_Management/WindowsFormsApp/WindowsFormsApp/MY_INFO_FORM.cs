@@ -12,8 +12,13 @@ using System.Windows.Forms;
 
 namespace WindowsFormsApp
 {
+
     public partial class MY_INFO_FORM : Form
     {
+
+        private int status;
+        private int LoginNumber;
+
         public MY_INFO_FORM()
         {
             InitializeComponent();
@@ -22,6 +27,8 @@ namespace WindowsFormsApp
         }
 
         int sX = 1500, sY = 800; // 폼 사이즈 지정.
+
+        
 
         ///////// 좌표 체크시 추가 /////////
         static ToolStripStatusLabel StripLb;
@@ -32,6 +39,11 @@ namespace WindowsFormsApp
         Panel pan1 = new Panel();
 
         string User = "1";
+
+        public void user()
+        {
+
+        }
 
         private void MY_INFO_FORM_Load(object sender, EventArgs e)
         {
@@ -67,7 +79,7 @@ namespace WindowsFormsApp
 
             Tb1 = comm.txtbox(new TXTBOXclass(this, "ID", "", 150, 20, 180, 60, Tb_click));
             Tb2 = comm.txtbox(new TXTBOXclass(this, "Pass", "", 150, 20, 180, 120, Tb_click));
-            Tb3 = comm.txtbox(new TXTBOXclass(this, "PassCon", "", 150, 20, 180, 180, Tb_click));
+            Tb3 = comm.txtbox(new TXTBOXclass(this, "name", "", 150, 20, 180, 180, Tb_click));
             Tb4 = comm.txtbox(new TXTBOXclass(this, "Name", "", 150, 20, 180, 240, Tb_click));
             Tb5 = comm.txtbox(new TXTBOXclass(this, "Gender", "", 150, 20, 180, 300, Tb_click));
             Tb6 = comm.txtbox(new TXTBOXclass(this, "Birth", "", 150, 20, 180, 360, Tb_click));
@@ -128,8 +140,8 @@ namespace WindowsFormsApp
             foreach (Hashtable ht in GetSelect(User))
             {
                 Tb1.Text = (ht["id"].ToString());
-                Tb2.Text = (ht["name"].ToString());
-                Tb3.Text = (ht["passwod"].ToString());
+                Tb2.Text = "************";
+                Tb3.Text = (ht["name"].ToString());
                 Tb4.Text = (ht["gender"].ToString());
                 Tb5.Text = (ht["birthday"].ToString());
                 Tb6.Text = (ht["email"].ToString());
@@ -137,7 +149,20 @@ namespace WindowsFormsApp
                 Tb8.Text = (ht["address"].ToString());
             }
 
+            Tb1.ReadOnly = ReadYn();
+            Tb2.ReadOnly = ReadYn();
+            Tb3.ReadOnly = ReadYn();
+            Tb4.ReadOnly = ReadYn();
+            Tb5.ReadOnly = ReadYn();
+            Tb6.ReadOnly = ReadYn();
+            Tb7.ReadOnly = ReadYn();
+            Tb8.ReadOnly = ReadYn();
+
+
+
             //==================================================================================================================================================
+
+
 
             //==================================================================================================================================================
             //for (int i = 0; i < Tbarray.Count; i++)
@@ -156,6 +181,12 @@ namespace WindowsFormsApp
 
 
         }
+
+        private bool ReadYn()
+        {
+            return true;
+        }
+
         private void Tb_click(object sender, EventArgs e)
         {
 
@@ -163,19 +194,12 @@ namespace WindowsFormsApp
 
         private void btn1_Click(object sender, EventArgs e)
         {
-            if (Tb2.Text == Tb3.Text)
-            {
-
-                GetInsert(Tb1.Text, Tb2.Text, Tb4.Text, Tb5.Text, Tb6.Text, Tb7.Text, Tb8.Text, Tb9.Text);
-            }
-            else MessageBox.Show("비밀번호 중복 확인");
-
+            
         }
 
         private void btn2_Click(object sender, EventArgs e)
         {
-
-            this.Close();
+            
         }
 
         private void Point_Print()
@@ -208,11 +232,12 @@ namespace WindowsFormsApp
 
         public void GetInsert(string ID, string Pass, string Name, string Gender, string Birth, string email, string Phon, string addres)
         {
-            MySql my = new MySql();
-            string sql = string.Format("INSERT INTO signup(id,passwod,name,gender,birthday,email,phone_number,address) values ('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}');", ID, Pass, Name, Gender, Birth, email, Phon, addres);
 
-            if (my.NonQuery(sql)) MessageBox.Show("회원가입 완료!");
-            else MessageBox.Show("가입실패");
+            MySql my = new MySql();
+            string sql = string.Format("UPDATE INTO signup(id,name,gender,birthday,email,phone_number,address) values ('{0}','{1}','{2}','{3}','{4}','{5}','{6}');", ID,  Name, Gender, Birth, email, Phon, addres);
+            if (my.NonQuery(sql)) MessageBox.Show("수정 완료");
+            else MessageBox.Show("수정 실패");
+
         }
 
         public string user_Select(string PWtext)

@@ -44,8 +44,8 @@ namespace WindowsFormsApp
             listView.TabIndex = 0;
             listView.UseCompatibleStateImageBehavior = false;
             listView.View = View.Details;
-            listView.MouseClick += lstView_obj.eh_listview;
-            //listView.MouseDoubleClick += lstView_obj.eh_listview;
+            //listView.MouseClick += lstView_obj.eh_listview_Click;
+            //listView.MouseDoubleClick += lstView_obj.eh_listview_DoubleClick;
 
             return listView;
         }
@@ -92,7 +92,7 @@ namespace WindowsFormsApp
             label.Font = new Font("굴림", lb_obj.FSize, FontStyle.Regular, GraphicsUnit.Point, ((byte)(129)));
             label.Location = new Point(lb_obj.PX, lb_obj.PY);
             label.BackColor = Color.Transparent;
-
+            label.Click += lb_obj.eh_label;
             return label;
         }
 
@@ -310,6 +310,7 @@ namespace WindowsFormsApp
             int nWidthEllipse,  // height of ellipse
             int nHeightEllipse  // width of ellipse  
         );
+
 
     }
 }

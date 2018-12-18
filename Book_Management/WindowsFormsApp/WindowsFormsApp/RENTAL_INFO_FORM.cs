@@ -20,25 +20,43 @@ namespace WindowsFormsApp
             Load += RENTAL_INFO_FORM_Load;
         }
 
+        private ListView lv;
         int sX = 1500, sY = 800; // 폼 사이즈 지정.
 
         ///////// 좌표 체크시 추가 /////////
         static ToolStripStatusLabel StripLb;
         StatusStrip statusStrip;
         ///////////////////////////////////
-
+        private string no;
         private void RENTAL_INFO_FORM_Load(object sender, EventArgs e)
         {
+            //this.Region = Region.FromHrgn(COMMON_Create_Ctl.CreateRoundRectRgn(2, 2, this.Width, this.Height, 15, 15));
             Point_Print(); //좌표 
             ClientSize = new Size(sX, sY);  // 폼 사이즈 지정.
             COMMON_Create_Ctl comm = new COMMON_Create_Ctl();
             MySql mysql = new MySql();
             this.BackColor = Color.FromArgb(201, 253, 223); //백컬러
             //리스트뷰====================================================================================================================================================
-            LISTVIEWclass lv_value = new LISTVIEWclass(this, "ListView1", 1300, 600, 100, 50, listview_mousedoubleclick, 3, "id", 100, "passwod", 100, "name", 100);
-            ListView lv = comm.listView(lv_value);
+            LISTVIEWclass lv_value = new LISTVIEWclass(this, "ListView1", 1300, 600, 100, 50, listview_mousedoubleclick, 7, "대여번호", 100, "도서명", 100, "저자", 100, "출판사", 100, "대여일", 100, "반납일", 100, "연체일", 100, "상태", 100);
+            lv = comm.listView(lv_value);
             Controls.Add(lv);
 
+            ArrayList arry = GetSelect();
+            foreach (Hashtable ht in arry)
+            {
+                ListViewItem item = new ListViewItem(ht["대여번호"].ToString());
+                item.SubItems.Add(ht["도서명"].ToString());
+                item.SubItems.Add(ht["저자"].ToString());
+                item.SubItems.Add(ht["출판사"].ToString());
+                item.SubItems.Add(ht["대여일"].ToString());
+                item.SubItems.Add(ht["반납일"].ToString());
+                item.SubItems.Add(ht["연체일"].ToString());
+                item.SubItems.Add(ht["상태"].ToString());
+                lv.Items.Add(item);
+            }
+            
+
+            Controls.Add(lv);
             //버튼=========================================================================================================================================================
 
             ArrayList btnArray = new ArrayList();
@@ -49,6 +67,7 @@ namespace WindowsFormsApp
             btn.FlatStyle = FlatStyle.Flat;
             btn.ForeColor = Color.LawnGreen;
             btn.BackColor = Color.ForestGreen;
+            btn.Region = Region.FromHrgn(COMMON_Create_Ctl.CreateRoundRectRgn(2, 2, 150, 80, 15, 15));
             Controls.Add(btn);
             //라벨 ========================================================================================================================================================
             ArrayList lbarray = new ArrayList();
@@ -79,18 +98,42 @@ namespace WindowsFormsApp
 
         private void btn1_Click(object sender, EventArgs e)
         {
-            
+            GetUpdate();
+
+            GetSelect();
+
         }
 
         private void listview_mousedoubleclick(object sender, MouseEventArgs e)
         {
-            
+            ListView lv = (ListView)sender;
+            ListView.SelectedListViewItemCollection slv = lv.SelectedItems;
+            for (int i = 0; i < slv.Count; i++)
+            {
+                ListViewItem item = slv[i];
+                no = item.SubItems[0].Text;
+            }
         }
 
         public ArrayList GetSelect()
         {
+            lv.Items.Clear();
             MySql my = new MySql();
-            string sql = "select * from signup;";
+            string sql = "select    R.rental_number 대여번호,	I.title 도서명, I.author 저자, I.publisher 출판사, R.rental_day 대여일, R.return_schedule 반납일," +
+                            " case	"+
+	                        " when TO_DAYS(now()) - TO_DAYS('2018-12-10') > 0 then '연체됨' "+
+	                        " when TO_DAYS(now()) - TO_DAYS('2018-12-10') <= 0 then '연체안됨' "+
+	                        " else '' "+
+                            " end 연체일,"+
+                            " case	"+
+	                        " when R.rental_status = 0 then '대여중' "+
+	                        " when R.rental_status = 1 then '반납요망' "+
+	                        " else '' "+
+                            " end 상태 "+
+                            " from	book_info as I "+
+                            " inner join book_rental as R on "+
+                            " (I.book_number = R.book_number)"+
+                            " WHERE R.rental_status = 0 || R.rental_status = 1;";
             MySqlDataReader sdr = my.Reader(sql);
             //string result = "";
             ArrayList list = new ArrayList();
@@ -108,6 +151,20 @@ namespace WindowsFormsApp
                 Console.WriteLine(list.ToString());
             }
             return list;
+        }
+
+        public ArrayList GetUpdate()
+        {
+            MySql my = new MySql();
+            string sql = string.Format("update book_rental set rental_status = 2 WHERE rental_number = {0};",no);
+            if (my.NonQuery(sql))
+            {
+                return GetSelect();
+            }
+            else
+            {
+                return new ArrayList();
+            }
         }
 
         private void Point_Print()

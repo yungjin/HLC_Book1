@@ -51,6 +51,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BOOK_LOC_FORM.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BOOK_LOC_FORM.Designer.cs">
+      <DependentUpon>BOOK_LOC_FORM.cs</DependentUpon>
+    </Compile>
     <Compile Include="BTNclass.cs" />
     <Compile Include="CHKBOXclass.cs" />
     <Compile Include="LOGIN_FORM.cs">

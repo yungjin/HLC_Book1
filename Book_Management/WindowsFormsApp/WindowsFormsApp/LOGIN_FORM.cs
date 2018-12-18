@@ -12,12 +12,16 @@ using System.Windows.Forms;
 
 namespace WindowsFormsApp
 {
+
+
     public partial class LOGIN_FORM : Form
     {
-        public LOGIN_FORM()
+        MAIN_FORM form;
+
+        public LOGIN_FORM(MAIN_FORM form)
         {
             InitializeComponent();
-
+            this.form = form;
             Load += LOGIN_FORM_Load;
         }
         int sX = 1500, sY = 800; // 폼 사이즈 지정.
@@ -73,6 +77,7 @@ namespace WindowsFormsApp
             pan1.Width = 500;
             pan1.Location = new Point(470, 120);
             pan1.BackColor = Color.FromArgb(218, 234, 244);
+            
 
             Controls.Add(pan1);
             //==================================================================================================================================================
@@ -119,11 +124,46 @@ namespace WindowsFormsApp
 
         private void btn1_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(ID_Select(Tb1.Text));
+            
             if (Tb1.Text == ID_Select(Tb1.Text) && Tb2.Text == PW_Select(Tb2.Text))
             {
                 MessageBox.Show("로그인 성공");
+
+                MySql my = new MySql();
+                string sql = string.Format("select user_number, member_rank from signup where id = '{0}';", Tb1.Text);
+                MySqlDataReader sdr = my.Reader(sql);
+                while (sdr.Read())
+                {
+                    MAIN_FORM.user_Number = Convert.ToInt32(sdr.GetValue(0).ToString());
+                    MAIN_FORM.member_rank = Convert.ToInt32(sdr.GetValue(1).ToString());
+                }
+
+                this.Close();
+                if(MAIN_FORM.member_rank == 1)
+                {
+                    form.user1.Show();
+                    form.btn1.Show();
+                    form.btn2.Show();
+                    form.btn3.Show();
+                    form.btn.Show();
+                    form.Login.Hide();
+                    form.Signup.Hide();
+
+                    if (MAIN_FORM.member_rank == 4)
+                    {
+                        form.lb_Login.Show();
+                        form.lb_Signup.Show();
+                    }
+                    else
+                    {
+                        form.lb_Login.Hide();
+                        form.lb_Signup.Hide();
+                    }
+                }
+                
+                
             }
+
             else MessageBox.Show("아이디 또는 비밀번호가 틀립니다.");
         }
 
@@ -138,6 +178,11 @@ namespace WindowsFormsApp
             this.Close();
         }
 
+        public void Login_Select(string Idtext)
+        {
+            
+        }
+
         public string ID_Select(string Idtext)
         {
             string i = ".";
@@ -148,10 +193,10 @@ namespace WindowsFormsApp
             {
                 i = sdr.GetValue(0).ToString();
             }
-
-            
             return i;
         }
+
+
 
         public string PW_Select(string PWtext)
         {
@@ -164,8 +209,6 @@ namespace WindowsFormsApp
             {
                 p = sdr.GetValue(0).ToString();
             }
-
-
             return p;
         }
 
