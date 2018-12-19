@@ -13,6 +13,7 @@ namespace WindowsFormsApp
 {
     public partial class SIGNUP_FORM : Form
     {
+
         int sX = 1500, sY = 800; // 폼 사이즈 지정.
        
         ///////// 좌표 체크시 추가 /////////
@@ -29,6 +30,8 @@ namespace WindowsFormsApp
         Panel pan1 = new Panel();
         private void SIGNUP_FORM_Load(object sender, EventArgs e)
         {
+            FormBorderStyle = FormBorderStyle.None;// 폼 상단 표시줄 제거
+
             this.BackColor = Color.FromArgb(201, 253, 223); //백컬러
 
             ClientSize = new Size(sX, sY);  // 폼 사이즈 지정.

@@ -57,8 +57,26 @@
     <Compile Include="BOOK_LOC_FORM.Designer.cs">
       <DependentUpon>BOOK_LOC_FORM.cs</DependentUpon>
     </Compile>
+    <Compile Include="BOOK_MGT_FORM.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BOOK_MGT_FORM.Designer.cs">
+      <DependentUpon>BOOK_MGT_FORM.cs</DependentUpon>
+    </Compile>
     <Compile Include="BTNclass.cs" />
     <Compile Include="CHKBOXclass.cs" />
+    <Compile Include="DETAIL_BOOK_FORM.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DETAIL_BOOK_FORM.Designer.cs">
+      <DependentUpon>DETAIL_BOOK_FORM.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LATE_MGT_FORM.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LATE_MGT_FORM.Designer.cs">
+      <DependentUpon>LATE_MGT_FORM.cs</DependentUpon>
+    </Compile>
     <Compile Include="LOGIN_FORM.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -126,6 +144,18 @@
     </Compile>
     <Compile Include="BOOK_INFO_FORM.Designer.cs">
       <DependentUpon>BOOK_INFO_FORM.cs</DependentUpon>
+    </Compile>
+    <Compile Include="USER_INFO_FORM.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="USER_INFO_FORM.Designer.cs">
+      <DependentUpon>USER_INFO_FORM.cs</DependentUpon>
+    </Compile>
+    <Compile Include="USER_LEVEL_UPDATE_FORM.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="USER_LEVEL_UPDATE_FORM.Designer.cs">
+      <DependentUpon>USER_LEVEL_UPDATE_FORM.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="MAIN_FORM.resx">
       <DependentUpon>MAIN_FORM.cs</DependentUpon>

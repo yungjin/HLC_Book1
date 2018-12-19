@@ -14,7 +14,8 @@ namespace WindowsFormsApp
         Form form;
         string name;
         int sX, sY, pX, pY;
-        public MouseEventHandler eh_listview;
+        public MouseEventHandler eh_listview_Click;
+        public MouseEventHandler eh_listview_DoubleClick;
         private ArrayList colname_array = new ArrayList();
         private ArrayList colwidth_array = new ArrayList();
 
@@ -42,7 +43,7 @@ namespace WindowsFormsApp
         int col_width_10;
 
         // 컬럼1개
-        public LISTVIEWclass(Form form, string name, int sX, int sY, int pX, int pY, MouseEventHandler eh_listview, int total_columns_count, string col_name_1, int col_width1)
+        public LISTVIEWclass(Form form, string name, int sX, int sY, int pX, int pY, MouseEventHandler eh_listview_Click, MouseEventHandler eh_listview_DoubleClick, int total_columns_count, string col_name_1, int col_width1)
         {
             this.form = form;
             this.name = name;
@@ -50,7 +51,8 @@ namespace WindowsFormsApp
             this.sY = sY;
             this.pX = pX;
             this.pY = pY;
-            this.eh_listview = eh_listview;
+            this.eh_listview_Click = eh_listview_Click;
+            this.eh_listview_DoubleClick = eh_listview_DoubleClick;
             this.total_columns_count = total_columns_count;
             this.col_name_1 = col_name_1;
             this.col_width_1 = col_width1;
@@ -60,7 +62,7 @@ namespace WindowsFormsApp
         }
 
         // 컬럼2개
-        public LISTVIEWclass(Form form, string name, int sX, int sY, int pX, int pY, MouseEventHandler eh_listview, int total_columns_count, string col_name_1, int col_width1, string col_name_2, int col_width2)
+        public LISTVIEWclass(Form form, string name, int sX, int sY, int pX, int pY, MouseEventHandler eh_listview_Click, MouseEventHandler eh_listview_DoubleClick, int total_columns_count, string col_name_1, int col_width1, string col_name_2, int col_width2)
         {
             this.form = form;
             this.name = name;
@@ -68,7 +70,8 @@ namespace WindowsFormsApp
             this.sY = sY;
             this.pX = pX;
             this.pY = pY;
-            this.eh_listview = eh_listview;
+            this.eh_listview_Click = eh_listview_Click;
+            this.eh_listview_DoubleClick = eh_listview_DoubleClick;
             this.total_columns_count = total_columns_count;
             this.col_name_1 = col_name_1;
             this.col_name_2 = col_name_2;
@@ -84,7 +87,7 @@ namespace WindowsFormsApp
         }
 
         // 컬럼3개
-        public LISTVIEWclass(Form form, string name, int sX, int sY, int pX, int pY, MouseEventHandler eh_listview, int total_columns_count, string col_name_1, int col_width1, string col_name_2, int col_width2, string col_name_3, int col_width3)
+        public LISTVIEWclass(Form form, string name, int sX, int sY, int pX, int pY, MouseEventHandler eh_listview_Click, MouseEventHandler eh_listview_DoubleClick, int total_columns_count, string col_name_1, int col_width1, string col_name_2, int col_width2, string col_name_3, int col_width3)
         {
             this.form = form;
             this.name = name;
@@ -92,7 +95,8 @@ namespace WindowsFormsApp
             this.sY = sY;
             this.pX = pX;
             this.pY = pY;
-            this.eh_listview = eh_listview;
+            this.eh_listview_Click = eh_listview_Click;
+            this.eh_listview_DoubleClick = eh_listview_DoubleClick;
             this.total_columns_count = total_columns_count;
             this.col_name_1 = col_name_1;
             this.col_name_2 = col_name_2;
@@ -112,7 +116,7 @@ namespace WindowsFormsApp
         }
 
         // 컬럼4개
-        public LISTVIEWclass(Form form, string name, int sX, int sY, int pX, int pY, MouseEventHandler eh_listview, int total_columns_count, string col_name_1, int col_width1, string col_name_2, int col_width2, string col_name_3, int col_width3, string col_name_4, int col_width4)
+        public LISTVIEWclass(Form form, string name, int sX, int sY, int pX, int pY, MouseEventHandler eh_listview_Click, MouseEventHandler eh_listview_DoubleClick, int total_columns_count, string col_name_1, int col_width1, string col_name_2, int col_width2, string col_name_3, int col_width3, string col_name_4, int col_width4)
         {
             this.form = form;
             this.name = name;
@@ -120,7 +124,8 @@ namespace WindowsFormsApp
             this.sY = sY;
             this.pX = pX;
             this.pY = pY;
-            this.eh_listview = eh_listview;
+            this.eh_listview_Click = eh_listview_Click;
+            this.eh_listview_DoubleClick = eh_listview_DoubleClick;
             this.total_columns_count = total_columns_count;
             this.col_name_1 = col_name_1;
             this.col_name_2 = col_name_2;
@@ -144,7 +149,7 @@ namespace WindowsFormsApp
         }
 
         // 컬럼5개
-        public LISTVIEWclass(Form form, string name, int sX, int sY, int pX, int pY, MouseEventHandler eh_listview, int total_columns_count, string col_name_1, int col_width1, string col_name_2, int col_width2, string col_name_3, int col_width3, string col_name_4, int col_width4, string col_name_5, int col_width5)
+        public LISTVIEWclass(Form form, string name, int sX, int sY, int pX, int pY, MouseEventHandler eh_listview_Click, MouseEventHandler eh_listview_DoubleClick, int total_columns_count, string col_name_1, int col_width1, string col_name_2, int col_width2, string col_name_3, int col_width3, string col_name_4, int col_width4, string col_name_5, int col_width5)
         {
             this.form = form;
             this.name = name;
@@ -152,7 +157,8 @@ namespace WindowsFormsApp
             this.sY = sY;
             this.pX = pX;
             this.pY = pY;
-            this.eh_listview = eh_listview;
+            this.eh_listview_Click = eh_listview_Click;
+            this.eh_listview_DoubleClick = eh_listview_DoubleClick;
             this.total_columns_count = total_columns_count;
             this.col_name_1 = col_name_1;
             this.col_name_2 = col_name_2;
@@ -180,7 +186,7 @@ namespace WindowsFormsApp
         }
 
         // 컬럼6개
-        public LISTVIEWclass(Form form, string name, int sX, int sY, int pX, int pY, MouseEventHandler eh_listview, int total_columns_count, string col_name_1, int col_width1, string col_name_2, int col_width2, string col_name_3, int col_width3, string col_name_4, int col_width4, string col_name_5, int col_width5, string col_name_6, int col_width6)
+        public LISTVIEWclass(Form form, string name, int sX, int sY, int pX, int pY, MouseEventHandler eh_listview_Click, MouseEventHandler eh_listview_DoubleClick, int total_columns_count, string col_name_1, int col_width1, string col_name_2, int col_width2, string col_name_3, int col_width3, string col_name_4, int col_width4, string col_name_5, int col_width5, string col_name_6, int col_width6)
         {
             this.form = form;
             this.name = name;
@@ -188,7 +194,8 @@ namespace WindowsFormsApp
             this.sY = sY;
             this.pX = pX;
             this.pY = pY;
-            this.eh_listview = eh_listview;
+            this.eh_listview_Click = eh_listview_Click;
+            this.eh_listview_DoubleClick = eh_listview_DoubleClick;
             this.total_columns_count = total_columns_count;
             this.col_name_1 = col_name_1;
             this.col_name_2 = col_name_2;
@@ -220,7 +227,7 @@ namespace WindowsFormsApp
         }
 
         // 컬럼7개
-        public LISTVIEWclass(Form form, string name, int sX, int sY, int pX, int pY, MouseEventHandler eh_listview, int total_columns_count, string col_name_1, int col_width1, string col_name_2, int col_width2, string col_name_3, int col_width3, string col_name_4, int col_width4, string col_name_5, int col_width5, string col_name_6, int col_width6, string col_name_7, int col_width7)
+        public LISTVIEWclass(Form form, string name, int sX, int sY, int pX, int pY, MouseEventHandler eh_listview_Click, MouseEventHandler eh_listview_DoubleClick, int total_columns_count, string col_name_1, int col_width1, string col_name_2, int col_width2, string col_name_3, int col_width3, string col_name_4, int col_width4, string col_name_5, int col_width5, string col_name_6, int col_width6, string col_name_7, int col_width7)
         {
             this.form = form;
             this.name = name;
@@ -228,7 +235,8 @@ namespace WindowsFormsApp
             this.sY = sY;
             this.pX = pX;
             this.pY = pY;
-            this.eh_listview = eh_listview;
+            this.eh_listview_Click = eh_listview_Click;
+            this.eh_listview_DoubleClick = eh_listview_DoubleClick;
             this.total_columns_count = total_columns_count;
             this.col_name_1 = col_name_1;
             this.col_name_2 = col_name_2;
@@ -264,7 +272,7 @@ namespace WindowsFormsApp
         }
 
         // 컬럼8개
-        public LISTVIEWclass(Form form, string name, int sX, int sY, int pX, int pY, MouseEventHandler eh_listview, int total_columns_count, string col_name_1, int col_width1, string col_name_2, int col_width2, string col_name_3, int col_width3, string col_name_4, int col_width4, string col_name_5, int col_width5, string col_name_6, int col_width6, string col_name_7, int col_width7, string col_name_8, int col_width8)
+        public LISTVIEWclass(Form form, string name, int sX, int sY, int pX, int pY, MouseEventHandler eh_listview_Click, MouseEventHandler eh_listview_DoubleClick, int total_columns_count, string col_name_1, int col_width1, string col_name_2, int col_width2, string col_name_3, int col_width3, string col_name_4, int col_width4, string col_name_5, int col_width5, string col_name_6, int col_width6, string col_name_7, int col_width7, string col_name_8, int col_width8)
         {
             this.form = form;
             this.name = name;
@@ -272,7 +280,8 @@ namespace WindowsFormsApp
             this.sY = sY;
             this.pX = pX;
             this.pY = pY;
-            this.eh_listview = eh_listview;
+            this.eh_listview_Click = eh_listview_Click;
+            this.eh_listview_DoubleClick = eh_listview_DoubleClick;
             this.total_columns_count = total_columns_count;
             this.col_name_1 = col_name_1;
             this.col_name_2 = col_name_2;
@@ -312,7 +321,7 @@ namespace WindowsFormsApp
         }
 
         // 컬럼9개
-        public LISTVIEWclass(Form form, string name, int sX, int sY, int pX, int pY, MouseEventHandler eh_listview, int total_columns_count, string col_name_1, int col_width1, string col_name_2, int col_width2, string col_name_3, int col_width3, string col_name_4, int col_width4, string col_name_5, int col_width5, string col_name_6, int col_width6, string col_name_7, int col_width7, string col_name_8, int col_width8, string col_name_9, int col_width9)
+        public LISTVIEWclass(Form form, string name, int sX, int sY, int pX, int pY, MouseEventHandler eh_listview_Click, MouseEventHandler eh_listview_DoubleClick, int total_columns_count, string col_name_1, int col_width1, string col_name_2, int col_width2, string col_name_3, int col_width3, string col_name_4, int col_width4, string col_name_5, int col_width5, string col_name_6, int col_width6, string col_name_7, int col_width7, string col_name_8, int col_width8, string col_name_9, int col_width9)
         {
             this.form = form;
             this.name = name;
@@ -320,7 +329,8 @@ namespace WindowsFormsApp
             this.sY = sY;
             this.pX = pX;
             this.pY = pY;
-            this.eh_listview = eh_listview;
+            this.eh_listview_Click = eh_listview_Click;
+            this.eh_listview_DoubleClick = eh_listview_DoubleClick;
             this.total_columns_count = total_columns_count;
             this.col_name_1 = col_name_1;
             this.col_name_2 = col_name_2;
@@ -364,7 +374,7 @@ namespace WindowsFormsApp
         }
 
         // 컬럼10개
-        public LISTVIEWclass(Form form, string name, int sX, int sY, int pX, int pY, MouseEventHandler eh_listview, int total_columns_count, string col_name_1, int col_width1, string col_name_2, int col_width2, string col_name_3, int col_width3, string col_name_4, int col_width4, string col_name_5, int col_width5, string col_name_6, int col_width6, string col_name_7, int col_width7, string col_name_8, int col_width8, string col_name_9, int col_width9, string col_name_10, int col_width10)
+        public LISTVIEWclass(Form form, string name, int sX, int sY, int pX, int pY, MouseEventHandler eh_listview_Click, MouseEventHandler eh_listview_DoubleClick, int total_columns_count, string col_name_1, int col_width1, string col_name_2, int col_width2, string col_name_3, int col_width3, string col_name_4, int col_width4, string col_name_5, int col_width5, string col_name_6, int col_width6, string col_name_7, int col_width7, string col_name_8, int col_width8, string col_name_9, int col_width9, string col_name_10, int col_width10)
         {
             this.form = form;
             this.name = name;
@@ -372,7 +382,8 @@ namespace WindowsFormsApp
             this.sY = sY;
             this.pX = pX;
             this.pY = pY;
-            this.eh_listview = eh_listview;
+            this.eh_listview_Click = eh_listview_Click;
+            this.eh_listview_DoubleClick = eh_listview_DoubleClick;
             this.total_columns_count = total_columns_count;
             this.col_name_1 = col_name_1;
             this.col_name_2 = col_name_2;

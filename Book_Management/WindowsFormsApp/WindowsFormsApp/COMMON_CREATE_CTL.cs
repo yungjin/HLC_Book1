@@ -44,8 +44,8 @@ namespace WindowsFormsApp
             listView.TabIndex = 0;
             listView.UseCompatibleStateImageBehavior = false;
             listView.View = View.Details;
-            //listView.MouseClick += lstView_obj.eh_listview_Click;
-            //listView.MouseDoubleClick += lstView_obj.eh_listview_DoubleClick;
+            listView.MouseClick += lstView_obj.eh_listview_Click;
+            listView.MouseDoubleClick += lstView_obj.eh_listview_DoubleClick;
 
             return listView;
         }

@@ -13,8 +13,8 @@ namespace WindowsFormsApp
 {
     public partial class MAIN_FORM : Form
     {
-        public static int member_rank = 4; // 0 관리자 / 1 유저 / 4 비회원
-        public static int user_Number;
+        public Panel panel1;
+
         PictureBox pictureBox;
         // MDI 자식폼 테스트 
         Sample_Form Child1 = new Sample_Form();
@@ -24,18 +24,32 @@ namespace WindowsFormsApp
         public Button btn1;
         public Button btn2;
         public Button btn3;
+
+        
+        public Button btn5;
+        public Button btn6;
+        public Button btn7;
         //로긴/회원가입==================================================================================================
         public LOGIN_FORM Login;
         public SIGNUP_FORM Signup = new SIGNUP_FORM();
 
 
         //유저 폼 =======================================================================================================
-        public BOOK_INFO_FORM user1 = new BOOK_INFO_FORM();
+        public BOOK_INFO_FORM user1;
         public RENTAL_INFO_FORM user2 = new RENTAL_INFO_FORM();
         public MY_INFO_FORM user3 = new MY_INFO_FORM();
         public BOOK_LOC_FORM user4 = new BOOK_LOC_FORM();
+        //관리자 폼======================================================================================================
+
+        public USER_INFO_FORM root2 = new USER_INFO_FORM();
+        public BOOK_MGT_FORM root3 = new BOOK_MGT_FORM();
+        public LATE_MGT_FORM root4 = new LATE_MGT_FORM();
+
 
         //===============================================================================================================
+
+
+
         int user_rank = 4;
 
         int sX = 1500, sY = 900; // 폼 사이즈 지정.
@@ -55,6 +69,11 @@ namespace WindowsFormsApp
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            //=======================================================================================================
+            user1 = new BOOK_INFO_FORM(this);
+            LOGIN_FORM login_frm = new LOGIN_FORM(this);
+            Login = new LOGIN_FORM(this);
+            //=======================================================================================================
 
             ClientSize = new Size(sX, sY);  // 폼 사이즈 지정.
             this.IsMdiContainer = true;     // MDI 설정.
@@ -68,14 +87,14 @@ namespace WindowsFormsApp
             // 생성할 패널 정보 객체 생성.
             PANELclass pn1 = new PANELclass(this, "panel1", "panel_main", 1500, 780, 0, 100, panel_MouseMove);
 
-            Panel panel1 = comm_create_ctl.panel(pn1);  // ex) 판넬만들기 :  create_ctl.CTL명(CTL값);           
+            panel1 = comm_create_ctl.panel(pn1);  // ex) 판넬만들기 :  create_ctl.CTL명(CTL값);           
             Controls.Add(panel1);  // 원하는 컨트롤에 추가함.
 
             BTNclass bt1 = new BTNclass(this, "유저1", "도서정보", 285, 100, 0, 0, btn1_Click);
             BTNclass bt2 = new BTNclass(this, "유저2", "대여목록", 285, 100, 285, 0, btn2_Click);
             BTNclass bt3 = new BTNclass(this, "유저3", "나의정보", 285, 100, 570, 0, btn3_Click);
             BTNclass bt4 = new BTNclass(this, "유저4", "도서위치MAP", 285, 100, 855, 0, btn4_Click);
-            BTNclass bt5 = new BTNclass(this, "관리1", "도서정보", 285, 100, 0, 0, btn5_Click);
+            
             BTNclass bt6 = new BTNclass(this, "관리2", "회원정보", 285, 100, 285, 0, btn6_Click);
             BTNclass bt7 = new BTNclass(this, "관리3", "도서관리", 285, 100, 570, 0, btn7_Click);
             BTNclass bt8 = new BTNclass(this, "관리4", "연체관리", 285, 100, 855, 0, btn8_Click);
@@ -86,44 +105,45 @@ namespace WindowsFormsApp
             btn3 = comm_create_ctl.btn(bt4);
 
 
-            Button btn4 = comm_create_ctl.btn(bt5);
-            Button btn5 = comm_create_ctl.btn(bt6);
-            Button btn6 = comm_create_ctl.btn(bt7);
-            Button btn7 = comm_create_ctl.btn(bt8);
+            
+            btn5 = comm_create_ctl.btn(bt6);
+            btn6 = comm_create_ctl.btn(bt7);
+            btn7 = comm_create_ctl.btn(bt8);
 
 
             Controls.Add(btn);
-
 
             Controls.Add(btn1);
             Controls.Add(btn2);
             Controls.Add(btn3);
 
-
-            Controls.Add(btn4);
+            
             Controls.Add(btn5);
             Controls.Add(btn6);
             Controls.Add(btn7);
 
-            if(member_rank == 4) // 비회원
+            MessageBox.Show("login_frm.Member_rank : " + login_frm.Member_rank);
+
+            if (login_frm.Member_rank == 4) // 비회원
             {
                 user1.Show();
                 btn1.Hide();
                 btn2.Hide();
                 btn3.Hide();
-                btn4.Hide();
+                
                 btn5.Hide();
                 btn6.Hide();
                 btn7.Hide();
             }
-            else if(member_rank == 0) //관리자
-            {
 
-                btn.Hide();
-                btn1.Hide();
-                btn2.Hide();
-                btn3.Hide();
-            }
+            //else if (member_rank == 0) //관리자
+            //{
+
+            //    btn.Hide();
+            //    btn1.Hide();
+            //    btn2.Hide();
+            //    btn3.Hide();
+            //}
             //else if(member_rank == 1) //유저
             //{
             //    user1.Show();
@@ -133,7 +153,7 @@ namespace WindowsFormsApp
             //    btn7.Hide();
             //}
 
-            
+
 
 
             //라벨 ==============================================================================================================================================
@@ -181,6 +201,7 @@ namespace WindowsFormsApp
             //Child1.Dispose();
 
             //Set the Parent Form of the Child window.
+
             user1.TopLevel = false;
             user1.TopMost = true;
             user1.MdiParent = this;
@@ -204,9 +225,7 @@ namespace WindowsFormsApp
             user4.MdiParent = this;
             user4.Dock = DockStyle.Fill; //판넬크기에 맞게 사이즈 늘림.
             panel1.Controls.Add(user4);
-
-
-            Login = new LOGIN_FORM(this);
+                                   
             Login.TopLevel = false;
             Login.TopMost = true;
             Login.MdiParent = this;
@@ -218,6 +237,26 @@ namespace WindowsFormsApp
             Signup.MdiParent = this;
             Signup.Dock = DockStyle.Fill; //판넬크기에 맞게 사이즈 늘림.
             panel1.Controls.Add(Signup);
+
+
+            root2.TopLevel = false;
+            root2.TopMost = true;
+            root2.MdiParent = this;
+            root2.Dock = DockStyle.Fill; //판넬크기에 맞게 사이즈 늘림.
+            panel1.Controls.Add(root2);
+
+            root3.TopLevel = false;
+            root3.TopMost = true;
+            root3.MdiParent = this;
+            root3.Dock = DockStyle.Fill; //판넬크기에 맞게 사이즈 늘림.
+            panel1.Controls.Add(root3);
+
+            root4.TopLevel = false;
+            root4.TopMost = true;
+            root4.MdiParent = this;
+            root4.Dock = DockStyle.Fill; //판넬크기에 맞게 사이즈 늘림.
+            panel1.Controls.Add(root4);
+
 
         }
 
@@ -279,67 +318,38 @@ namespace WindowsFormsApp
 
         }
 
-        private void btn5_Click(Object o, EventArgs e)
-        {
-            //MessageBox.Show("동작확인 : btn_Click");
-            //if (Child1.Visible)
-            //{
-            //    Child1.Hide();
-
-            //}
-            //else
-            //{
-
-            //    Child1.Show();
-            //}
-
-        }
 
         private void btn6_Click(Object o, EventArgs e)
         {
-            //MessageBox.Show("동작확인 : btn_Click");
-            //if (Child1.Visible)
-            //{
-            //    Child1.Hide();
+            user1.Hide();
+            root2.Show();
+            root3.Hide();
+            root4.Hide();
+            Login.Hide();
+            Signup.Hide();
 
-            //}
-            //else
-            //{
-
-            //    Child1.Show();
-            //}
 
         }
 
         private void btn7_Click(Object o, EventArgs e)
         {
-            //MessageBox.Show("동작확인 : btn_Click");
-            //if (Child1.Visible)
-            //{
-            //    Child1.Hide();
-
-            //}
-            //else
-            //{
-
-            //    Child1.Show();
-            //}
+            user1.Hide();
+            root2.Hide();
+            root3.Show();
+            root4.Hide();
+            Login.Hide();
+            Signup.Hide();
 
         }
 
         private void btn8_Click(Object o, EventArgs e)
         {
-            //MessageBox.Show("동작확인 : btn_Click");
-            //if (Child1.Visible)
-            //{
-            //    Child1.Hide();
-
-            //}
-            //else
-            //{
-
-            //    Child1.Show();
-            //}
+            user1.Hide();
+            root2.Hide();
+            root3.Hide();
+            root4.Show();
+            Login.Hide();
+            Signup.Hide();
 
         }
         //로긴 회원 =======================================================================================

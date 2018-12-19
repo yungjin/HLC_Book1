@@ -11,45 +11,39 @@ using System.Windows.Forms;
 
 namespace WindowsFormsApp
 {
-    public partial class REQUEST_BOOK_FORM : Form
+    public partial class LATE_MGT_FORM : Form
     {
-        int sX = 580, sY = 480; // 폼 사이즈 지정.
+        int sX = 1500, sY = 800; // 폼 사이즈 지정.
 
         ///////// 좌표 체크시 추가 /////////
         static ToolStripStatusLabel StripLb;
         StatusStrip statusStrip;
         ///////////////////////////////////
 
-        TextBox Textbox1;
-        TextBox Textbox2;
-        TextBox Textbox3;
-        TextBox Textbox4;
+        COMMON_Create_Ctl comm = new COMMON_Create_Ctl();
 
+        private OpenFileDialog openFileDialog1 = new OpenFileDialog();  // openFileDialog1 변수 선언 및 초기화
+        public static string _Slected_File_RootPath;
+        PictureBox 책이미지;
+        TextBox 텍스트박스;
 
-        public REQUEST_BOOK_FORM()
+        public LATE_MGT_FORM()
         {
             InitializeComponent();
 
-            Load += REQUEST_BOOK_FORM_Load;
+            Load += LATE_MGT_FORM_Load;
         }
 
-        private void REQUEST_BOOK_FORM_Load(object sender, EventArgs e)
+        private void LATE_MGT_FORM_Load(object sender, EventArgs e)
         {
-            // 테두리 색깔 추가
-            this.Paint += new PaintEventHandler(UserControl1_Paint);
+            //FormBorderStyle = FormBorderStyle.None; 폼 상단 표시줄 제거
 
-
-            //(좌측상단여백, 우측상단여백, 컨트롤 넓이, 컨트롤 높이, 가로 모서리 원기울기, 세로 모서리 원기울기)
-            //this.Region = Region.FromHrgn(COMMON_Create_Ctl.CreateRoundRectRgn(2, 2, this.Width, this.Height, 15, 15));
-
-            FormBorderStyle = FormBorderStyle.None; //폼 상단 표시줄 제거
-
-            this.BackColor = Color.FromArgb(218, 234, 244);
+            this.BackColor = Color.FromArgb(201, 253, 223);
 
             ClientSize = new Size(sX, sY);  // 폼 사이즈 지정.
 
             /// 좌표 체크시 추가 ///
-            //Point_Print();
+            Point_Print();
 
             COMMON_Create_Ctl create_ctl = new COMMON_Create_Ctl();
 
@@ -70,84 +64,46 @@ namespace WindowsFormsApp
             // COMBOBOXclass combobox1 = new COMBOBOXclass(this, "콤보박스Name", 가로사이즈, 세로사이즈, 가로포인트, 세로포인트, 콤보박스클릭이벤트, 리스트추가갯수, "test1", "test2", "test3", "test4", "test5");
             COMBOBOXclass combobox1 = new COMBOBOXclass(this, "ComboBox1", 100, 100, 721, 12, ComboBox_SelectedIndexChanged, 5, "test1", "test2", "test3", "test4", "test5");
 
-            COMMON_Create_Ctl comm = new COMMON_Create_Ctl();
 
-            /// 라벨 ArrayList
-            ArrayList labelArr = new ArrayList();
-            labelArr.Add(new LBclass(this, "입고요청상단", "입고 요청", 26, 200, 40, 40, 40, label_Click));
-            labelArr.Add(new LBclass(this, "제목", "제목", 20, 80, 40, 46, 130, label_Click));
-            labelArr.Add(new LBclass(this, "저자", "저자", 20, 80, 40, 46, 180, label_Click));
-            labelArr.Add(new LBclass(this, "출판사", "출판사", 20, 80, 40, 46, 230, label_Click));
-            labelArr.Add(new LBclass(this, "장르", "장르", 20, 80, 40, 46, 280, label_Click));
-            labelArr.Add(new LBclass(this, "", ":", 20, 20, 30, 140, 130, label_Click));
-            labelArr.Add(new LBclass(this, "", ":", 20, 20, 30, 140, 180, label_Click));
-            labelArr.Add(new LBclass(this, "", ":", 20, 20, 30, 140, 230, label_Click));
-            labelArr.Add(new LBclass(this, "", ":", 20, 20, 30, 140, 280, label_Click));
+            LBclass 연체정보라벨값 = new LBclass(this, "연체정보라벨", "연체자 정보", 30, 250, 50, 30, 50, label_Click);
+            Label 연체정보라벨 = comm.lb(연체정보라벨값);
+            Controls.Add(연체정보라벨);
 
-            for (int i = 0; i < labelArr.Count; i++)
+
+            LISTVIEWclass 연체정보리스트값 = new LISTVIEWclass(this, "연체정보리스트", 1400, 600, 38, 130, listview_mousedoubleclick, listview_mousedoubleclick, 8, "", 0, "회원번호", 200, "연락처", 200, "이름", 200, "도서명", 200, "도서번호", 200, "대여일", 200, "연체일", 200);
+            ListView 연체정보리스트 = comm.listView(연체정보리스트값);
+            연체정보리스트.Font = new Font("신명조", 24, FontStyle.Bold);
+
+            연체정보리스트.OwnerDraw = true;
+            연체정보리스트.DrawColumnHeader += new DrawListViewColumnHeaderEventHandler(lv_DrawColumnHeader);
+
+            //연체정보리스트.BackColor = Color.AliceBlue;  // Color.FromArgb(201, 253, 223); 
+            연체정보리스트.DrawSubItem += new DrawListViewSubItemEventHandler(lv_DrawSubItem);
+
+            MySql mysql = new MySql();
+
+            ArrayList arry = mysql.Select("select S.user_number, S.phone_number, S.name, I.title, I.book_number, R.rental_day, TO_DAYS(now()) - TO_DAYS(R.return_schedule) 연체일 from book_info as I inner join book_rental as R on (I.book_number = R.book_number and TO_DAYS(now()) - TO_DAYS(R.return_schedule) > 0) inner join signup as S on (S.user_number = R.user_number);");
+            foreach (Hashtable ht in arry)
             {
-                Label 라벨 = comm.lb((LBclass)labelArr[i]);
+                ListViewItem item = new ListViewItem("");
+                item.SubItems.Add(ht["user_number"].ToString());
+                item.SubItems.Add(ht["phone_number"].ToString());
+                item.SubItems.Add(ht["name"].ToString());
+                item.SubItems.Add(ht["title"].ToString());
+                item.SubItems.Add(ht["book_number"].ToString());
+                item.SubItems.Add(ht["rental_day"].ToString());
+                item.SubItems.Add(ht["연체일"].ToString());
 
-                if (라벨.Name == "입고요청상단")
+                연체정보리스트.Items.Add(item);
+
+                for (int i = 0; i < item.SubItems.Count; i++)
                 {
-                    라벨.Font = new Font("신명조", 30, FontStyle.Bold);
+                    item.SubItems[i].Font = new Font("Arial", 14, FontStyle.Italic);
                 }
-                else
-                {
-                    라벨.Font = new Font("신명조", 20, FontStyle.Bold);
-                }
-                Controls.Add(라벨);
             }
 
-            // 텍스트박스 ArrayList
-            ArrayList TextBoxArr = new ArrayList();
-            TextBoxArr.Add(new TXTBOXclass(this, "입고텍스트제목", "", 330, 40, 200, 135, txtbox_Click));
-            TextBoxArr.Add(new TXTBOXclass(this, "입고텍스트저자", "", 330, 40, 200, 185, txtbox_Click));
-            TextBoxArr.Add(new TXTBOXclass(this, "입고텍스트출판사", "", 330, 40, 200, 235, txtbox_Click));
-            TextBoxArr.Add(new TXTBOXclass(this, "입고텍스트장르", "", 330, 40, 200, 285, txtbox_Click));
+            Controls.Add(연체정보리스트);
 
-            for (int i = 0; i < TextBoxArr.Count; i++)
-            {
-                TextBox 텍스트박스 = comm.txtbox((TXTBOXclass)TextBoxArr[i]);
-                텍스트박스.Font = new Font(텍스트박스.Font.Name, 15, FontStyle.Bold);
-
-                if (텍스트박스.Name == "입고텍스트제목")
-                {
-                    Textbox1 = 텍스트박스;
-                }
-                else if (텍스트박스.Name == "입고텍스트저자")
-                {
-                    Textbox2 = 텍스트박스;
-                }
-                else if (텍스트박스.Name == "입고텍스트출판사")
-                {
-                    Textbox3 = 텍스트박스;
-                }
-                else if (텍스트박스.Name == "입고텍스트장르")
-                {
-                    Textbox4 = 텍스트박스;
-                }
-
-                Controls.Add(텍스트박스);
-            }
-
-
-            ArrayList btnArray = new ArrayList();
-            btnArray.Add(new BTNclass(this, "등록", "등록", 120, 50, 280, 380, btn_Click));
-            btnArray.Add(new BTNclass(this, "취소", "취소", 120, 50, 415, 380, btn_Click));
-
-            for (int i = 0; i < btnArray.Count; i++)
-            {
-                Button 버튼 = comm.btn((BTNclass)btnArray[i]);
-
-                버튼.Font = new Font("견명조", 24F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(129)));  // FontStyle.Regular                
-                버튼.BackColor = Color.FromArgb(50, 178, 223);
-                버튼.FlatStyle = FlatStyle.Flat;
-                버튼.ForeColor = Color.White;
-                버튼.Region = Region.FromHrgn(COMMON_Create_Ctl.CreateRoundRectRgn(2, 2, 버튼.Width, 버튼.Height, 18, 18));
-
-                Controls.Add(버튼);
-            }
 
         }
 
@@ -169,25 +125,17 @@ namespace WindowsFormsApp
 
         private void btn_Click(Object o, EventArgs e)
         {
+            MessageBox.Show("동작확인 : btn_Click");
+
             Button button = (Button)o;
 
-            ///  버튼 설정. 
-            if (button.Name == "등록")
+            if (button.Name == "등록버튼")
             {
-                if (Textbox1.Text == "" || Textbox2.Text == "" || Textbox3.Text == "" || Textbox4.Text == "")
-                {
-                    MessageBox.Show("입력칸을 모두 채워주세요");
-                    return;
-                }
-
-                MessageBox.Show("등록 - 입고 요청한 user_number로 등록되도록 추후 수정 필요");
-                MySql mysql = new MySql();
-                string sql = string.Format("insert into Receiving_equest(title, author, publisher, genre, user_number) values('{0}', '{1}', '{2}', '{3}', {4});", Textbox1.Text, Textbox2.Text, Textbox3.Text, Textbox4.Text, 1); // 1 : 입고 요청한 user_number 로 등록되도록 변경 필요. 
-                mysql.NonQuery_INSERT(sql);
+                MessageBox.Show("등록버튼");
             }
-            else if (button.Name == "취소")
+            else if (button.Name == "업로드버튼")
             {
-                this.Close();
+                Image_Select();
             }
         }
 
@@ -198,7 +146,6 @@ namespace WindowsFormsApp
 
         private void txtbox_Click(Object o, EventArgs e)
         {
-            return;
             MessageBox.Show("동작확인 : txtbox_Click");
         }
 
@@ -245,6 +192,38 @@ namespace WindowsFormsApp
         }
 
 
+        private void Image_Select()
+        {
+            try
+            {
+                OpenFileDialog openFileDlg = new OpenFileDialog();
+                openFileDlg.DefaultExt = "jpg";
+                openFileDlg.Title = "이미지 업로드";
+                openFileDlg.Filter = "이미지 파일|*.jpg|png 파일|*.png";
+                openFileDialog1.FileName = "";
+                openFileDlg.ShowDialog();
+                if (openFileDlg.FileName.Length > 0)
+                {
+                    foreach (string file_root in openFileDlg.FileNames)
+                    {
+                        _Slected_File_RootPath = file_root;
+                        string fileName = _Slected_File_RootPath.Substring(_Slected_File_RootPath.LastIndexOf("\\") + 1);
+
+                        //MessageBox.Show("_Slected_File_RootPath : " + _Slected_File_RootPath + ", fileName : " + fileName);
+
+                        comm.UploadFTPFile(_Slected_File_RootPath, fileName);
+                        책이미지.ImageLocation = "http://ljh5432.iptime.org:81/ImageCollection/" + fileName; // fileName : FTP에서 불러올 파일 이름.
+                        텍스트박스.Text = fileName;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("이미지 지정 실패");
+            }
+        }
+
+
         ///////////////////////// 좌표 체크시 추가 /////////////////////////////
 
         private void Point_Print()
@@ -272,13 +251,30 @@ namespace WindowsFormsApp
         ///////////////////////////////////////////////////////////////////////
         ///
 
-
         // 테두리 색상 추가
         private void UserControl1_Paint(object sender, PaintEventArgs e)
         {
             ControlPaint.DrawBorder(e.Graphics, this.ClientRectangle, Color.Black, ButtonBorderStyle.Solid);
         }
 
+        private void Form_Paint(object sender, PaintEventArgs e)
+        {
+            Pen pen = new Pen(Color.FromArgb(255, 0, 0, 0));
+            e.Graphics.DrawLine(pen, 750, 0, 750, 800);
+        }
+
+        // 리스트뷰 헤더 컬러추가
+        void lv_DrawColumnHeader(object sender, DrawListViewColumnHeaderEventArgs e)
+        {
+            e.Graphics.FillRectangle(Brushes.LightGray, e.Bounds);
+            e.DrawText();
+        }
+
+        // 리스트뷰 Subitem 컬러추가
+        void lv_DrawSubItem(object sender, DrawListViewSubItemEventArgs e)
+        {
+            e.DrawText();
+        }
 
     }
 }

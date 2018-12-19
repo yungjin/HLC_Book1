@@ -52,13 +52,13 @@ namespace WindowsFormsApp
             // CHKBOXclass bhkbox1 = new CHKBOXclass(this, "체크박스Name", 체크박스Text", 가로사이즈, 세로사이즈, 가로포인트, 세로포인트, 체크박스클릭이벤트);
             CHKBOXclass chkbox1 = new CHKBOXclass(this, "chkbox1", "chkbox1~", 100, 100, 20, 20, chkbox_Click);
             // LISTVIEWclass listview1 = new LISTVIEWclass(this, "리스트뷰Name", 가로사이즈, 세로사이즈, 가로포인트, 세로포인트, 리스트뷰더블클릭이벤트, 컬럼갯수, "컬럼1번Name", 컬럼1간격, "컬럼2번Name", 컬럼2간격, "컬럼3번Name", 컬럼3간격, ~ 동일방식 10개 컬럼까지 가능);
-            LISTVIEWclass listview1 = new LISTVIEWclass(this, "ListView1", 500, 500, 10, 10, listview_mousedoubleclick, 3, "col1", 100, "col2", 100, "col3", 100);
+            LISTVIEWclass listview1 = new LISTVIEWclass(this, "ListView1", 500, 500, 10, 10, listview_mousedoubleclick, listview_mousedoubleclick, 3, "col1", 100, "col2", 100, "col3", 100);
             // COMBOBOXclass combobox1 = new COMBOBOXclass(this, "콤보박스Name", 가로사이즈, 세로사이즈, 가로포인트, 세로포인트, 콤보박스클릭이벤트, 리스트추가갯수, "test1", "test2", "test3", "test4", "test5");
             COMBOBOXclass combobox1 = new COMBOBOXclass(this, "ComboBox1", 100, 100, 721, 12, ComboBox_SelectedIndexChanged, 5, "test1", "test2", "test3", "test4", "test5");
 
             COMMON_Create_Ctl comm = new COMMON_Create_Ctl();
 
-            LISTVIEWclass 리스트뷰1_값 = new LISTVIEWclass(this, "ListView1", 500, 500, 10, 10, listview_mousedoubleclick, 3, "id", 100, "name", 100, "passwd", 100);
+            LISTVIEWclass 리스트뷰1_값 = new LISTVIEWclass(this, "ListView1", 500, 500, 10, 10, listview_mousedoubleclick, listview_mousedoubleclick, 3, "id", 100, "name", 100, "passwd", 100);
             ListView 리스트뷰1 = comm.listView(리스트뷰1_값);
 
             MySql mysql = new MySql();
@@ -78,14 +78,29 @@ namespace WindowsFormsApp
         }
 
 
+
+
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////
+
+        /// <summary> 아래는 이벤트 처리 부분
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+
+        //////////////////////////////////////////////////////////////////////////////////////////////// 
+
+
+
         private void listview_mousedoubleclick(object sender, MouseEventArgs e)
         {
-
+            MessageBox.Show("동작확인 : listview_mousedoubleclick");
         }
 
         private void listView_MouseClick(object sender, MouseEventArgs e)
         {
-
+            MessageBox.Show("동작확인 : listView_MouseClick");
         }
 
         private void ComboBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -178,6 +193,18 @@ namespace WindowsFormsApp
         ///////////////////////////////////////////////////////////////////////
         ///
 
+
+        // 테두리 색상 추가
+        private void UserControl1_Paint(object sender, PaintEventArgs e)
+        {
+            ControlPaint.DrawBorder(e.Graphics, this.ClientRectangle, Color.Black, ButtonBorderStyle.Solid);
+        }
+
+        private void Form_Paint(object sender, PaintEventArgs e)
+        {
+            Pen pen = new Pen(Color.FromArgb(255, 0, 0, 0));
+            e.Graphics.DrawLine(pen, 750, 0, 750, 800);
+        }
 
     }
 }

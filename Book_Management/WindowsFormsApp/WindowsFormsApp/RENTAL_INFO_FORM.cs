@@ -30,6 +30,8 @@ namespace WindowsFormsApp
         private string no;
         private void RENTAL_INFO_FORM_Load(object sender, EventArgs e)
         {
+            FormBorderStyle = FormBorderStyle.None;// 폼 상단 표시줄 제거
+
             //this.Region = Region.FromHrgn(COMMON_Create_Ctl.CreateRoundRectRgn(2, 2, this.Width, this.Height, 15, 15));
             Point_Print(); //좌표 
             ClientSize = new Size(sX, sY);  // 폼 사이즈 지정.
@@ -37,7 +39,7 @@ namespace WindowsFormsApp
             MySql mysql = new MySql();
             this.BackColor = Color.FromArgb(201, 253, 223); //백컬러
             //리스트뷰====================================================================================================================================================
-            LISTVIEWclass lv_value = new LISTVIEWclass(this, "ListView1", 1300, 600, 100, 50, listview_mousedoubleclick, 7, "대여번호", 100, "도서명", 100, "저자", 100, "출판사", 100, "대여일", 100, "반납일", 100, "연체일", 100, "상태", 100);
+            LISTVIEWclass lv_value = new LISTVIEWclass(this, "ListView1", 1300, 600, 100, 50, listView_MouseClick, listview_mousedoubleclick, 7, "대여번호", 100, "도서명", 100, "저자", 100, "출판사", 100, "대여일", 100, "반납일", 100, "연체일", 100, "상태", 100);
             lv = comm.listView(lv_value);
             Controls.Add(lv);
 
@@ -104,6 +106,7 @@ namespace WindowsFormsApp
 
         }
 
+
         private void listview_mousedoubleclick(object sender, MouseEventArgs e)
         {
             ListView lv = (ListView)sender;
@@ -113,6 +116,11 @@ namespace WindowsFormsApp
                 ListViewItem item = slv[i];
                 no = item.SubItems[0].Text;
             }
+        }
+
+        private void listView_MouseClick(object sender, MouseEventArgs e)
+        {
+            MessageBox.Show("동작확인 : listView_MouseClick");
         }
 
         public ArrayList GetSelect()

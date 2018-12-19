@@ -17,7 +17,10 @@ namespace WindowsFormsApp
     public partial class LOGIN_FORM : Form
     {
         MAIN_FORM form;
-
+        public BOOK_INFO_FORM user1;
+        public static int member_rank = 4; // 0 관리자 / 1 유저 / 4 비회원
+        public static int user_Number;
+        
         public LOGIN_FORM(MAIN_FORM form)
         {
             InitializeComponent();
@@ -36,8 +39,8 @@ namespace WindowsFormsApp
 
         private void LOGIN_FORM_Load(object sender, EventArgs e)
         {
+            FormBorderStyle = FormBorderStyle.None;// 폼 상단 표시줄 제거
 
-            
             COMMON_Create_Ctl comm = new COMMON_Create_Ctl();
             this.BackColor = Color.FromArgb(201, 253, 223); //백컬러
             Point_Print(); //좌표 
@@ -134,12 +137,13 @@ namespace WindowsFormsApp
                 MySqlDataReader sdr = my.Reader(sql);
                 while (sdr.Read())
                 {
-                    MAIN_FORM.user_Number = Convert.ToInt32(sdr.GetValue(0).ToString());
-                    MAIN_FORM.member_rank = Convert.ToInt32(sdr.GetValue(1).ToString());
+                    user_Number = Convert.ToInt32(sdr.GetValue(0).ToString());
+                    member_rank = Convert.ToInt32(sdr.GetValue(1).ToString());
+                    MessageBox.Show(sdr.GetValue(1).ToString());
                 }
 
                 this.Close();
-                if(MAIN_FORM.member_rank == 1)
+                if(member_rank == 1)
                 {
                     form.user1.Show();
                     form.btn1.Show();
@@ -149,7 +153,7 @@ namespace WindowsFormsApp
                     form.Login.Hide();
                     form.Signup.Hide();
 
-                    if (MAIN_FORM.member_rank == 4)
+                    if (member_rank == 4)
                     {
                         form.lb_Login.Show();
                         form.lb_Signup.Show();
@@ -160,11 +164,59 @@ namespace WindowsFormsApp
                         form.lb_Signup.Hide();
                     }
                 }
-                
-                
+                if (member_rank == 0)
+                {
+                    //form.user1.Close();
+                    //BOOK_INFO_FORM user77 = new BOOK_INFO_FORM(form);
+                    //form.panel1.Controls.Add(user77);
+                    form.user1.Show();
+                    form.btn5.Show();
+                    form.btn6.Show();
+                    form.btn7.Show();
+                    form.btn.Show();
+                    form.Login.Hide();
+                    form.Signup.Hide();
+
+                    if (member_rank == 4)
+                    {
+                        form.lb_Login.Show();
+                        form.lb_Signup.Show();
+                    }
+                    else
+                    {
+                        form.lb_Login.Hide();
+                        form.lb_Signup.Hide();
+                    }
+                }
+
+
             }
 
             else MessageBox.Show("아이디 또는 비밀번호가 틀립니다.");
+        }
+
+        public int Member_rank
+        {
+            get
+            {
+                return member_rank;
+            }
+            //set
+            //{
+            //    member_rank = value;
+            //}
+        }
+
+        public int User_Number
+        {
+            get
+            {
+                return user_Number;
+            }
+            //set
+            //{
+            //    user_Number = value;
+            //}
         }
 
         private void btn2_Click(object sender, EventArgs e)

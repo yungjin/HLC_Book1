@@ -136,6 +136,8 @@ namespace WindowsFormsApp
                 list.Add(ht);
                 Console.WriteLine(list.ToString());
             }
+            ReaderClose(sdr);
+            ConnectionClose();
             return list;
         }
 
@@ -226,9 +228,24 @@ namespace WindowsFormsApp
                 list.Add(ht);
                 Console.WriteLine(list.ToString());
             }
+            ReaderClose(sdr);
+            ConnectionClose();
             return list;
         }
 
+        public bool NonQuery_INSERT(string val)
+        {
+            MySql my = new MySql();
+            string sql = val;
+            if (my.NonQuery(sql))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
 
     }
 }

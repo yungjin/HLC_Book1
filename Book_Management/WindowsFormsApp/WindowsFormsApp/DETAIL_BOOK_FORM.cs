@@ -11,9 +11,9 @@ using System.Windows.Forms;
 
 namespace WindowsFormsApp
 {
-    public partial class Sample_Form2 : Form
+    public partial class DETAIL_BOOK_FORM : Form
     {
-        int sX = 1500, sY = 800; // 폼 사이즈 지정.
+        int sX = 500, sY = 400; // 폼 사이즈 지정.
 
         ///////// 좌표 체크시 추가 /////////
         static ToolStripStatusLabel StripLb;
@@ -26,17 +26,30 @@ namespace WindowsFormsApp
         public static string _Slected_File_RootPath;
         PictureBox 책이미지;
         TextBox 텍스트박스;
+        ListView 도서상세정보_리스트뷰;
+        string book_name;
+        Label 도서이름라벨;
+        Label 보유권수총갯수라벨;
 
-        public Sample_Form2()
+        public DETAIL_BOOK_FORM()
         {
             InitializeComponent();
 
-            Load += Sample_Form2_Load;
+            Load += DETAIL_BOOK_FORM_Load;
+        }
+        public DETAIL_BOOK_FORM(string book_name)
+        {
+            InitializeComponent();
+
+            this.book_name = book_name;
+            Load += DETAIL_BOOK_FORM_Load;
         }
 
-        private void Sample_Form2_Load(object sender, EventArgs e)
+        private void DETAIL_BOOK_FORM_Load(object sender, EventArgs e)
         {
             //FormBorderStyle = FormBorderStyle.None; 폼 상단 표시줄 제거
+
+            this.BackColor = Color.FromArgb(149, 165, 165);
 
             ClientSize = new Size(sX, sY);  // 폼 사이즈 지정.
 
@@ -62,53 +75,137 @@ namespace WindowsFormsApp
             // COMBOBOXclass combobox1 = new COMBOBOXclass(this, "콤보박스Name", 가로사이즈, 세로사이즈, 가로포인트, 세로포인트, 콤보박스클릭이벤트, 리스트추가갯수, "test1", "test2", "test3", "test4", "test5");
             COMBOBOXclass combobox1 = new COMBOBOXclass(this, "ComboBox1", 100, 100, 721, 12, ComboBox_SelectedIndexChanged, 5, "test1", "test2", "test3", "test4", "test5");
 
-
-            PICTUREBOXclass picturboxValue = new PICTUREBOXclass(this, "picturebox1", "picturebox_txt1", 150, 160, 20, 20, "default_book_image.png", picturbox_Click);
-            책이미지 = comm.load_PictureBox(picturboxValue);
-            Controls.Add(책이미지);
-
-
-            TXTBOXclass textboxValue = new TXTBOXclass(this, "파일이름확인", "이미지를 올려주세요", 150, 40, 20, 180, txtbox_Click);
-            텍스트박스 = comm.txtbox(textboxValue);
-            텍스트박스.ReadOnly = true;
-            Controls.Add(텍스트박스);
+            ////// 고정 라벨 
+            ArrayList labelArr = new ArrayList();
+            labelArr.Add(new LBclass(this, "도서상세정보", "도서 상세 정보", 26, 300, 40, 30, 30, label_Click));
+            labelArr.Add(new LBclass(this, "도서명", "도서명", 15, 80, 40, 30, 110, label_Click));
+            labelArr.Add(new LBclass(this, "보유정보", "보유정보", 12, 100, 40, 30, 160, label_Click));
+            labelArr.Add(new LBclass(this, "", ":", 12, 30, 40, 140, 108, label_Click));
+            labelArr.Add(new LBclass(this, "", ":", 12, 30, 40, 140, 158, label_Click));
 
 
-            ArrayList btnArray = new ArrayList();
-            btnArray.Add(new BTNclass(this, "업로드버튼", "", 30, 30, 173, 173, btn_Click));
-            btnArray.Add(new BTNclass(this, "등록버튼", "등록", 60, 25, 243, 176, btn_Click));
-
-            for (int i = 0; i < btnArray.Count; i++)
+            for (int i = 0; i < labelArr.Count; i++)
             {
-                Button 버튼 = comm.btn((BTNclass)btnArray[i]);
+                Label 라벨 = comm.lb((LBclass)labelArr[i]);
 
-                if (버튼.Name == "업로드버튼")
+                라벨.Font = new Font("신명조", 15, FontStyle.Bold);
+
+                if (라벨.Name == "도서상세정보")
                 {
-                    버튼.Font = new Font("견명조", 13F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(129)));  // FontStyle.Regular                
-                    Image imageLoad = (Image)Properties.Resources.upload;
-                    imageLoad = comm.ResizeImage(imageLoad, 30, 30);
-                    버튼.Image = imageLoad;
-                    버튼.ImageAlign = ContentAlignment.MiddleCenter;
-                    버튼.TabStop = false;
-                    //버튼.FlatStyle = FlatStyle.Flat;  // 버튼 평면으로 표시
-                    버튼.FlatAppearance.BorderSize = 0;
-
+                    라벨.Font = new Font("신명조", 24, FontStyle.Bold);
+                }
+                else if (라벨.Name == "도서명")
+                {
 
                 }
-                else if (버튼.Name == "등록버튼")
+                else if (라벨.Name == "보유정보")
                 {
-                    버튼.Font = new Font("견명조", 9F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(129)));  // FontStyle.Regular
-                    버튼.FlatStyle = FlatStyle.Flat;
-                    버튼.ForeColor = Color.LawnGreen;
-                    버튼.BackColor = Color.ForestGreen;
+
                 }
-                Controls.Add(버튼);
+
+
+
+                Controls.Add(라벨);
+            }
+
+
+            /// 변경되는 라벨 
+            ArrayList Value_labelArr = new ArrayList();
+            Value_labelArr.Add(new LBclass(this, "도서명파라미터", "도서명파라미터", 10, 280, 40, 172, 112, label_Click));
+            Value_labelArr.Add(new LBclass(this, "보유권수파라미터", "보유권수파라미터", 10, 250, 40, 172, 162, label_Click));
+
+            for (int i = 0; i < Value_labelArr.Count; i++)
+            {
+                Label 변경라벨 = comm.lb((LBclass)Value_labelArr[i]);
+
+                변경라벨.Font = new Font("신명조", 12, FontStyle.Bold);
+
+                if (변경라벨.Name == "도서명파라미터")
+                {
+                    도서이름라벨 = 변경라벨;
+                }
+                else if (변경라벨.Name == "보유권수파라미터")
+                {
+                    보유권수총갯수라벨 = 변경라벨;
+                }
+
+
+
+                Controls.Add(변경라벨);
             }
 
 
 
 
+            /// 도서상세정보 리스트
+            LISTVIEWclass 도서상세정보_리스트뷰값 = new LISTVIEWclass(this, "도서상세정보_ListVIew", 324, 140, 38, 210, listView_MouseClick, listview_mousedoubleclick, 4, "", 0, "책번호", 100, "책위치", 110, "대여", 110);
+            도서상세정보_리스트뷰 = comm.listView(도서상세정보_리스트뷰값);
+
+
+            도서상세정보_리스트뷰.Font = new Font("Arial", 14, FontStyle.Bold);
+
+            도서상세정보_리스트뷰.OwnerDraw = true;
+            도서상세정보_리스트뷰.DrawColumnHeader += new DrawListViewColumnHeaderEventHandler(lv_DrawColumnHeader);
+
+            도서상세정보_리스트뷰.BackColor = Color.FromArgb(149, 165, 165);
+            도서상세정보_리스트뷰.DrawSubItem += new DrawListViewSubItemEventHandler(lv_DrawSubItem);
+
+
+            MySql mysql = new MySql();
+            string sql = string.Format("select title, count(*) COUNT from book_info where title = '{0}';", book_name);
+            //MessageBox.Show(sql);
+            ArrayList bookinfoSearch_arry1 = mysql.Select(sql);
+            foreach (Hashtable ht in bookinfoSearch_arry1)
+            {
+                도서이름라벨.Text = ht["title"].ToString();
+                보유권수총갯수라벨.Text = "총 " + ht["COUNT"].ToString() + "권";
+            }
+            mysql.ConnectionClose();
+
+            mysql = new MySql();
+            sql = string.Format("select * from book_info where title = '{0}';", book_name);
+            ArrayList bookinfoSearch_arry2 = mysql.Select(sql);
+            foreach (Hashtable ht in bookinfoSearch_arry2)
+            {
+                ListViewItem item = new ListViewItem("");
+                item.SubItems.Add(ht["book_number"].ToString());
+                item.SubItems.Add(ht["book_location"].ToString());
+                item.SubItems.Add(ht["availability"].ToString());
+                도서상세정보_리스트뷰.Items.Add(item);
+
+                for (int i = 0; i < item.SubItems.Count; i++)
+                {
+                    item.SubItems[i].Font = new Font("Arial", 12, FontStyle.Bold | FontStyle.Italic);
+                }
+            }
+
+            Controls.Add(도서상세정보_리스트뷰);
+
+
+            /// 닫기 버튼
+            BTNclass 버튼닫기값 = new BTNclass(this, "닫기버튼", "닫기", 80, 40, 397, 312, btn_Click);
+            Button 버튼닫기 = comm.btn(버튼닫기값);
+            버튼닫기.BackColor = Color.FromArgb(50, 178, 223);
+            버튼닫기.Font = new Font(버튼닫기.Font.Name, 12, FontStyle.Bold);
+            버튼닫기.FlatStyle = FlatStyle.Flat;
+            버튼닫기.ForeColor = Color.White;
+            버튼닫기.Region = Region.FromHrgn(COMMON_Create_Ctl.CreateRoundRectRgn(2, 2, 버튼닫기.Width, 버튼닫기.Height, 10, 10));
+            Controls.Add(버튼닫기);
+
         }
+
+
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////
+
+        /// <summary> 아래는 이벤트 처리 부분
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+
+        //////////////////////////////////////////////////////////////////////////////////////////////// 
+
 
 
         private void listview_mousedoubleclick(object sender, MouseEventArgs e)
@@ -132,14 +229,11 @@ namespace WindowsFormsApp
 
             Button button = (Button)o;
 
-            if (button.Name == "등록버튼")
+            if (button.Name == "닫기버튼")
             {
-                MessageBox.Show("등록버튼");
+                this.Close();
             }
-            else if (button.Name == "업로드버튼")
-            {
-                Image_Select();
-            }
+
         }
 
         private void label_Click(Object o, EventArgs e)
@@ -260,11 +354,20 @@ namespace WindowsFormsApp
             ControlPaint.DrawBorder(e.Graphics, this.ClientRectangle, Color.Black, ButtonBorderStyle.Solid);
         }
 
-        private void Form_Paint(object sender, PaintEventArgs e)
+        // 리스트뷰 헤더 컬러추가
+        void lv_DrawColumnHeader(object sender, DrawListViewColumnHeaderEventArgs e)
         {
-            Pen pen = new Pen(Color.FromArgb(255, 0, 0, 0));
-            e.Graphics.DrawLine(pen, 750, 0, 750, 800);
+            e.Graphics.FillRectangle(Brushes.LightGray, e.Bounds);
+            e.DrawText();
         }
+
+        // 리스트뷰 Subitem 컬러추가
+        void lv_DrawSubItem(object sender, DrawListViewSubItemEventArgs e)
+        {
+            e.DrawText();
+        }
+
+
 
     }
 }

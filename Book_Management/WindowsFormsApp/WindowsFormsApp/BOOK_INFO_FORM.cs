@@ -14,6 +14,11 @@ namespace WindowsFormsApp
 {
     public partial class BOOK_INFO_FORM : Form
     {
+        bool user = true;
+        bool admin = false;
+
+        MAIN_FORM form;
+
         string search_category = "";
         int sX = 1500, sY = 800; // 폼 사이즈 지정.
 
@@ -31,6 +36,10 @@ namespace WindowsFormsApp
         TextBox 책정보검색상자;
         TextBox 간략소개상자;
         ComboBox 콤보박스검색카테고리;
+        Panel 책정보패널;
+        Button 정보수정;
+        Button 수정취소;
+        Button 수정완료;
 
         Label 번호값;
         Label 제목값;
@@ -38,10 +47,20 @@ namespace WindowsFormsApp
         Label 출판사값;
         Label 장르값;
         Label 대여가능여부값;
+        Label 대여자여부값;
         Label 도서위치값;
 
+        TextBox 텍스트박스_번호값;
+        TextBox 텍스트박스_제목값;
+        TextBox 텍스트박스_저자값;
+        TextBox 텍스트박스_출판사값;
+        TextBox 텍스트박스_장르값;
+        TextBox 텍스트박스_대여가능여부값;
+        TextBox 텍스트박스_대여자여부값;
+        TextBox 텍스트박스_도서위치값;
 
-        public BOOK_INFO_FORM()
+
+        public BOOK_INFO_FORM(MAIN_FORM form)
         {
             InitializeComponent();
 
@@ -50,6 +69,26 @@ namespace WindowsFormsApp
 
         private void BOOK_INFO_FORM_Load(object sender, EventArgs e)
         {
+            LOGIN_FORM login_frm = new LOGIN_FORM(form);
+
+            if (login_frm.Member_rank == 1)
+            {
+                user = true;
+                admin = false;
+            }
+            else if(login_frm.Member_rank == 0)
+            {
+                user = false;
+                admin = true;
+            }
+            //else if (MAIN_FORM.member_rank == 4)
+            //{
+            //    user = true;
+            //    admin = false;
+            //}
+
+
+
             FormBorderStyle = FormBorderStyle.None; //폼 상단 표시줄 제거
             //this.BackColor = Color.Aquamarine;
             this.BackColor = Color.FromArgb(201, 253, 223);
@@ -74,28 +113,27 @@ namespace WindowsFormsApp
             // CHKBOXclass bhkbox1 = new CHKBOXclass(this, "체크박스Name", 체크박스Text", 가로사이즈, 세로사이즈, 가로포인트, 세로포인트, 체크박스클릭이벤트);
             CHKBOXclass chkbox1 = new CHKBOXclass(this, "chkbox1", "chkbox1~", 100, 100, 20, 20, chkbox_Click);
             // LISTVIEWclass listview1 = new LISTVIEWclass(this, "리스트뷰Name", 가로사이즈, 세로사이즈, 가로포인트, 세로포인트, 리스트뷰더블클릭이벤트, 컬럼갯수, "컬럼1번Name", 컬럼1간격, "컬럼2번Name", 컬럼2간격, "컬럼3번Name", 컬럼3간격, ~ 동일방식 10개 컬럼까지 가능);
-            LISTVIEWclass listview1 = new LISTVIEWclass(this, "ListView1", 500, 500, 10, 10, listview_mousedoubleclick, 3, "col1", 100, "col2", 100, "col3", 100);
+            LISTVIEWclass listview1 = new LISTVIEWclass(this, "ListView1", 500, 500, 10, 10, listview_mousedoubleclick, listview_mousedoubleclick, 3, "col1", 100, "col2", 100, "col3", 100);
             // COMBOBOXclass combobox1 = new COMBOBOXclass(this, "콤보박스Name", 가로사이즈, 세로사이즈, 가로포인트, 세로포인트, 콤보박스클릭이벤트, 리스트추가갯수, "test1", "test2", "test3", "test4", "test5");
             COMBOBOXclass combobox1 = new COMBOBOXclass(this, "ComboBox1", 100, 100, 721, 12, ComboBox_SelectedIndexChanged, 5, "test1", "test2", "test3", "test4", "test5");
 
-            // 책정보패널
-            PANELclass 책정보패널값 = new PANELclass(this, "책정보패널", "책정보패널", 550, 600, 10, 10, panel_MouseMove);
-            Panel 책정보패널 = comm.panel(책정보패널값);
-            // 입고요청패널
-            PANELclass 입고요청패널값 = new PANELclass(this, "입고요청패널", "입고요청패널", 550, 160, 10, 610, panel_MouseMove);
-            Panel 입고요청패널 = comm.panel(입고요청패널값);
-
+            if (user)
+            {
+                // 책정보패널
+                PANELclass 책정보패널값 = new PANELclass(this, "책정보패널", "책정보패널", 550, 600, 10, 10, panel_MouseMove);
+                책정보패널 = comm.panel(책정보패널값);
+            }
+            else
+            {
+                // 책정보패널
+                PANELclass 책정보패널값 = new PANELclass(this, "책정보패널", "책정보패널", 550, 750, 10, 10, panel_MouseMove);
+                책정보패널 = comm.panel(책정보패널값);
+            }
 
             //(좌측상단여백, 우측상단여백, 컨트롤 넓이, 컨트롤 높이, 가로 모서리 원기울기, 세로 모서리 원기울기)
             책정보패널.Region = Region.FromHrgn(COMMON_Create_Ctl.CreateRoundRectRgn(2, 2, 책정보패널.Width, 책정보패널.Height, 15, 15));
             책정보패널.BackColor = Color.FromArgb(218, 234, 244);  // rgb(218,234,244)
             Controls.Add(책정보패널);
-
-            //(좌측상단여백, 우측상단여백, 컨트롤 넓이, 컨트롤 높이, 가로 모서리 원기울기, 세로 모서리 원기울기)
-            입고요청패널.Region = Region.FromHrgn(COMMON_Create_Ctl.CreateRoundRectRgn(2, 2, 입고요청패널.Width, 입고요청패널.Height, 15, 15));
-            입고요청패널.BackColor = Color.FromArgb(114, 241, 168);  // rgb(218,234,244)
-            Controls.Add(입고요청패널);
-
 
             // 도서사진 픽쳐박스
             PICTUREBOXclass picturboxValue = new PICTUREBOXclass(this, "picturebox1", "picturebox_txt1", 220, 260, 10, 20, "default_book_image.png", picturbox_Click);
@@ -127,8 +165,18 @@ namespace WindowsFormsApp
             arry.Add(new LBclass(this, "출판사", "출판사 :", 17, 110, 40, 235, 190, label_Click));
             arry.Add(new LBclass(this, "장르", "장르    :", 17, 110, 40, 235, 240, label_Click));
             arry.Add(new LBclass(this, "간략소개", "간략소개 :", 17, 110, 40, 26, 293, label_Click));
-            arry.Add(new LBclass(this, "대여가능여부", "대여가능여부    :", 17, 200, 40, 22, 496, label_Click));
-            arry.Add(new LBclass(this, "도서위치", "    도서위치    :", 17, 180, 40, 38, 540, label_Click));
+            if (user)
+            {
+                arry.Add(new LBclass(this, "대여가능여부", "대여가능여부    :", 17, 200, 40, 22, 496, label_Click));
+                arry.Add(new LBclass(this, "도서위치", "    도서위치    :", 17, 180, 40, 38, 540, label_Click));
+            }
+            else
+            {
+                arry.Add(new LBclass(this, "대여가능여부", "대여가능여부   :", 17, 220, 40, 22, 530, label_Click));
+                arry.Add(new LBclass(this, "대여자", "대여자  :", 17, 130, 40, 115, 600, label_Click));
+                arry.Add(new LBclass(this, "도서위치", "도서위치   :", 17, 170, 40, 75, 670, label_Click));
+            }
+
 
             for (int i = 0; i < arry.Count; i++)
             {
@@ -137,6 +185,18 @@ namespace WindowsFormsApp
                 if (label.Name == "간략소개")
                 {
                     label.Font = new Font(label.Font.Name, 14, FontStyle.Bold | FontStyle.Underline);
+                }
+                else if (admin && label.Name == "대여가능여부")
+                {
+                    label.Font = new Font(label.Font.Name, 20, FontStyle.Bold);
+                }
+                else if (admin && label.Name == "대여자")
+                {
+                    label.Font = new Font(label.Font.Name, 20, FontStyle.Bold);
+                }
+                else if (admin && label.Name == "도서위치")
+                {
+                    label.Font = new Font(label.Font.Name, 20, FontStyle.Bold);
                 }
                 else
                 {
@@ -153,8 +213,19 @@ namespace WindowsFormsApp
             arryValue.Add(new LBclass(this, "저자값", "저자값", 17, 200, 40, 349, 140, label_Click));
             arryValue.Add(new LBclass(this, "출판사값", "출판사값", 17, 200, 40, 349, 190, label_Click));
             arryValue.Add(new LBclass(this, "장르값", "장르값", 17, 200, 40, 349, 240, label_Click));
-            arryValue.Add(new LBclass(this, "대여가능여부값", "가능", 17, 110, 40, 236, 497, label_Click));
-            arryValue.Add(new LBclass(this, "도서위치값", "A열 2 - 1", 17, 110, 40, 238, 540, label_Click));
+
+            if (user)
+            {
+                arryValue.Add(new LBclass(this, "대여가능여부값", "가능", 17, 110, 40, 236, 497, label_Click));
+                arryValue.Add(new LBclass(this, "도서위치값", "A열 2 - 1", 17, 110, 40, 238, 540, label_Click));
+            }
+
+            else
+            {
+                arryValue.Add(new LBclass(this, "대여가능여부값", "가능", 17, 1000, 40, 246, 530, label_Click));
+                arryValue.Add(new LBclass(this, "대여자여부값", "없음", 17, 100, 40, 245, 600, label_Click));
+                arryValue.Add(new LBclass(this, "도서위치값", "A열 2 - 1", 17, 100, 40, 248, 670, label_Click));
+            }
 
             for (int i = 0; i < arryValue.Count; i++)
             {
@@ -190,32 +261,151 @@ namespace WindowsFormsApp
                 {
                     도서위치값 = label;
                 }
+
+                if (admin && label.Name == "대여가능여부값")
+                {
+                    label.Font = new Font(label.Font.Name, 20, FontStyle.Bold);
+                }
+                else if (admin && label.Name == "대여자여부값")
+                {
+                    대여자여부값 = label;
+                    label.Font = new Font(label.Font.Name, 20, FontStyle.Bold);
+                }
+                else if (admin && label.Name == "도서위치값")
+                {
+                    label.Font = new Font(label.Font.Name, 20, FontStyle.Bold);
+                }
+
             }
 
 
-            // 입고요청 고정라벨
-            LBclass 입고요청라벨값 = new LBclass(this, "입고요청", "※ 찾으시는 도서가 없으신가요?\n    그럼 입고요청을 해주세요.", 17, 360, 50, 17, 17, label_Click);
-            Label 입고요청라벨 = comm.lb(입고요청라벨값);
-            입고요청패널.Controls.Add(입고요청라벨);
+            /*
+                제목값.Hide();
+                저자값.Hide();
+                출판사값.Hide();
+                장르값.Hide();
+                도서위치값.Hide();
+             
+             */
 
 
-            BTNclass 버튼대여버튼값 = new BTNclass(this, "대여버튼", "대여", 130, 60, 410, 530, btn_Click);
-            Button 대여버튼 = comm.btn(버튼대여버튼값);
-            대여버튼.BackColor = Color.FromArgb(50, 178, 223);
-            대여버튼.Font = new Font(대여버튼.Font.Name, 17, FontStyle.Bold);
-            대여버튼.FlatStyle = FlatStyle.Flat;
-            대여버튼.ForeColor = Color.White;
-            대여버튼.Region = Region.FromHrgn(COMMON_Create_Ctl.CreateRoundRectRgn(2, 2, 대여버튼.Width, 대여버튼.Height, 18, 18));
-            책정보패널.Controls.Add(대여버튼);
 
-            BTNclass 버튼입고요청값 = new BTNclass(this, "입고버튼", "입고요청", 130, 60, 410, 30, btn_Click);
-            Button 버튼입고요청 = comm.btn(버튼입고요청값);
-            버튼입고요청.BackColor = Color.FromArgb(50, 178, 223);
-            버튼입고요청.Font = new Font(버튼입고요청.Font.Name, 17, FontStyle.Bold);
-            버튼입고요청.FlatStyle = FlatStyle.Flat;
-            버튼입고요청.ForeColor = Color.White;
-            버튼입고요청.Region = Region.FromHrgn(COMMON_Create_Ctl.CreateRoundRectRgn(2, 2, 버튼입고요청.Width, 버튼입고요청.Height, 18, 18));
-            입고요청패널.Controls.Add(버튼입고요청);
+            if (user)
+            {
+                // 입고요청패널
+                PANELclass 입고요청패널값 = new PANELclass(this, "입고요청패널", "입고요청패널", 550, 160, 10, 610, panel_MouseMove);
+                Panel 입고요청패널 = comm.panel(입고요청패널값);
+
+                //(좌측상단여백, 우측상단여백, 컨트롤 넓이, 컨트롤 높이, 가로 모서리 원기울기, 세로 모서리 원기울기)
+                입고요청패널.Region = Region.FromHrgn(COMMON_Create_Ctl.CreateRoundRectRgn(2, 2, 입고요청패널.Width, 입고요청패널.Height, 15, 15));
+                입고요청패널.BackColor = Color.FromArgb(114, 241, 168);  // rgb(218,234,244)
+                Controls.Add(입고요청패널);
+
+                // 입고요청 고정라벨
+                LBclass 입고요청라벨값 = new LBclass(this, "입고요청", "※ 찾으시는 도서가 없으신가요?\n    그럼 입고요청을 해주세요.", 17, 360, 50, 17, 17, label_Click);
+                Label 입고요청라벨 = comm.lb(입고요청라벨값);
+                입고요청패널.Controls.Add(입고요청라벨);
+
+                // 대여 버튼
+                BTNclass 버튼대여버튼값 = new BTNclass(this, "대여버튼", "대여", 130, 60, 410, 530, btn_Click);
+                Button 대여버튼 = comm.btn(버튼대여버튼값);
+                대여버튼.BackColor = Color.FromArgb(50, 178, 223);
+                대여버튼.Font = new Font(대여버튼.Font.Name, 17, FontStyle.Bold);
+                대여버튼.FlatStyle = FlatStyle.Flat;
+                대여버튼.ForeColor = Color.White;
+                대여버튼.Region = Region.FromHrgn(COMMON_Create_Ctl.CreateRoundRectRgn(2, 2, 대여버튼.Width, 대여버튼.Height, 18, 18));
+                책정보패널.Controls.Add(대여버튼);
+
+                // 입고 버튼
+                BTNclass 버튼입고요청값 = new BTNclass(this, "입고버튼", "입고요청", 130, 60, 410, 30, btn_Click);
+                Button 버튼입고요청 = comm.btn(버튼입고요청값);
+                버튼입고요청.BackColor = Color.FromArgb(50, 178, 223);
+                버튼입고요청.Font = new Font(버튼입고요청.Font.Name, 17, FontStyle.Bold);
+                버튼입고요청.FlatStyle = FlatStyle.Flat;
+                버튼입고요청.ForeColor = Color.White;
+                버튼입고요청.Region = Region.FromHrgn(COMMON_Create_Ctl.CreateRoundRectRgn(2, 2, 버튼입고요청.Width, 버튼입고요청.Height, 18, 18));
+                입고요청패널.Controls.Add(버튼입고요청);
+            }
+            else
+            {
+                // 정보수정 && 수정 취소 버튼  
+                ArrayList btnArray = new ArrayList();
+                btnArray.Add(new BTNclass(this, "정보수정버튼", "정보 수정", 140, 60, 385, 640, btn_Click));
+                btnArray.Add(new BTNclass(this, "수정취소버튼", "수정 취소", 140, 60, 385, 640, btn_Click));
+                btnArray.Add(new BTNclass(this, "수정완료버튼", "수정 완료", 140, 60, 385, 570, btn_Click));
+
+                for (int i = 0; i < btnArray.Count; i++)
+                {
+                    Button 버튼 = comm.btn((BTNclass)btnArray[i]);
+
+                    버튼.BackColor = Color.FromArgb(50, 178, 223);
+                    버튼.Font = new Font(버튼.Font.Name, 17, FontStyle.Bold);
+                    버튼.FlatStyle = FlatStyle.Flat;
+                    버튼.ForeColor = Color.White;
+                    버튼.Region = Region.FromHrgn(COMMON_Create_Ctl.CreateRoundRectRgn(2, 2, 버튼.Width, 버튼.Height, 18, 18));
+                    책정보패널.Controls.Add(버튼);
+
+                    if (버튼.Name == "정보수정버튼")
+                    {
+                        정보수정 = 버튼;
+
+                    }
+                    else if (버튼.Name == "수정취소버튼")
+                    {
+                        수정취소 = 버튼;
+                    }
+                    else if (버튼.Name == "수정완료버튼")
+                    {
+                        수정완료 = 버튼;
+                    }
+                }
+                수정취소.Hide();
+                수정완료.Hide();
+
+                // 책정보패널 - 책정보 수정을 위한 텍스트박스 값
+                ArrayList TextBox_arryValue = new ArrayList();
+                TextBox_arryValue.Add(new TXTBOXclass(this, "텍스트박스_제목값", "텍스트박스_제목값", 180, 40, 349, 80, txtbox_Click)); //  200, 40, 349, 90,
+                TextBox_arryValue.Add(new TXTBOXclass(this, "텍스트박스_저자값", "텍스트박스_저자값", 180, 40, 349, 130, txtbox_Click));
+                TextBox_arryValue.Add(new TXTBOXclass(this, "텍스트박스_출판사값", "텍스트박스_출판사값", 180, 40, 349, 180, txtbox_Click));
+                TextBox_arryValue.Add(new TXTBOXclass(this, "텍스트박스_장르값", "텍스트박스_장르값", 180, 40, 349, 230, txtbox_Click));
+                TextBox_arryValue.Add(new TXTBOXclass(this, "텍스트박스_도서위치값", "A열 2 - 1", 100, 40, 248, 660, txtbox_Click));
+
+                for (int i = 0; i < TextBox_arryValue.Count; i++)
+                {
+                    TextBox textbox = comm.txtbox((TXTBOXclass)TextBox_arryValue[i]);
+                    textbox.Font = new Font(textbox.Font.Name, 20, FontStyle.Bold);
+                    책정보패널.Controls.Add(textbox);
+
+                    if (textbox.Name == "텍스트박스_제목값")
+                    {
+                        텍스트박스_제목값 = textbox;
+                    }
+                    else if (textbox.Name == "텍스트박스_저자값")
+                    {
+                        텍스트박스_저자값 = textbox;
+                    }
+                    else if (textbox.Name == "텍스트박스_출판사값")
+                    {
+                        텍스트박스_출판사값 = textbox;
+                    }
+                    else if (textbox.Name == "텍스트박스_장르값")
+                    {
+                        텍스트박스_장르값 = textbox;
+                    }
+                    else if (textbox.Name == "텍스트박스_도서위치값")
+                    {
+                        텍스트박스_도서위치값 = textbox;
+                    }
+
+                }
+                텍스트박스_제목값.Hide();
+                텍스트박스_저자값.Hide();
+                텍스트박스_출판사값.Hide();
+                텍스트박스_장르값.Hide();
+                텍스트박스_도서위치값.Hide();
+
+            }
+
 
             BTNclass 검색버튼값 = new BTNclass(this, "검색버튼", "검색버튼", 130, 48, 1350, 87, btn_Click);
             Button 버튼검색 = comm.btn(검색버튼값);
@@ -232,7 +422,7 @@ namespace WindowsFormsApp
             Controls.Add(라벨책정보검색);
 
 
-            LISTVIEWclass 책정보검색_리스트뷰값 = new LISTVIEWclass(this, "ListView1", 900, 580, 589, 190, listView_MouseClick, 6, "", 0, "책번호", 100, "대여", 120, "도서명", 460, "저자", 100, "출판사", 115);
+            LISTVIEWclass 책정보검색_리스트뷰값 = new LISTVIEWclass(this, "ListView1", 900, 580, 589, 190, listView_MouseClick, listview_mousedoubleclick, 6, "", 0, "책번호", 100, "대여", 120, "도서명", 460, "저자", 100, "출판사", 115);
             책정보검색_리스트뷰 = comm.listView(책정보검색_리스트뷰값);
 
 
@@ -276,7 +466,7 @@ namespace WindowsFormsApp
 
 
 
-
+        ////////////////////////////////////////////////////////////////////////////////////////////////
 
         /// <summary> 아래는 이벤트 처리 부분
         /// 
@@ -284,23 +474,31 @@ namespace WindowsFormsApp
         /// <param name="sender"></param>
         /// <param name="e"></param>
 
+        //////////////////////////////////////////////////////////////////////////////////////////////// 
 
 
-
-
+        // 리스트뷰 더블클릭
         private void listview_mousedoubleclick(object sender, MouseEventArgs e)
         {
             MessageBox.Show("동작확인 : listview_mousedoubleclick");
+
+            int index;
+            index = 책정보검색_리스트뷰.FocusedItem.Index;  // 선택돈 아이템 인덱스 번호 얻기
+            string book_name = 책정보검색_리스트뷰.Items[index].SubItems[3].Text; // 인덱스 번호의 n번째 아이템 얻기
+
+
+            DETAIL_BOOK_FORM detail_form = new DETAIL_BOOK_FORM(book_name);
+            detail_form.StartPosition = FormStartPosition.CenterParent;
+            detail_form.ShowDialog();
         }
 
+        // 리스트뷰 마우스클릭
         private void listView_MouseClick(object sender, MouseEventArgs e)
         {
             //MessageBox.Show("동작확인 : listView_MouseClick");
 
             int index;
-
             index = 책정보검색_리스트뷰.FocusedItem.Index;  // 선택돈 아이템 인덱스 번호 얻기
-
             int book_number = Convert.ToInt32(책정보검색_리스트뷰.Items[index].SubItems[1].Text); // 인덱스 번호의 n번째 아이템 얻기
 
             MySql mysql = new MySql();
@@ -320,6 +518,8 @@ namespace WindowsFormsApp
             }
         }
 
+
+        // 콤보박스 인덱스 선택
         private void ComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             ComboBox combo = (ComboBox)sender;
@@ -344,6 +544,8 @@ namespace WindowsFormsApp
 
         }
 
+
+        // 버튼클릭
         private void btn_Click(Object o, EventArgs e)
         {
             //MessageBox.Show("동작확인 : btn_Click");
@@ -360,32 +562,137 @@ namespace WindowsFormsApp
                 REQUEST_FORM.ShowDialog();
             }
 
-
             /// 검색버튼 클릭 시 리스트 뷰 넣는 부분 
-            if (button.Name == "등록버튼")
+            if (button.Name == "정보수정버튼") // admin 모드일 경우 
             {
-                MessageBox.Show("등록버튼");
-            }
-            else if (button.Name == "업로드버튼")
-            {
-                Image_Select();
-            }
-            else if (button.Name == "검색버튼")
-            {
-                책정보검색_리스트뷰.Clear();
+                // 라벨값 그대로 텍스트 박스로 옮기는  부분.
+                텍스트박스_제목값.Text = 제목값.Text;
+                텍스트박스_저자값.Text = 저자값.Text;
+                텍스트박스_출판사값.Text = 출판사값.Text;
+                텍스트박스_장르값.Text = 장르값.Text;
+                텍스트박스_도서위치값.Text = 도서위치값.Text;
+                간략소개상자.Text = 간략소개상자.Text;
 
-                책정보검색_리스트뷰.Columns.Add("", 0, HorizontalAlignment.Center);
-                책정보검색_리스트뷰.Columns.Add("책번호", 100, HorizontalAlignment.Center);
-                책정보검색_리스트뷰.Columns.Add("대여", 120, HorizontalAlignment.Center);
-                책정보검색_리스트뷰.Columns.Add("도서명", 460, HorizontalAlignment.Center);
-                책정보검색_리스트뷰.Columns.Add("저자", 100, HorizontalAlignment.Center);
-                책정보검색_리스트뷰.Columns.Add("출판사", 115, HorizontalAlignment.Center);
+                // 정보수정 버튼 숨기기
+                정보수정.Hide();
+                수정취소.Show();
+                수정완료.Show();
 
-                //for (int i = 0; i < 책정보검색_리스트뷰.Items.Count; i++)
-                //{                    
-                //        책정보검색_리스트뷰.Items[i].SubItems.Clear();                   
-                //}
+                // 라벨 값 숨기기
+                제목값.Hide();
+                저자값.Hide();
+                출판사값.Hide();
+                장르값.Hide();
+                도서위치값.Hide();
+
+                // 텍스트박스 보이기
+                텍스트박스_제목값.Show();
+                텍스트박스_저자값.Show();
+                텍스트박스_출판사값.Show();
+                텍스트박스_장르값.Show();
+                텍스트박스_도서위치값.Show();
+
+                간략소개상자.ReadOnly = false;
+            }
+            else if (button.Name == "수정취소버튼")
+            {
+                // 정보수정 버튼 보이기
+                정보수정.Show();
+                수정취소.Hide();
+                수정완료.Hide();
+
+                // 라벨 값 숨기기
+                제목값.Show();
+                저자값.Show();
+                출판사값.Show();
+                장르값.Show();
+                도서위치값.Show();
+
+                // 텍스트박스 보이기
+                텍스트박스_제목값.Hide();
+                텍스트박스_저자값.Hide();
+                텍스트박스_출판사값.Hide();
+                텍스트박스_장르값.Hide();
+                텍스트박스_도서위치값.Hide();
+
+                간략소개상자.ReadOnly = true;
+            }
+            else if (button.Name == "수정완료버튼")
+            {
+                MessageBox.Show("수정완료");
+
+
+                if (번호값.Text == "번호값" || 텍스트박스_제목값.Text == "" || 텍스트박스_저자값.Text == "" || 텍스트박스_출판사값.Text == "" || 텍스트박스_장르값.Text == "" || 텍스트박스_도서위치값.Text == "" || 간략소개상자.Text == "")
+                {
+                    MessageBox.Show("입력칸을 모두 채워주세요.");
+                    return;
+                }
+
                 MySql mysql = new MySql();
+                string sql = string.Format("update book_info set title = '{1}', author = '{2}', publisher = '{3}', genre = '{4}', brief_introduction = '{5}', book_location = '{6}' where book_number = {0};", 번호값.Text, 텍스트박스_제목값.Text, 텍스트박스_저자값.Text, 텍스트박스_출판사값.Text, 텍스트박스_장르값.Text, 간략소개상자.Text, 텍스트박스_도서위치값.Text);
+                bool status = mysql.NonQuery_INSERT(sql);
+
+                if (status)
+                {
+                    MessageBox.Show("수정이 완료 되었습니다.");
+                }
+                else
+                {
+                    MessageBox.Show("수정 중 오류가 발생했습니다.");
+                }
+
+
+
+                mysql = new MySql();
+                ArrayList bookinfoSearch_arry = mysql.Select(string.Format("select * from book_info where book_number = {0}", 번호값.Text));
+                foreach (Hashtable ht in bookinfoSearch_arry)
+                {
+                    제목값.Text = ht["title"].ToString();
+                    저자값.Text = ht["author"].ToString();
+                    출판사값.Text = ht["publisher"].ToString();
+                    장르값.Text = ht["genre"].ToString();
+                    도서위치값.Text = ht["book_location"].ToString();
+                    책이미지.ImageLocation = "http://ljh5432.iptime.org:81/ImageCollection/" + ht["image_location"].ToString();
+                    간략소개상자.Text = ht["brief_introduction"].ToString();
+
+                }
+
+
+                // 정보수정 버튼 보이기
+                정보수정.Show();
+                수정취소.Hide();
+                수정완료.Hide();
+
+                // 라벨 값 숨기기
+                제목값.Show();
+                저자값.Show();
+                출판사값.Show();
+                장르값.Show();
+                도서위치값.Show();
+
+                // 텍스트박스 보이기
+                텍스트박스_제목값.Hide();
+                텍스트박스_저자값.Hide();
+                텍스트박스_출판사값.Hide();
+                텍스트박스_장르값.Hide();
+                텍스트박스_도서위치값.Hide();
+
+                간략소개상자.ReadOnly = true;
+
+            }
+            else if (button.Name == "검색버튼") // admin / user 둘다 사용
+            {
+                if (search_category == "")
+                {
+                    MessageBox.Show("카테고리를 선택 해주세요.");
+                    return;
+                }
+
+
+                책정보검색_리스트뷰.Items.Clear();
+
+                MySql mysql = new MySql();
+                //ArrayList bookinfoSearch_arry = mysql.Select(string.Format("select * from book_info where {0} LIKE '%{1}%'", search_category, 책정보검색상자.Text));
                 ArrayList bookinfoSearch_arry = mysql.Select(string.Format("select * from book_info where {0} LIKE '%{1}%'", search_category, 책정보검색상자.Text));
 
                 foreach (Hashtable ht in bookinfoSearch_arry)

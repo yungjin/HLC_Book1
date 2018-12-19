@@ -11,9 +11,10 @@ using System.Windows.Forms;
 
 namespace WindowsFormsApp
 {
-    public partial class Sample_Form2 : Form
+
+    public partial class USER_LEVEL_UPDATE_FORM : Form
     {
-        int sX = 1500, sY = 800; // 폼 사이즈 지정.
+        int sX = 800, sY = 450; // 폼 사이즈 지정.
 
         ///////// 좌표 체크시 추가 /////////
         static ToolStripStatusLabel StripLb;
@@ -27,15 +28,42 @@ namespace WindowsFormsApp
         PictureBox 책이미지;
         TextBox 텍스트박스;
 
-        public Sample_Form2()
+        TextBox 회원등급값;
+        TextBox 회원ID값;
+        TextBox 회원이름값;
+        TextBox 회원번호값;
+        TextBox 연락처값;
+
+        string 회원등급Temp값;
+        string 회원IDTemp값;
+        string 회원이름Temp값;
+        string 회원번호Temp값;
+        string 연락처Temp값;
+
+        RadioButton 관리자라디오버튼;
+        RadioButton 회원라디오버튼;
+
+        string user_number;
+
+        public USER_LEVEL_UPDATE_FORM()
         {
             InitializeComponent();
 
-            Load += Sample_Form2_Load;
+            Load += USER_LEVEL_UPDATE_FORM_Load;
         }
 
-        private void Sample_Form2_Load(object sender, EventArgs e)
+        public USER_LEVEL_UPDATE_FORM(string user_number)
         {
+            InitializeComponent();
+
+            this.user_number = user_number;
+            Load += USER_LEVEL_UPDATE_FORM_Load;
+        }
+
+        private void USER_LEVEL_UPDATE_FORM_Load(object sender, EventArgs e)
+        {
+            this.Paint += new PaintEventHandler(this.Form_Paint);
+
             //FormBorderStyle = FormBorderStyle.None; 폼 상단 표시줄 제거
 
             ClientSize = new Size(sX, sY);  // 폼 사이즈 지정.
@@ -63,49 +91,126 @@ namespace WindowsFormsApp
             COMBOBOXclass combobox1 = new COMBOBOXclass(this, "ComboBox1", 100, 100, 721, 12, ComboBox_SelectedIndexChanged, 5, "test1", "test2", "test3", "test4", "test5");
 
 
-            PICTUREBOXclass picturboxValue = new PICTUREBOXclass(this, "picturebox1", "picturebox_txt1", 150, 160, 20, 20, "default_book_image.png", picturbox_Click);
-            책이미지 = comm.load_PictureBox(picturboxValue);
-            Controls.Add(책이미지);
 
 
-            TXTBOXclass textboxValue = new TXTBOXclass(this, "파일이름확인", "이미지를 올려주세요", 150, 40, 20, 180, txtbox_Click);
-            텍스트박스 = comm.txtbox(textboxValue);
-            텍스트박스.ReadOnly = true;
-            Controls.Add(텍스트박스);
 
+            // 회원등급 수정 고정라벨
+            ArrayList arry = new ArrayList();
+            arry.Add(new LBclass(this, "회원등급제목", "회원 등급 수정", 17, 200, 30, 30, 30, label_Click));
+            arry.Add(new LBclass(this, "회원등급", "회원 등급", 17, 140, 30, 30, 115, label_Click));
+            arry.Add(new LBclass(this, "회원ID", "회원 ID", 17, 140, 30, 30, 175, label_Click));
+            arry.Add(new LBclass(this, "회원이름", "회원 이름", 17, 140, 30, 30, 235, label_Click));
+            arry.Add(new LBclass(this, "회원번호", "회원 번호", 17, 140, 30, 30, 295, label_Click));
+            arry.Add(new LBclass(this, "연락처", "연락처", 17, 140, 40, 30, 355, label_Click));
+            arry.Add(new LBclass(this, "", ":", 12, 30, 40, 210, 115, label_Click));
+            arry.Add(new LBclass(this, "", ":", 12, 30, 40, 210, 175, label_Click));
+            arry.Add(new LBclass(this, "", ":", 12, 30, 40, 210, 235, label_Click));
+            arry.Add(new LBclass(this, "", ":", 12, 30, 40, 210, 295, label_Click));
+            arry.Add(new LBclass(this, "", ":", 12, 30, 40, 210, 355, label_Click));
 
-            ArrayList btnArray = new ArrayList();
-            btnArray.Add(new BTNclass(this, "업로드버튼", "", 30, 30, 173, 173, btn_Click));
-            btnArray.Add(new BTNclass(this, "등록버튼", "등록", 60, 25, 243, 176, btn_Click));
-
-            for (int i = 0; i < btnArray.Count; i++)
+            for (int i = 0; i < arry.Count; i++)
             {
-                Button 버튼 = comm.btn((BTNclass)btnArray[i]);
+                Label label = comm.lb((LBclass)arry[i]);
 
-                if (버튼.Name == "업로드버튼")
-                {
-                    버튼.Font = new Font("견명조", 13F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(129)));  // FontStyle.Regular                
-                    Image imageLoad = (Image)Properties.Resources.upload;
-                    imageLoad = comm.ResizeImage(imageLoad, 30, 30);
-                    버튼.Image = imageLoad;
-                    버튼.ImageAlign = ContentAlignment.MiddleCenter;
-                    버튼.TabStop = false;
-                    //버튼.FlatStyle = FlatStyle.Flat;  // 버튼 평면으로 표시
-                    버튼.FlatAppearance.BorderSize = 0;
+                label.Font = new Font(label.Font.Name, 20, FontStyle.Bold);
 
 
-                }
-                else if (버튼.Name == "등록버튼")
-                {
-                    버튼.Font = new Font("견명조", 9F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(129)));  // FontStyle.Regular
-                    버튼.FlatStyle = FlatStyle.Flat;
-                    버튼.ForeColor = Color.LawnGreen;
-                    버튼.BackColor = Color.ForestGreen;
-                }
-                Controls.Add(버튼);
+                Controls.Add(label);
             }
 
 
+            MySql mysql = new MySql();
+            ArrayList userinfoSearch_arry = mysql.Select(string.Format("select * from signup where user_number = {0}", user_number));
+            foreach (Hashtable ht in userinfoSearch_arry)
+            {
+                회원등급Temp값 = ht["member_rank"].ToString();
+                회원IDTemp값 = ht["id"].ToString();
+                회원이름Temp값 = ht["name"].ToString();
+                회원번호Temp값 = ht["user_number"].ToString();
+                연락처Temp값 = ht["phone_number"].ToString();
+            }
+
+
+            // 회원등급 TextBox 변동값
+            ArrayList userinfoArry = new ArrayList();
+            userinfoArry.Add(new TXTBOXclass(this, "회원등급값", "회원등급값", 250, 40, 250, 110, txtbox_Click));
+            userinfoArry.Add(new TXTBOXclass(this, "회원ID값", "회원ID값", 250, 40, 250, 170, txtbox_Click));
+            userinfoArry.Add(new TXTBOXclass(this, "회원이름값", "회원이름값", 250, 40, 250, 230, txtbox_Click));
+            userinfoArry.Add(new TXTBOXclass(this, "회원번호값", "회원번호값", 250, 40, 250, 290, txtbox_Click));
+            userinfoArry.Add(new TXTBOXclass(this, "연락처값", "연락처값", 250, 40, 250, 350, txtbox_Click));
+
+            for (int i = 0; i < userinfoArry.Count; i++)
+            {
+                TextBox textBox = comm.txtbox((TXTBOXclass)userinfoArry[i]);
+                textBox.ReadOnly = true;
+                textBox.Font = new Font(textBox.Font.Name, 18, FontStyle.Bold);
+
+                if (textBox.Name == "회원등급값")
+                {
+                    textBox.Text = 회원등급Temp값;
+                }
+                else if (textBox.Name == "회원ID값")
+                {
+                    textBox.Text = 회원IDTemp값;
+                }
+                else if (textBox.Name == "회원이름값")
+                {
+                    textBox.Text = 회원이름Temp값;
+                }
+                else if (textBox.Name == "회원번호값")
+                {
+                    textBox.Text = 회원번호Temp값;
+                }
+                else if (textBox.Name == "연락처값")
+                {
+                    textBox.Text = 연락처Temp값;
+                }
+
+                Controls.Add(textBox);
+            }
+
+
+            // 권한 선택 - 라디오 버튼
+            ArrayList radio_arry = new ArrayList();
+            radio_arry.Add(new RADIOclass(this, "관리자권한", "관리자 권한", 250, 40, 570, 160, radio_btn_Click));
+            radio_arry.Add(new RADIOclass(this, "회원권한", "회원 권한", 250, 40, 570, 255, radio_btn_Click));
+
+            for (int i = 0; i < radio_arry.Count; i++)
+            {
+                RadioButton 권한선택라디오 = comm.radio_btn((RADIOclass)radio_arry[i]);
+
+                권한선택라디오.Font = new Font(권한선택라디오.Font.Name, 20, FontStyle.Bold);
+                Controls.Add(권한선택라디오);
+
+                if (권한선택라디오.Name == "관리자권한")
+                {
+                    관리자라디오버튼 = 권한선택라디오;
+
+                }
+                else if (권한선택라디오.Name == "회원권한")
+                {
+                    회원라디오버튼 = 권한선택라디오;
+
+                }
+            }
+
+
+            // 권한 선택 - 설정 버튼
+            ArrayList btn_arry = new ArrayList();
+            btn_arry.Add(new BTNclass(this, "설정완료", "설정 완료", 100, 40, 570, 345, btn_Click));
+            btn_arry.Add(new BTNclass(this, "취소", "취 소", 100, 40, 680, 345, btn_Click));
+
+            for (int i = 0; i < btn_arry.Count; i++)
+            {
+                Button 권한설정버튼 = comm.btn((BTNclass)btn_arry[i]);
+
+                권한설정버튼.BackColor = Color.FromArgb(50, 178, 223);
+                권한설정버튼.Font = new Font(권한설정버튼.Font.Name, 12, FontStyle.Bold);
+                권한설정버튼.FlatStyle = FlatStyle.Flat;
+                권한설정버튼.ForeColor = Color.White;
+                권한설정버튼.Region = Region.FromHrgn(COMMON_Create_Ctl.CreateRoundRectRgn(2, 2, 권한설정버튼.Width, 권한설정버튼.Height, 10, 10));
+                Controls.Add(권한설정버튼);
+            }
 
 
         }
@@ -128,17 +233,26 @@ namespace WindowsFormsApp
 
         private void btn_Click(Object o, EventArgs e)
         {
-            MessageBox.Show("동작확인 : btn_Click");
+            //MessageBox.Show("동작확인 : btn_Click");
 
             Button button = (Button)o;
 
-            if (button.Name == "등록버튼")
+            if (button.Name == "설정완료")
             {
-                MessageBox.Show("등록버튼");
+                MessageBox.Show("설정완료");
+                if (관리자라디오버튼.Checked == true)
+                {
+                    MessageBox.Show("관리자 권한 최종 선택");
+                }
+                else if (회원라디오버튼.Checked == true)
+                {
+                    MessageBox.Show("회원 권한 최종 선택");
+                }
+
             }
-            else if (button.Name == "업로드버튼")
+            else if (button.Name == "취소")
             {
-                Image_Select();
+                this.Close();
             }
         }
 
@@ -160,6 +274,7 @@ namespace WindowsFormsApp
         private void radio_btn_Click(Object o, EventArgs e)
         {
             MessageBox.Show("동작확인 : radio_btn_Click");
+
         }
 
         private void picturbox_Click(Object o, EventArgs e)
@@ -262,9 +377,8 @@ namespace WindowsFormsApp
 
         private void Form_Paint(object sender, PaintEventArgs e)
         {
-            Pen pen = new Pen(Color.FromArgb(255, 0, 0, 0));
-            e.Graphics.DrawLine(pen, 750, 0, 750, 800);
+            Pen pen = new Pen(Color.FromArgb(255, 0, 0, 0), 2);
+            e.Graphics.DrawLine(pen, 30, 70, 770, 70);
         }
-
     }
 }
