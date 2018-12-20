@@ -166,9 +166,17 @@ namespace WindowsFormsApp
                 }
                 if (member_rank == 0)
                 {
-                    //form.user1.Close();
-                    //BOOK_INFO_FORM user77 = new BOOK_INFO_FORM(form);
-                    //form.panel1.Controls.Add(user77);
+                    form.user1.Hide();
+                    form.user1.Dispose();
+                    BOOK_INFO_FORM login_user1 = new BOOK_INFO_FORM(form);
+                    //user1.FormBorderStyle = FormBorderStyle.None;
+                    login_user1.TopLevel = false;
+                    login_user1.TopMost = true;
+                    login_user1.MdiParent = form;
+                    login_user1.Dock = DockStyle.Fill; //판넬크기에 맞게 사이즈 늘림.
+                    form.panel1.Controls.Add(login_user1);
+                    form.user1 = login_user1;
+
                     form.user1.Show();
                     form.btn5.Show();
                     form.btn6.Show();

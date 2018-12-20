@@ -190,5 +190,26 @@
   <ItemGroup>
     <None Include="Resources\upload.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\book_info.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\book_location.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\book_management.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\my_information.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\overdue_management.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\rental_list.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\user_management.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
