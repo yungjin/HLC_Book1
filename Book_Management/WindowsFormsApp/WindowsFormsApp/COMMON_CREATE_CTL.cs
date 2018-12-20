@@ -172,7 +172,7 @@ namespace WindowsFormsApp
             //Image picturebox_myImage = (Image)Properties.Resources.ResourceManager.GetObject(picturbox_obj.Image_Name); // global::WindowsFormsHiWeather.Properties.Resources.config_image; 
             //picturebox.ClientSize = new Size(picturbox_obj.SX, picturbox_obj.SY);
             picturebox.Size = new Size(picturbox_obj.SX, picturbox_obj.SY);
-            picturebox.ImageLocation = "http://ljh5432.iptime.org:81/ImageCollection/" + picturbox_obj.Image_Name; // FTP에서불러올파일이름;
+            picturebox.ImageLocation = "http://ljh5432.iptime.org:5000/" + picturbox_obj.Image_Name; // FTP에서불러올파일이름;
             picturebox.Click += picturbox_obj.eh_picturbox;
             //radio1.Checked = true;  // RadioButton 체크로 설정.
 

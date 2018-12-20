@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -39,7 +42,9 @@ namespace WindowsFormsApp
         TextBox 출판사값;
         TextBox 장르값;
         TextBox 도서위치값;
-        String 이미지파일이름 = "";
+        String 이미지Load경로 = "";
+        String 본파일이름 = "";
+
 
         public BOOK_MGT_FORM()
         {
@@ -260,20 +265,24 @@ namespace WindowsFormsApp
             if (button.Name == "이미지추가버튼")
             {
                 MessageBox.Show("이미지추가버튼");
-                Image_Select();
+                WebApi_Image_Select();
+                //Image_Select();
             }
             else if (button.Name == "등록버튼")
             {
                 MessageBox.Show("등록버튼");
 
-                if (제목값.Text == "" || 저자값.Text == "" || 출판사값.Text == "" || 장르값.Text == "" || 도서위치값.Text == "" || 간략소개상자.Text == "" || 이미지파일이름 == "")
+                if (제목값.Text == "" || 저자값.Text == "" || 출판사값.Text == "" || 장르값.Text == "" || 도서위치값.Text == "" || 간략소개상자.Text == "" || 이미지Load경로 == "" || 본파일이름 == "")
                 {
                     MessageBox.Show("빈칸 및 이미지 파일을 등록해주세요.");
                     return;
                 }
 
+                MessageBox.Show("이미지Load경로 : " + 이미지Load경로);
+                MessageBox.Show("본파일이름 : " + 본파일이름);
+
                 MySql mysql = new MySql();
-                string sql = string.Format("insert into book_info(title, author, publisher, genre, book_location, brief_introduction, image_location) values('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}');", 제목값.Text, 저자값.Text, 출판사값.Text, 장르값.Text, 도서위치값.Text, 간략소개상자.Text, 이미지파일이름);
+                string sql = string.Format("insert into book_info(title, author, publisher, genre, book_location, brief_introduction, image_location, image_FileName) values('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}');", 제목값.Text, 저자값.Text, 출판사값.Text, 장르값.Text, 도서위치값.Text, 간략소개상자.Text, 이미지Load경로, 본파일이름);
                 bool status = mysql.NonQuery_INSERT(sql);
 
                 if (status)
@@ -341,6 +350,55 @@ namespace WindowsFormsApp
             StripLb.Text = "(" + e.X + ", " + e.Y + ")";
         }
 
+        private void WebApi_Image_Select()
+        {
+            OpenFileDialog of = new OpenFileDialog();
+            of.Filter = "Images only. |*.jpg; *.jpeg; *.png; *.gif;";
+
+            if (of.ShowDialog() == DialogResult.OK)
+            {
+
+                string filePath = of.FileName;
+                Image img = Image.FromFile(filePath);
+                //textBox1.Text = textBox1.Text + "\r\n" + filePath;
+
+                int start = filePath.LastIndexOf("\\") + 1;
+                int len = filePath.Length - start;
+                string fileName = filePath.Substring(start, len);
+
+                WebClient wc = new WebClient();
+                NameValueCollection param = new NameValueCollection();
+                본파일이름 = fileName;
+                param.Add("fileName", fileName);
+
+                /************************************************************************************/
+                MemoryStream ms = new MemoryStream();
+                img.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+                string fileData = Convert.ToBase64String(ms.ToArray());
+                param.Add("fileData", fileData);
+                ms.Close();
+                /************************************************************************************/
+
+                try
+                {
+                    byte[] result = wc.UploadValues("http://ljh5432.iptime.org:5000/imageUpload", "POST", param);
+                    string resultStr = Encoding.UTF8.GetString(result);
+                    MessageBox.Show("파일 저장 완료 : " + resultStr);
+                    이미지Load경로 = resultStr;
+                    책이미지.ImageLocation = resultStr; // Webapi Service wwwroot 경로에 파일이름 위치경로.
+
+                }
+                catch
+                {
+                    MessageBox.Show("파일 저장 중 오류 발생");
+                }
+                
+            }
+            else
+            {
+                MessageBox.Show("취소");
+            }
+        }
 
         private void Image_Select()
         {
@@ -359,7 +417,7 @@ namespace WindowsFormsApp
                         _Slected_File_RootPath = file_root;
                         string fileName = _Slected_File_RootPath.Substring(_Slected_File_RootPath.LastIndexOf("\\") + 1);
                         fileName = fileName.Replace("#", "샵");
-                        이미지파일이름 = fileName;
+                        이미지Load경로 = fileName;
                         //MessageBox.Show("_Slected_File_RootPath : " + _Slected_File_RootPath + ", fileName : " + fileName);
 
                         comm.UploadFTPFile(_Slected_File_RootPath, fileName);

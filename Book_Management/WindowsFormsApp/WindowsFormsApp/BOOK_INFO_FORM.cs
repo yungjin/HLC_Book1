@@ -512,7 +512,7 @@ namespace WindowsFormsApp
                 장르값.Text = ht["genre"].ToString();
                 대여가능여부값.Text = ht["availability"].ToString();
                 도서위치값.Text = ht["book_location"].ToString();
-                책이미지.ImageLocation = "http://ljh5432.iptime.org:81/ImageCollection/" + ht["image_location"].ToString();
+                책이미지.ImageLocation = ht["image_location"].ToString();
                 간략소개상자.Text = ht["brief_introduction"].ToString();
 
             }

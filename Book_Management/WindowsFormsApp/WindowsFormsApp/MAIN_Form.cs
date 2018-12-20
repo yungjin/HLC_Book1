@@ -93,22 +93,27 @@ namespace WindowsFormsApp
             BTNclass bt1 = new BTNclass(this, "유저1", "도서정보", 285, 100, 0, 0, btn1_Click);
             BTNclass bt2 = new BTNclass(this, "유저2", "대여목록", 285, 100, 285, 0, btn2_Click);
             BTNclass bt3 = new BTNclass(this, "유저3", "나의정보", 285, 100, 570, 0, btn3_Click);
-            BTNclass bt4 = new BTNclass(this, "유저4", "도서위치MAP", 285, 100, 855, 0, btn4_Click);
-            
+            BTNclass bt4 = new BTNclass(this, "유저4", "위치MAP", 285, 100, 855, 0, btn4_Click);
+
             BTNclass bt6 = new BTNclass(this, "관리2", "회원정보", 285, 100, 285, 0, btn6_Click);
             BTNclass bt7 = new BTNclass(this, "관리3", "도서관리", 285, 100, 570, 0, btn7_Click);
             BTNclass bt8 = new BTNclass(this, "관리4", "연체관리", 285, 100, 855, 0, btn8_Click);
 
             btn = comm_create_ctl.btn(bt1);
+            ButtonConfig(btn, "book_info");
             btn1 = comm_create_ctl.btn(bt2);
+            ButtonConfig(btn1, "rental_list");
             btn2 = comm_create_ctl.btn(bt3);
+            ButtonConfig(btn2, "my_information");
             btn3 = comm_create_ctl.btn(bt4);
+            ButtonConfig(btn3, "book_location");
 
-
-            
             btn5 = comm_create_ctl.btn(bt6);
+            ButtonConfig(btn5, "user_management");
             btn6 = comm_create_ctl.btn(bt7);
+            ButtonConfig(btn6, "book_management");
             btn7 = comm_create_ctl.btn(bt8);
+            ButtonConfig(btn7, "overdue_management");
 
 
             Controls.Add(btn);
@@ -274,12 +279,37 @@ namespace WindowsFormsApp
             Controls.Add(pictureBox);
         }
 
+        private void ButtonConfig(Button btn, string image_name)
+        {
+            btn.Font = new Font("신명조", 30.0F, FontStyle.Bold);
+            btn.ForeColor = Color.White;
+            Image btn_myImage;
+            btn_myImage = (Image)Properties.Resources.ResourceManager.GetObject(image_name);
+            ImageList imageList = new ImageList();
+            imageList.ImageSize = new Size(100, 100);
+            imageList.Images.Add(btn_myImage);
+            imageList.TransparentColor = Color.Transparent;
+            btn.ImageAlign = ContentAlignment.MiddleLeft;
+            btn.TextAlign = ContentAlignment.MiddleRight;
+            btn.ImageIndex = 0;
+            btn.ImageList = imageList;
+            btn.TabStop = false;
+            btn.FlatStyle = FlatStyle.Flat;
+            btn.FlatAppearance.BorderSize = 0;
+            btn.BackColor = Color.FromArgb(39, 174, 97);
+        }
+
+
         private void btn1_Click(Object o, EventArgs e)
         {
+
             user1.Show();
             user2.Hide();
             user3.Hide();
             user4.Hide();
+            root2.Hide();
+            root3.Hide();
+            root4.Hide();
             Login.Hide();
             Signup.Hide();
 
