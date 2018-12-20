@@ -13,7 +13,7 @@ namespace WindowsFormsApp
 {
     public partial class REQUEST_BOOK_FORM : Form
     {
-        int sX = 700, sY = 500; // 폼 사이즈 지정.
+        int sX = 700, sY = 400; // 폼 사이즈 지정.
 
         ///////// 좌표 체크시 추가 /////////
         static ToolStripStatusLabel StripLb;
@@ -30,7 +30,10 @@ namespace WindowsFormsApp
 
         private void REQUEST_BOOK_FORM_Load(object sender, EventArgs e)
         {
-            FormBorderStyle = FormBorderStyle.None; //폼 상단 표시줄 제거
+            COMMON_Create_Ctl comm = new COMMON_Create_Ctl();
+            comm.SetRegion(this); // 폼 둥글게 변경     
+
+            //FormBorderStyle = FormBorderStyle.None; //폼 상단 표시줄 제거
 
             this.BackColor = Color.FromArgb(218, 234, 244);
 
@@ -39,8 +42,7 @@ namespace WindowsFormsApp
             /// 좌표 체크시 추가 ///
             Point_Print();
 
-            COMMON_Create_Ctl create_ctl = new COMMON_Create_Ctl();
-
+            
             // BTNclass bt1 = new BTNclass(this, "버튼Name", "버튼Text", 가로사이즈, 세로사이즈, 가로포인트, 세로포인트, 버튼클릭이벤트);
             BTNclass bt1 = new BTNclass(this, "Home", "button1", 100, 100, 10, 10, btn_Click);
             // LBclass lb1 = new LBclass(this, "라벨Name", "라벨Text", 라벨Font사이즈, 가로사이즈, 세로사이즈, 가로포인트, 세로포인트, 라벨클릭이벤트);
@@ -58,9 +60,9 @@ namespace WindowsFormsApp
             // COMBOBOXclass combobox1 = new COMBOBOXclass(this, "콤보박스Name", 가로사이즈, 세로사이즈, 가로포인트, 세로포인트, 콤보박스클릭이벤트, 리스트추가갯수, "test1", "test2", "test3", "test4", "test5");
             COMBOBOXclass combobox1 = new COMBOBOXclass(this, "ComboBox1", 100, 100, 721, 12, ComboBox_SelectedIndexChanged, 5, "test1", "test2", "test3", "test4", "test5");
 
-            COMMON_Create_Ctl comm = new COMMON_Create_Ctl();
+            
 
-            LBclass 라벨_입고요청상단값 = new LBclass(this, "입고요청상단", "입고 요청", 26, 200, 40, 590, 95, label_Click);
+            LBclass 라벨_입고요청상단값 = new LBclass(this, "입고요청상단", "입고 요청", 26, 200, 40, 15, 20, label_Click);
             Label 라벨_입고요청상단 = comm.lb(라벨_입고요청상단값);
             Controls.Add(라벨_입고요청상단);
 

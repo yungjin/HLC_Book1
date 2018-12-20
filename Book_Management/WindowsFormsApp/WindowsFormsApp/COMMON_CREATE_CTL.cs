@@ -311,5 +311,18 @@ namespace WindowsFormsApp
             int nHeightEllipse  // width of ellipse  
         );
 
+        public void SetRegion(Form form)
+        {
+            Rectangle rectangle = form.DisplayRectangle;
+            GraphicsPath path = new GraphicsPath();
+            int arcRadius = 50;
+            path.AddArc(rectangle.X + 16, rectangle.Y + 4, arcRadius, arcRadius, 180, 90);
+            path.AddArc(rectangle.X + rectangle.Width - arcRadius - 6, rectangle.Y + 4, arcRadius, arcRadius, 270, 90);
+            path.AddArc(rectangle.X + rectangle.Width - arcRadius - 6, rectangle.Y + rectangle.Height - arcRadius - 18, arcRadius, arcRadius, 0, 90);
+            path.AddArc(rectangle.X + 16, rectangle.Y + rectangle.Height - arcRadius - 18, arcRadius, arcRadius, 90, 90);
+            path.CloseFigure();
+            form.Region = new Region(path);
+        }
+
     }
 }
