@@ -18,6 +18,7 @@ namespace WindowsFormsApp
 
         private int status;
         private int LoginNumber;
+        public LOGIN_FORM Login;
 
         public MY_INFO_FORM()
         {
@@ -25,7 +26,11 @@ namespace WindowsFormsApp
 
             Load += MY_INFO_FORM_Load;
         }
-
+        
+        public MY_INFO_FORM(LOGIN_FORM Login)
+        {
+            this.Login = Login;
+        }
         int sX = 1500, sY = 800; // 폼 사이즈 지정.
 
         
@@ -38,12 +43,12 @@ namespace WindowsFormsApp
         TextBox Tb1, Tb2, Tb3, Tb4, Tb5, Tb6, Tb7, Tb8, Tb9 = new TextBox();
         Panel pan1 = new Panel();
 
-        string User = "1";
+        Button btn;
+        Button btn1;
+        Button btn2;
+        Button btn3;
 
-        public void user()
-        {
-
-        }
+        private bool btnYn = true;
 
         private void MY_INFO_FORM_Load(object sender, EventArgs e)
         {
@@ -51,8 +56,14 @@ namespace WindowsFormsApp
 
             ClientSize = new Size(sX, sY);  // 폼 사이즈 지정.
 
+            FormBorderStyle = FormBorderStyle.None;// 폼 상단 표시줄 제거
+
             /// 좌표 체크시 추가 ///
             Point_Print();
+
+            Login = new LOGIN_FORM();
+
+            
 
             COMMON_Create_Ctl comm = new COMMON_Create_Ctl();
             ArrayList lbarray = new ArrayList();
@@ -77,14 +88,14 @@ namespace WindowsFormsApp
             //Tbarray.Add(new TXTBOXclass(this, "Phon", "", 150, 20, 180, 480, Tb_click));
             //Tbarray.Add(new TXTBOXclass(this, "addres", "", 150, 20, 180, 540, Tb_click));
 
-            Tb1 = comm.txtbox(new TXTBOXclass(this, "ID", "", 150, 20, 180, 60, Tb_click));
-            Tb2 = comm.txtbox(new TXTBOXclass(this, "Pass", "", 150, 20, 180, 120, Tb_click));
-            Tb3 = comm.txtbox(new TXTBOXclass(this, "name", "", 150, 20, 180, 180, Tb_click));
-            Tb4 = comm.txtbox(new TXTBOXclass(this, "Name", "", 150, 20, 180, 240, Tb_click));
-            Tb5 = comm.txtbox(new TXTBOXclass(this, "Gender", "", 150, 20, 180, 300, Tb_click));
-            Tb6 = comm.txtbox(new TXTBOXclass(this, "Birth", "", 150, 20, 180, 360, Tb_click));
-            Tb7 = comm.txtbox(new TXTBOXclass(this, "email", "", 150, 20, 180, 420, Tb_click));
-            Tb8 = comm.txtbox(new TXTBOXclass(this, "Phon", "", 150, 20, 180, 480, Tb_click));
+            Tb1 = comm.txtbox(new TXTBOXclass(this, "ID", "", 150, 20, 180, 60-1, Tb_click));
+            Tb2 = comm.txtbox(new TXTBOXclass(this, "Pass", "", 150, 20, 180, 120 - 1, Tb_click));
+            Tb3 = comm.txtbox(new TXTBOXclass(this, "name", "", 150, 20, 180, 180 - 1, Tb_click));
+            Tb4 = comm.txtbox(new TXTBOXclass(this, "Name", "", 150, 20, 180, 240 - 1, Tb_click));
+            Tb5 = comm.txtbox(new TXTBOXclass(this, "Gender", "", 150, 20, 180, 300 - 1, Tb_click));
+            Tb6 = comm.txtbox(new TXTBOXclass(this, "Birth", "", 150, 20, 180, 360 - 1, Tb_click));
+            Tb7 = comm.txtbox(new TXTBOXclass(this, "email", "", 150, 20, 180, 420 - 1, Tb_click));
+            Tb8 = comm.txtbox(new TXTBOXclass(this, "Phon", "", 150, 20, 180, 480 - 1, Tb_click));
             
 
             pan1.Controls.Add(Tb1);
@@ -108,46 +119,55 @@ namespace WindowsFormsApp
             Controls.Add(pan1);
             //==================================================================================================================================================
 
+
+            //버튼==============================================================================================================================================
+
             // BTNclass bt1 = new BTNclass(this, "버튼Name", "버튼Text", 가로사이즈, 세로사이즈, 가로포인트, 세로포인트, 버튼클릭이벤트);
 
-            btnArray.Add(new BTNclass(this, "비번수정", "비밀번호 변경", 100, 50, 100, 580, btn1_Click));
-            btnArray.Add(new BTNclass(this, "정보수정", "정보 수정", 100, 50, 300, 580, btn2_Click));
 
-            for (int i = 0; i < btnArray.Count; i++)
-            {
-                Button btn = comm.btn((BTNclass)btnArray[i]);
 
-                if (btn.Name == "가입")
-                {
-                    btn.Font = new Font("견명조", 9F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(129)));  // FontStyle.Regular
-                    btn.FlatStyle = FlatStyle.Flat;
-                    btn.ForeColor = Color.LawnGreen;
-                    btn.BackColor = Color.ForestGreen;
-                }
-                else if (btn.Name == "닫기")
-                {
-                    btn.Font = new Font("견명조", 9F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(129)));  // FontStyle.Regular
-                    btn.FlatStyle = FlatStyle.Flat;
-                    btn.ForeColor = Color.LawnGreen;
-                    btn.BackColor = Color.ForestGreen;
-                }
-                pan1.Controls.Add(btn);
-            }
+            btn1 = comm.btn(new BTNclass(this, "비밀번호 변경", "비밀번호 변경", 100, 50, 100, 580, btn1_Click));
+            btn2 = comm.btn(new BTNclass(this, "정보수정", "정보수정", 100, 50, 300, 580, btn2_Click));
+            btn3 = comm.btn(new BTNclass(this, "취소", "취소", 100, 50, 400, 580, btn3_Click));
+
+            pan1.Controls.Add(btn1);
+            pan1.Controls.Add(btn2);
+            pan1.Controls.Add(btn3);
+            btn3.Hide();
+            //for (int i = 0; i < btnArray.Count; i++)
+            //{
+            //    btn = comm.btn((BTNclass)btnArray[i]);
+
+            //    if (btn.Name == "비밀번호 변경")
+            //    {
+            //        btn.Font = new Font("견명조", 9F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(129)));  // FontStyle.Regular
+            //        btn.FlatStyle = FlatStyle.Flat;
+            //        btn.ForeColor = Color.LawnGreen;
+            //        btn.BackColor = Color.ForestGreen;
+            //    }
+            //    else if (btn.Name == "정보수정")
+            //    {
+            //        btn.Font = new Font("견명조", 9F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(129)));  // FontStyle.Regular
+            //        btn.FlatStyle = FlatStyle.Flat;
+            //        btn.ForeColor = Color.LawnGreen;
+            //        btn.BackColor = Color.ForestGreen;
+            //    }
+
+            //    else if (btn.Name == "취소")
+            //    {
+            //        btn.Font = new Font("견명조", 9F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(129)));  // FontStyle.Regular
+            //        btn.FlatStyle = FlatStyle.Flat;
+            //        btn.ForeColor = Color.LawnGreen;
+            //        btn.BackColor = Color.ForestGreen;
+            //    }
+            //    pan1.Controls.Add(btn);
+            //}
             //==================================================================================================================================================
             //기본 띄어지는 유저정보
-            
 
-            foreach (Hashtable ht in GetSelect(User))
-            {
-                Tb1.Text = (ht["id"].ToString());
-                Tb2.Text = "************";
-                Tb3.Text = (ht["name"].ToString());
-                Tb4.Text = (ht["gender"].ToString());
-                Tb5.Text = (ht["birthday"].ToString());
-                Tb6.Text = (ht["email"].ToString());
-                Tb7.Text = (ht["phone_number"].ToString());
-                Tb8.Text = (ht["address"].ToString());
-            }
+            List_View();
+
+
 
             Tb1.ReadOnly = ReadYn();
             Tb2.ReadOnly = ReadYn();
@@ -162,7 +182,7 @@ namespace WindowsFormsApp
 
             //==================================================================================================================================================
 
-
+            
 
             //==================================================================================================================================================
             //for (int i = 0; i < Tbarray.Count; i++)
@@ -182,6 +202,22 @@ namespace WindowsFormsApp
 
         }
 
+        private void List_View()
+        {
+            foreach (Hashtable ht in GetSelect(Login.User_Number.ToString()))
+            {
+                Tb1.Text = (ht["id"].ToString());
+                Tb2.Text = "************";
+                Tb3.Text = (ht["name"].ToString());
+                Tb4.Text = (ht["gender"].ToString());
+                Tb5.Text = (ht["birthday"].ToString());
+                Tb6.Text = (ht["email"].ToString());
+                Tb7.Text = (ht["phone_number"].ToString());
+                Tb8.Text = (ht["address"].ToString());
+            }
+            Tb5.Text = Tb5.Text.Substring(0, 10);
+        }
+
         private bool ReadYn()
         {
             return true;
@@ -192,14 +228,79 @@ namespace WindowsFormsApp
 
         }
 
-        private void btn1_Click(object sender, EventArgs e)
+        private void btn1_Click(object sender, EventArgs e) //비밀번호 버튼 클릭
         {
-            
+            if (btn1.Text == "비밀번호 변경")
+            {
+                btn3.Show();
+                Tb2.ReadOnly = false;
+                
+
+                btnYn = false;
+
+                btn1.Text = "변경완료";
+            }
+            else if (btn1.Text == "변경완료")
+            {
+                MessageBox.Show(Tb2.Text);
+                MessageBox.Show(Login.User_Number.ToString());
+
+                GetUPDATE_Pass(Tb2.Text, Login.User_Number.ToString());
+
+                List_View();
+                
+                Tb2.ReadOnly = true;
+
+                btnYn = true;
+
+                btn1.Text = "비밀번호 변경";
+                btn3.Hide();
+            }
         }
 
-        private void btn2_Click(object sender, EventArgs e)
+        private void btn2_Click(object sender, EventArgs e) //정보수정 버튼 클릭
         {
-            
+            if(btn2.Text == "정보수정")
+            {
+                btn3.Show();
+                Tb6.ReadOnly = false;
+                Tb7.ReadOnly = false;
+                Tb8.ReadOnly = false;
+
+                btnYn = false;
+
+                btn2.Text = "수정완료";
+            }
+            else if(btn2.Text == "수정완료")
+            {
+                GetUPDATE(Tb6.Text, Tb7.Text, Tb8.Text, Login.User_Number.ToString());
+
+                Tb6.ReadOnly = true;
+                Tb7.ReadOnly = true;
+                Tb8.ReadOnly = true;
+
+                btn2.Text = "정보수정";
+
+                btnYn = true;
+                btn3.Hide();
+            }
+        }
+
+        private void btn3_Click(object sender, EventArgs e) //취소 버튼 클릭
+        {
+            if(!btnYn)
+            {
+
+                List_View();
+
+                Tb2.ReadOnly = true;
+                Tb6.ReadOnly = true;
+                Tb7.ReadOnly = true;
+                Tb8.ReadOnly = true;
+
+                btn3.Hide();
+                btnYn = true;
+            }
         }
 
         private void Point_Print()
@@ -230,11 +331,21 @@ namespace WindowsFormsApp
             throw new NotImplementedException();
         }
 
-        public void GetInsert(string ID, string Pass, string Name, string Gender, string Birth, string email, string Phon, string addres)
+        public void GetUPDATE(string email, string Phon, string addres, string user_number)
         {
 
             MySql my = new MySql();
-            string sql = string.Format("UPDATE INTO signup(id,name,gender,birthday,email,phone_number,address) values ('{0}','{1}','{2}','{3}','{4}','{5}','{6}');", ID,  Name, Gender, Birth, email, Phon, addres);
+            string sql = string.Format("UPDATE signup set email = '{0}',phone_number = '{1}',address = '{2}' where user_number = {3};", email, Phon, addres,user_number);
+            if (my.NonQuery(sql)) MessageBox.Show("수정 완료");
+            else MessageBox.Show("수정 실패");
+
+        }
+
+        public void GetUPDATE_Pass(string passwod, string user_number)
+        {
+
+            MySql my = new MySql();
+            string sql = string.Format("UPDATE signup set passwod = '{0}' where user_number = {1};", passwod, user_number);
             if (my.NonQuery(sql)) MessageBox.Show("수정 완료");
             else MessageBox.Show("수정 실패");
 

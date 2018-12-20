@@ -20,11 +20,17 @@ namespace WindowsFormsApp
         public BOOK_INFO_FORM user1;
         public static int member_rank = 4; // 0 관리자 / 1 유저 / 4 비회원
         public static int user_Number;
-        
+        public RENTAL_INFO_FORM RENTAL1;
+        public MY_INFO_FORM MYinfo;
         public LOGIN_FORM(MAIN_FORM form)
         {
             InitializeComponent();
             this.form = form;
+            Load += LOGIN_FORM_Load;
+        }
+        public LOGIN_FORM()
+        {
+            InitializeComponent();
             Load += LOGIN_FORM_Load;
         }
         int sX = 1500, sY = 800; // 폼 사이즈 지정.
@@ -44,6 +50,11 @@ namespace WindowsFormsApp
             COMMON_Create_Ctl comm = new COMMON_Create_Ctl();
             this.BackColor = Color.FromArgb(201, 253, 223); //백컬러
             Point_Print(); //좌표 
+            //=============
+            RENTAL1 = new RENTAL_INFO_FORM(this);
+
+            MYinfo = new MY_INFO_FORM(this);
+            //=============
             ClientSize = new Size(sX, sY);  // 폼 사이즈 지정.
             //라벨 ==============================================================================================================================================
             ArrayList lbarray = new ArrayList();
@@ -88,7 +99,7 @@ namespace WindowsFormsApp
             ArrayList btnArray = new ArrayList();
             btnArray.Add(new BTNclass(this, "로그인", "로그인", 80, 80, 345, 240, btn1_Click));
             btnArray.Add(new BTNclass(this, "회원가입", "회원가입", 80, 40, 345, 320, btn2_Click));
-            btnArray.Add(new BTNclass(this, "뒤로가기", "←", 50, 40, 450, 0, btn3_Click));
+            //btnArray.Add(new BTNclass(this, "뒤로가기", "←", 50, 40, 450, 0, btn3_Click));
 
 
 
@@ -132,6 +143,7 @@ namespace WindowsFormsApp
             {
                 MessageBox.Show("로그인 성공");
 
+                form.lb_Logout.Show();
                 MySql my = new MySql();
                 string sql = string.Format("select user_number, member_rank from signup where id = '{0}';", Tb1.Text);
                 MySqlDataReader sdr = my.Reader(sql);
@@ -139,10 +151,10 @@ namespace WindowsFormsApp
                 {
                     user_Number = Convert.ToInt32(sdr.GetValue(0).ToString());
                     member_rank = Convert.ToInt32(sdr.GetValue(1).ToString());
-                    MessageBox.Show(sdr.GetValue(1).ToString());
+                    //MessageBox.Show(sdr.GetValue(1).ToString());
                 }
 
-                this.Close();
+                this.Hide();
                 if(member_rank == 1)
                 {
                     form.user1.Show();
@@ -153,16 +165,7 @@ namespace WindowsFormsApp
                     form.Login.Hide();
                     form.Signup.Hide();
 
-                    if (member_rank == 4)
-                    {
-                        form.lb_Login.Show();
-                        form.lb_Signup.Show();
-                    }
-                    else
-                    {
-                        form.lb_Login.Hide();
-                        form.lb_Signup.Hide();
-                    }
+                    
                 }
                 if (member_rank == 0)
                 {
@@ -185,18 +188,20 @@ namespace WindowsFormsApp
                     form.Login.Hide();
                     form.Signup.Hide();
 
-                    if (member_rank == 4)
-                    {
-                        form.lb_Login.Show();
-                        form.lb_Signup.Show();
-                    }
-                    else
-                    {
-                        form.lb_Login.Hide();
-                        form.lb_Signup.Hide();
-                    }
+                    
+                }
+                if (member_rank == 4)
+                {
+                    form.lb_Login.Show();
+                    form.lb_Signup.Show();
+                }
+                else
+                {
+                    form.lb_Login.Hide();
+                    form.lb_Signup.Hide();
                 }
 
+               
 
             }
 
@@ -209,10 +214,10 @@ namespace WindowsFormsApp
             {
                 return member_rank;
             }
-            //set
-            //{
-            //    member_rank = value;
-            //}
+            set
+            {
+                member_rank = value;
+            }
         }
 
         public int User_Number
@@ -221,21 +226,22 @@ namespace WindowsFormsApp
             {
                 return user_Number;
             }
-            //set
-            //{
-            //    user_Number = value;
-            //}
+            set
+            {
+                user_Number = value;
+            }
         }
 
         private void btn2_Click(object sender, EventArgs e)
         {
-            
+            this.Hide();
+            form.Signup.Show();
         }
 
         private void btn3_Click(object sender, EventArgs e)
         {
 
-            this.Close();
+            
         }
 
         public void Login_Select(string Idtext)
