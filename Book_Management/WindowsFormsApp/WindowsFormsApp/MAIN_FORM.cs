@@ -20,6 +20,7 @@ namespace WindowsFormsApp
         Sample_Form Child1 = new Sample_Form();
         public Label lb_Login;
         public Label lb_Signup;
+        public Label lb_Logout;
         public Button btn;
         public Button btn1;
         public Button btn2;
@@ -31,8 +32,8 @@ namespace WindowsFormsApp
         public Button btn7;
         //로긴/회원가입==================================================================================================
         public LOGIN_FORM Login;
-        public SIGNUP_FORM Signup = new SIGNUP_FORM();
-
+        public SIGNUP_FORM Signup;
+        public LOGIN_FORM login_frm;
 
         //유저 폼 =======================================================================================================
         public BOOK_INFO_FORM user1;
@@ -49,8 +50,6 @@ namespace WindowsFormsApp
         //===============================================================================================================
 
 
-
-        int user_rank = 4;
 
         int sX = 1500, sY = 900; // 폼 사이즈 지정.
 
@@ -71,8 +70,9 @@ namespace WindowsFormsApp
         {
             //=======================================================================================================
             user1 = new BOOK_INFO_FORM(this);
-            LOGIN_FORM login_frm = new LOGIN_FORM(this);
+            login_frm = new LOGIN_FORM(this);
             Login = new LOGIN_FORM(this);
+            Signup = new SIGNUP_FORM(this);
             //=======================================================================================================
 
             ClientSize = new Size(sX, sY);  // 폼 사이즈 지정.
@@ -127,7 +127,7 @@ namespace WindowsFormsApp
             Controls.Add(btn6);
             Controls.Add(btn7);
 
-            MessageBox.Show("login_frm.Member_rank : " + login_frm.Member_rank);
+            //MessageBox.Show("login_frm.Member_rank : " + login_frm.Member_rank);
 
             if (login_frm.Member_rank == 4) // 비회원
             {
@@ -165,7 +165,9 @@ namespace WindowsFormsApp
             ArrayList lbarray = new ArrayList();
             lbarray.Add(new LBclass(this, "Login", "Login", 10, 70, 15, 1500-72, 3, label_Click));
             lbarray.Add(new LBclass(this, "Signup", "Signup", 10, 70, 15, 1500 - 72, 20, label2_Click));
+            lbarray.Add(new LBclass(this, "Logout", "Logout", 10, 70, 15, 1500 - 72, 3, label3_Click));
             
+
             for (int i = 0; i < lbarray.Count; i++)
             {
 
@@ -186,9 +188,14 @@ namespace WindowsFormsApp
                     lb.Font = new Font("견명조", 9F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(129)));
                     lb_Signup = lb;
                 }
+                else if (lb.Name == "Logout")
+                {
+                    lb.Font = new Font("견명조", 9F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(129)));
+                    lb_Logout = lb;
+                }
                 Controls.Add(lb);
             }
-            
+            lb_Logout.Hide();
 
             //=====================================================================================================================================================
 
@@ -386,9 +393,6 @@ namespace WindowsFormsApp
         private void label_Click(Object o, EventArgs e)//로긴
         {
             user1.Hide();
-            user2.Hide();
-            user3.Hide();
-            user4.Hide();
             Login.Show();
             Signup.Hide();
         }
@@ -396,11 +400,47 @@ namespace WindowsFormsApp
         private void label2_Click(object sender, EventArgs e)//회원
         {
             user1.Hide();
+            Login.Hide();
+            Signup.Show();
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
+            login_frm.Member_rank = 4;
+            login_frm.User_Number = 0;
+
+            user1.Dispose();
+            BOOK_INFO_FORM login_user1 = new BOOK_INFO_FORM(this);
+            //user1.FormBorderStyle = FormBorderStyle.None;
+            login_user1.TopLevel = false;
+            login_user1.TopMost = true;
+            login_user1.MdiParent = this;
+            login_user1.Dock = DockStyle.Fill; //판넬크기에 맞게 사이즈 늘림.
+            panel1.Controls.Add(login_user1);
+            user1 = login_user1;
+
+            user1.Show();
             user2.Hide();
             user3.Hide();
             user4.Hide();
-            Login.Hide();
-            Signup.Show();
+            root2.Hide();
+            root3.Hide();
+            root4.Hide();
+
+            btn.Show();
+            btn1.Hide();
+            btn2.Hide();
+            btn3.Hide();
+            btn5.Hide();
+            btn6.Hide();
+            btn7.Hide();
+
+            MessageBox.Show("로그아웃");
+            lb_Logout.Hide();
+            lb_Login.Show();
+            lb_Signup.Show();
+
         }
         //===============================================================================================
         private void txtbox_Click(Object o, EventArgs e)
@@ -422,6 +462,7 @@ namespace WindowsFormsApp
         {
             e.Graphics.DrawString(lb_Login.Text, lb_Login.Font, new SolidBrush(lb_Login.ForeColor), lb_Login.Left - pictureBox.Left, lb_Login.Top - pictureBox.Top);
             e.Graphics.DrawString(lb_Signup.Text, lb_Login.Font, new SolidBrush(lb_Signup.ForeColor), lb_Signup.Left - pictureBox.Left, lb_Signup.Top - pictureBox.Top);
+            e.Graphics.DrawString(lb_Logout.Text, lb_Logout.Font, new SolidBrush(lb_Logout.ForeColor), lb_Logout.Left - pictureBox.Left, lb_Logout.Top - pictureBox.Top);
         }
 
 

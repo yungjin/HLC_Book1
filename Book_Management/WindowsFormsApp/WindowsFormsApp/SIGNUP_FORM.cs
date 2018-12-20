@@ -20,16 +20,19 @@ namespace WindowsFormsApp
         static ToolStripStatusLabel StripLb;
         StatusStrip statusStrip;
         ///////////////////////////////////
+        public MAIN_FORM main;
 
-        public SIGNUP_FORM()
+        public SIGNUP_FORM(MAIN_FORM main)
         {
             InitializeComponent();
+            this.main = main;
             Load += SIGNUP_FORM_Load;
         }
         TextBox Tb1, Tb2, Tb3, Tb4, Tb5, Tb6, Tb7, Tb8, Tb9 = new TextBox();
         Panel pan1 = new Panel();
         private void SIGNUP_FORM_Load(object sender, EventArgs e)
         {
+            
             FormBorderStyle = FormBorderStyle.None;// 폼 상단 표시줄 제거
 
             this.BackColor = Color.FromArgb(201, 253, 223); //백컬러
@@ -44,9 +47,9 @@ namespace WindowsFormsApp
             ArrayList Tbarray = new ArrayList();
             ArrayList btnArray = new ArrayList();
             lbarray.Add(new LBclass(this, "lb1", "회원가입", 18, 200, 40,200, 10, label_Click));
-            lbarray.Add(new LBclass(this, "lb_ID", "아이디", 10, 150, 20, 60, 60, label_Click));
+            lbarray.Add(new LBclass(this, "lb_ID", "아이디", 10, 150, 20, 20, 60, label_Click));
             lbarray.Add(new LBclass(this, "lb_Pass", "비밀번호", 10, 150, 20, 20, 120, label_Click));
-            lbarray.Add(new LBclass(this, "lb_PassCon", "비밀번호 확인", 10, 50, 20, 20, 180, label_Click));
+            lbarray.Add(new LBclass(this, "lb_PassCon", "비밀번호 확인", 10, 150, 20, 20, 180, label_Click));
             lbarray.Add(new LBclass(this, "lb_Name", "이름", 10, 150, 20, 20, 240, label_Click));
             lbarray.Add(new LBclass(this, "lb_Gender", "성별", 10, 150, 20, 20, 300, label_Click));
             lbarray.Add(new LBclass(this, "lb_Birth", "생일", 10, 150, 20, 20, 360, label_Click));
@@ -97,8 +100,8 @@ namespace WindowsFormsApp
 
             // BTNclass bt1 = new BTNclass(this, "버튼Name", "버튼Text", 가로사이즈, 세로사이즈, 가로포인트, 세로포인트, 버튼클릭이벤트);
 
-            btnArray.Add(new BTNclass(this, "가입", "가입", 100, 50, 100, 580, btn1_Click));
-            btnArray.Add(new BTNclass(this, "닫기", "닫기", 100, 50, 300, 580, btn2_Click));
+            btnArray.Add(new BTNclass(this, "가입", "가입", 100, 50, 200, 580, btn1_Click));
+            //btnArray.Add(new BTNclass(this, "닫기", "닫기", 100, 50, 300, 580, btn2_Click));
 
             for (int i = 0; i < btnArray.Count; i++)
             {
@@ -155,8 +158,7 @@ namespace WindowsFormsApp
 
         private void btn2_Click(object sender, EventArgs e)
         {
-
-            this.Close();
+            
         }
 
         private void Point_Print()
@@ -191,9 +193,24 @@ namespace WindowsFormsApp
         {
             MySql my = new MySql();
             string sql = string.Format("INSERT INTO signup(id,passwod,name,gender,birthday,email,phone_number,address) values ('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}');", ID, Pass, Name, Gender, Birth, email, Phon, addres);
-            
-            if (my.NonQuery(sql)) MessageBox.Show("회원가입 완료!");
-            else MessageBox.Show("가입실패");
+
+            if (my.NonQuery(sql))
+            {
+                MessageBox.Show("회원가입 완료!");
+                
+                this.Hide();
+                main.Login.Show();
+            }
+
+            else
+            {
+                MessageBox.Show("가입실패");
+
+                
+                this.Hide();
+                main.user1.Show();
+            }
+
         }
     }
 }
