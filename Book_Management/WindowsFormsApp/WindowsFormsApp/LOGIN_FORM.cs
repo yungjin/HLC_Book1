@@ -86,19 +86,19 @@ namespace WindowsFormsApp
 
             //=================================================================================================================================================
 
-            
+
             pan1.Height = 600;
             pan1.Width = 500;
             pan1.Location = new Point(470, 120);
             pan1.BackColor = Color.FromArgb(218, 234, 244);
-            
+
 
             Controls.Add(pan1);
             //==================================================================================================================================================
             // BTNclass bt1 = new BTNclass(this, "버튼Name", "버튼Text", 가로사이즈, 세로사이즈, 가로포인트, 세로포인트, 버튼클릭이벤트);
             ArrayList btnArray = new ArrayList();
-            btnArray.Add(new BTNclass(this, "로그인", "로그인", 80, 80, 345, 240, btn1_Click));
-            btnArray.Add(new BTNclass(this, "회원가입", "회원가입", 80, 40, 345, 320, btn2_Click));
+            btnArray.Add(new BTNclass(this, "로그인", "로그인", 100, 80, 345, 240, btn1_Click));
+            btnArray.Add(new BTNclass(this, "회원가입", "회원가입", 100, 40, 345, 320, btn2_Click));
             //btnArray.Add(new BTNclass(this, "뒤로가기", "←", 50, 40, 450, 0, btn3_Click));
 
 
@@ -109,17 +109,21 @@ namespace WindowsFormsApp
 
                 if (btn.Name == "로그인")
                 {
-                    btn.Font = new Font("견명조", 9F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(129)));  // FontStyle.Regular
+                    btn.Font = new Font("견명조", 18F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(129)));  // FontStyle.Regular
                     btn.FlatStyle = FlatStyle.Flat;
-                    btn.ForeColor = Color.LawnGreen;
-                    btn.BackColor = Color.ForestGreen;
+                    btn.ForeColor = Color.White;
+                    btn.BackColor = Color.FromArgb(80, 200, 223);
+                    btn.Region = Region.FromHrgn(COMMON_Create_Ctl.CreateRoundRectRgn(2, 2, btn.Width, btn.Height, 15, 15));
+                    btn.BackColor = Color.FromArgb(114, 241, 168);  // rgb(218,234,244)
                 }
-                else if (btn.Name == "뒤로가기")
+                else if (btn.Name == "회원가입")
                 {
                     btn.Font = new Font("견명조", 15F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(129)));  // FontStyle.Regular
                     btn.FlatStyle = FlatStyle.Flat;
-                    btn.ForeColor = Color.LawnGreen;
-                    btn.BackColor = Color.ForestGreen;
+                    btn.ForeColor = Color.White;
+                    btn.BackColor = Color.FromArgb(80, 200, 223);
+                    btn.Region = Region.FromHrgn(COMMON_Create_Ctl.CreateRoundRectRgn(2, 2, btn.Width, btn.Height, 15, 15));
+                    btn.BackColor = Color.FromArgb(114, 241, 168);  // rgb(218,234,244)
                 }
                 pan1.Controls.Add(btn);
             }
@@ -128,17 +132,17 @@ namespace WindowsFormsApp
 
         private void Tb_click(object sender, EventArgs e)
         {
-            
+
         }
 
         private void label_Click(object sender, EventArgs e)
         {
-            
+
         }
 
         private void btn1_Click(object sender, EventArgs e)
         {
-            
+
             if (Tb1.Text == ID_Select(Tb1.Text) && Tb2.Text == PW_Select(Tb2.Text))
             {
                 MessageBox.Show("로그인 성공");
@@ -155,7 +159,7 @@ namespace WindowsFormsApp
                 }
 
                 this.Hide();
-                if(member_rank == 1)
+                if (member_rank == 1)
                 {
                     form.user1.Show();
                     form.btn1.Show();
@@ -165,7 +169,7 @@ namespace WindowsFormsApp
                     form.Login.Hide();
                     form.Signup.Hide();
 
-                    
+
                 }
                 if (member_rank == 0)
                 {
@@ -188,7 +192,7 @@ namespace WindowsFormsApp
                     form.Login.Hide();
                     form.Signup.Hide();
 
-                    
+
                 }
                 if (member_rank == 4)
                 {
@@ -201,7 +205,7 @@ namespace WindowsFormsApp
                     form.lb_Signup.Hide();
                 }
 
-               
+
 
             }
 
@@ -241,19 +245,19 @@ namespace WindowsFormsApp
         private void btn3_Click(object sender, EventArgs e)
         {
 
-            
+
         }
 
         public void Login_Select(string Idtext)
         {
-            
+
         }
 
         public string ID_Select(string Idtext)
         {
             string i = ".";
             MySql my = new MySql();
-            string  sql = string.Format("select id from signup where id = '{0}';",Idtext);
+            string sql = string.Format("select id from signup where id = '{0}';", Idtext);
             MySqlDataReader sdr = my.Reader(sql);
             while (sdr.Read())
             {

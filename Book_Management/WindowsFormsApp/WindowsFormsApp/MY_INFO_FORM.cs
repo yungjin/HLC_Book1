@@ -26,14 +26,14 @@ namespace WindowsFormsApp
 
             Load += MY_INFO_FORM_Load;
         }
-        
+
         public MY_INFO_FORM(LOGIN_FORM Login)
         {
             this.Login = Login;
         }
         int sX = 1500, sY = 800; // 폼 사이즈 지정.
 
-        
+
 
         ///////// 좌표 체크시 추가 /////////
         static ToolStripStatusLabel StripLb;
@@ -63,7 +63,7 @@ namespace WindowsFormsApp
 
             Login = new LOGIN_FORM();
 
-            
+
 
             COMMON_Create_Ctl comm = new COMMON_Create_Ctl();
             ArrayList lbarray = new ArrayList();
@@ -88,7 +88,7 @@ namespace WindowsFormsApp
             //Tbarray.Add(new TXTBOXclass(this, "Phon", "", 150, 20, 180, 480, Tb_click));
             //Tbarray.Add(new TXTBOXclass(this, "addres", "", 150, 20, 180, 540, Tb_click));
 
-            Tb1 = comm.txtbox(new TXTBOXclass(this, "ID", "", 150, 20, 180, 60-1, Tb_click));
+            Tb1 = comm.txtbox(new TXTBOXclass(this, "ID", "", 150, 20, 180, 60 - 1, Tb_click));
             Tb2 = comm.txtbox(new TXTBOXclass(this, "Pass", "", 150, 20, 180, 120 - 1, Tb_click));
             Tb3 = comm.txtbox(new TXTBOXclass(this, "name", "", 150, 20, 180, 180 - 1, Tb_click));
             Tb4 = comm.txtbox(new TXTBOXclass(this, "Name", "", 150, 20, 180, 240 - 1, Tb_click));
@@ -96,7 +96,7 @@ namespace WindowsFormsApp
             Tb6 = comm.txtbox(new TXTBOXclass(this, "Birth", "", 150, 20, 180, 360 - 1, Tb_click));
             Tb7 = comm.txtbox(new TXTBOXclass(this, "email", "", 150, 20, 180, 420 - 1, Tb_click));
             Tb8 = comm.txtbox(new TXTBOXclass(this, "Phon", "", 150, 20, 180, 480 - 1, Tb_click));
-            
+
 
             pan1.Controls.Add(Tb1);
             pan1.Controls.Add(Tb2);
@@ -106,7 +106,7 @@ namespace WindowsFormsApp
             pan1.Controls.Add(Tb6);
             pan1.Controls.Add(Tb7);
             pan1.Controls.Add(Tb8);
-            
+
 
             //=================================================================================================================================================
 
@@ -182,7 +182,7 @@ namespace WindowsFormsApp
 
             //==================================================================================================================================================
 
-            
+
 
             //==================================================================================================================================================
             //for (int i = 0; i < Tbarray.Count; i++)
@@ -234,7 +234,7 @@ namespace WindowsFormsApp
             {
                 btn3.Show();
                 Tb2.ReadOnly = false;
-                
+
 
                 btnYn = false;
 
@@ -248,7 +248,7 @@ namespace WindowsFormsApp
                 GetUPDATE_Pass(Tb2.Text, Login.User_Number.ToString());
 
                 List_View();
-                
+
                 Tb2.ReadOnly = true;
 
                 btnYn = true;
@@ -260,7 +260,7 @@ namespace WindowsFormsApp
 
         private void btn2_Click(object sender, EventArgs e) //정보수정 버튼 클릭
         {
-            if(btn2.Text == "정보수정")
+            if (btn2.Text == "정보수정")
             {
                 btn3.Show();
                 Tb6.ReadOnly = false;
@@ -271,7 +271,7 @@ namespace WindowsFormsApp
 
                 btn2.Text = "수정완료";
             }
-            else if(btn2.Text == "수정완료")
+            else if (btn2.Text == "수정완료")
             {
                 GetUPDATE(Tb6.Text, Tb7.Text, Tb8.Text, Login.User_Number.ToString());
 
@@ -288,7 +288,7 @@ namespace WindowsFormsApp
 
         private void btn3_Click(object sender, EventArgs e) //취소 버튼 클릭
         {
-            if(!btnYn)
+            if (!btnYn)
             {
 
                 List_View();
@@ -298,6 +298,8 @@ namespace WindowsFormsApp
                 Tb7.ReadOnly = true;
                 Tb8.ReadOnly = true;
 
+                btn2.Text = "정보수정";
+                btn1.Text = "비밀번호 변경";
                 btn3.Hide();
                 btnYn = true;
             }
@@ -335,7 +337,7 @@ namespace WindowsFormsApp
         {
 
             MySql my = new MySql();
-            string sql = string.Format("UPDATE signup set email = '{0}',phone_number = '{1}',address = '{2}' where user_number = {3};", email, Phon, addres,user_number);
+            string sql = string.Format("UPDATE signup set email = '{0}',phone_number = '{1}',address = '{2}' where user_number = {3};", email, Phon, addres, user_number);
             if (my.NonQuery(sql)) MessageBox.Show("수정 완료");
             else MessageBox.Show("수정 실패");
 

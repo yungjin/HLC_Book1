@@ -34,6 +34,7 @@ namespace WindowsFormsApp
         TextBox 책정보검색상자;
         TextBox 간략소개상자;
         ComboBox 콤보박스검색카테고리;
+        ListView 요청입고_리스트뷰;
 
         string new_book_number;
         TextBox 번호값;
@@ -193,7 +194,7 @@ namespace WindowsFormsApp
 
 
             LISTVIEWclass 요청입고_리스트뷰값 = new LISTVIEWclass(this, "요청입고리스트뷰", 700, 650, 775, 105, listView_MouseClick, listview_mousedoubleclick, 6, "", 0, "회원번호", 100, "요청자", 100, "도서명", 300, "저자", 100, "출판사", 100);
-            ListView 요청입고_리스트뷰 = comm.listView(요청입고_리스트뷰값);
+            요청입고_리스트뷰 = comm.listView(요청입고_리스트뷰값);
             요청입고_리스트뷰.Font = new Font("Arial", 15, FontStyle.Bold);
 
             MySql mysql = new MySql();
@@ -250,6 +251,27 @@ namespace WindowsFormsApp
         private void ComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        public void list_Refresh()
+        {
+            요청입고_리스트뷰.Items.Clear();
+
+            MySql mysql = new MySql();
+
+            ArrayList Receiving_equest_arry = mysql.Select(string.Format("select S.user_number, S.name, R.title, R.author, R.publisher from signup S inner join Receiving_equest R on (S.user_number = R.user_number);"));
+            foreach (Hashtable ht in Receiving_equest_arry)
+            {
+                ListViewItem item = new ListViewItem("");
+                item.SubItems.Add(ht["user_number"].ToString());
+                item.SubItems.Add(ht["name"].ToString());
+                item.SubItems.Add(ht["title"].ToString());
+                item.SubItems.Add(ht["author"].ToString());
+                item.SubItems.Add(ht["publisher"].ToString());
+                item.Font = new Font("Arial", 15, FontStyle.Italic);
+
+                요청입고_리스트뷰.Items.Add(item);
+            }
         }
 
 
@@ -392,7 +414,7 @@ namespace WindowsFormsApp
                 {
                     MessageBox.Show("파일 저장 중 오류 발생");
                 }
-                
+
             }
             else
             {

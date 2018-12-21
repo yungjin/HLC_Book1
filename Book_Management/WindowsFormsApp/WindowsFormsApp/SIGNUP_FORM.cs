@@ -15,7 +15,7 @@ namespace WindowsFormsApp
     {
 
         int sX = 1500, sY = 800; // 폼 사이즈 지정.
-       
+
         ///////// 좌표 체크시 추가 /////////
         static ToolStripStatusLabel StripLb;
         StatusStrip statusStrip;
@@ -32,7 +32,7 @@ namespace WindowsFormsApp
         Panel pan1 = new Panel();
         private void SIGNUP_FORM_Load(object sender, EventArgs e)
         {
-            
+
             FormBorderStyle = FormBorderStyle.None;// 폼 상단 표시줄 제거
 
             this.BackColor = Color.FromArgb(201, 253, 223); //백컬러
@@ -46,7 +46,7 @@ namespace WindowsFormsApp
             ArrayList lbarray = new ArrayList();
             ArrayList Tbarray = new ArrayList();
             ArrayList btnArray = new ArrayList();
-            lbarray.Add(new LBclass(this, "lb1", "회원가입", 18, 200, 40,200, 10, label_Click));
+            lbarray.Add(new LBclass(this, "lb1", "회원가입", 18, 200, 40, 200, 10, label_Click));
             lbarray.Add(new LBclass(this, "lb_ID", "아이디", 10, 150, 20, 20, 60, label_Click));
             lbarray.Add(new LBclass(this, "lb_Pass", "비밀번호", 10, 150, 20, 20, 120, label_Click));
             lbarray.Add(new LBclass(this, "lb_PassCon", "비밀번호 확인", 10, 150, 20, 20, 180, label_Click));
@@ -100,7 +100,7 @@ namespace WindowsFormsApp
 
             // BTNclass bt1 = new BTNclass(this, "버튼Name", "버튼Text", 가로사이즈, 세로사이즈, 가로포인트, 세로포인트, 버튼클릭이벤트);
 
-            btnArray.Add(new BTNclass(this, "가입", "가입", 100, 50, 200, 580, btn1_Click));
+            btnArray.Add(new BTNclass(this, "가입", "가 입", 100, 50, 200, 580, btn1_Click));
             //btnArray.Add(new BTNclass(this, "닫기", "닫기", 100, 50, 300, 580, btn2_Click));
 
             for (int i = 0; i < btnArray.Count; i++)
@@ -109,10 +109,12 @@ namespace WindowsFormsApp
 
                 if (btn.Name == "가입")
                 {
-                    btn.Font = new Font("견명조", 9F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(129)));  // FontStyle.Regular
+                    btn.Font = new Font("견명조", 18F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(129)));  // FontStyle.Regular
                     btn.FlatStyle = FlatStyle.Flat;
-                    btn.ForeColor = Color.LawnGreen;
-                    btn.BackColor = Color.ForestGreen;
+                    btn.ForeColor = Color.White;
+                    btn.BackColor = Color.FromArgb(80, 200, 223);
+                    btn.Region = Region.FromHrgn(COMMON_Create_Ctl.CreateRoundRectRgn(2, 2, btn.Width, btn.Height, 15, 15));
+                    btn.BackColor = Color.FromArgb(114, 241, 168);  // rgb(218,234,244)
                 }
                 else if (btn.Name == "닫기")
                 {
@@ -137,19 +139,19 @@ namespace WindowsFormsApp
 
                 pan1.Controls.Add(lb);
             }
-            
+
         }
 
         private void Tb_click(object sender, EventArgs e)
         {
-            
+
         }
 
         private void btn1_Click(object sender, EventArgs e)
         {
-            if(Tb2.Text == Tb3.Text)
+            if (Tb2.Text == Tb3.Text)
             {
-                
+
                 GetInsert(Tb1.Text, Tb2.Text, Tb4.Text, Tb5.Text, Tb6.Text, Tb7.Text, Tb8.Text, Tb9.Text);
             }
             else MessageBox.Show("비밀번호 중복 확인");
@@ -158,7 +160,7 @@ namespace WindowsFormsApp
 
         private void btn2_Click(object sender, EventArgs e)
         {
-            
+
         }
 
         private void Point_Print()
@@ -197,7 +199,7 @@ namespace WindowsFormsApp
             if (my.NonQuery(sql))
             {
                 MessageBox.Show("회원가입 완료!");
-                
+
                 this.Hide();
                 main.Login.Show();
             }
@@ -206,7 +208,7 @@ namespace WindowsFormsApp
             {
                 MessageBox.Show("가입실패");
 
-                
+
                 this.Hide();
                 main.user1.Show();
             }
