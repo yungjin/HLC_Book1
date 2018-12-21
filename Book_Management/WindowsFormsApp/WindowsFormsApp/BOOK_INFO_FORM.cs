@@ -551,7 +551,7 @@ namespace WindowsFormsApp
             //MessageBox.Show("동작확인 : btn_Click");
 
             Button button = (Button)o;
-
+            
 
             /// 입고요청 버튼 설정. 
             if (button.Name == "입고버튼")

@@ -51,7 +51,7 @@ namespace WindowsFormsApp
 
 
 
-        int sX = 1500, sY = 950; // 폼 사이즈 지정.
+        int sX = 1500, sY = 930; // 폼 사이즈 지정.
 
         ///////// 좌표 체크시 추가 /////////
         static ToolStripStatusLabel StripLb;
@@ -85,19 +85,19 @@ namespace WindowsFormsApp
             COMMON_Create_Ctl comm_create_ctl = new COMMON_Create_Ctl();
 
             // 생성할 패널 정보 객체 생성.
-            PANELclass pn1 = new PANELclass(this, "panel1", "panel_main", 1500, 780, 0, 165, panel_MouseMove);
+            PANELclass pn1 = new PANELclass(this, "panel1", "panel_main", 1500, 780, 0, 145, panel_MouseMove);
 
             panel1 = comm_create_ctl.panel(pn1);  // ex) 판넬만들기 :  create_ctl.CTL명(CTL값);           
             Controls.Add(panel1);  // 원하는 컨트롤에 추가함.
 
-            BTNclass bt1 = new BTNclass(this, "유저1", "도서정보", 285, 100, 0, 0, btn1_Click);
-            BTNclass bt2 = new BTNclass(this, "유저2", "대여목록", 285, 100, 285, 0, btn2_Click);
-            BTNclass bt3 = new BTNclass(this, "유저3", "나의정보", 285, 100, 570, 0, btn3_Click);
-            BTNclass bt4 = new BTNclass(this, "유저4", "위치MAP", 285, 100, 855, 0, btn4_Click);
+            BTNclass bt1 = new BTNclass(this, "유저1", "도서정보", 285, 145, 0, 0, btn1_Click);
+            BTNclass bt2 = new BTNclass(this, "유저2", "대여목록", 285, 145, 285, 0, btn2_Click);
+            BTNclass bt3 = new BTNclass(this, "유저3", "나의정보", 285, 145, 570, 0, btn3_Click);
+            BTNclass bt4 = new BTNclass(this, "유저4", "위치정보", 285, 145, 855, 0, btn4_Click);
 
-            BTNclass bt6 = new BTNclass(this, "관리2", "회원정보", 285, 100, 285, 0, btn6_Click);
-            BTNclass bt7 = new BTNclass(this, "관리3", "도서관리", 285, 100, 570, 0, btn7_Click);
-            BTNclass bt8 = new BTNclass(this, "관리4", "연체관리", 285, 100, 855, 0, btn8_Click);
+            BTNclass bt6 = new BTNclass(this, "관리2", "회원정보", 285, 145, 285, 0, btn6_Click);
+            BTNclass bt7 = new BTNclass(this, "관리3", "도서관리", 285, 145, 570, 0, btn7_Click);
+            BTNclass bt8 = new BTNclass(this, "관리4", "연체관리", 285, 145, 855, 0, btn8_Click);
 
             btn = comm_create_ctl.btn(bt1);
             ButtonConfig(btn, "book_info");
@@ -163,9 +163,9 @@ namespace WindowsFormsApp
 
             //라벨 ==============================================================================================================================================
             ArrayList lbarray = new ArrayList();
-            lbarray.Add(new LBclass(this, "Login", "Login", 15, 100, 30, 1500 - 100, 10, label_Click));
-            lbarray.Add(new LBclass(this, "Signup", "Signup", 15, 100, 30, 1500 - 100, 40, label2_Click));
-            lbarray.Add(new LBclass(this, "Logout", "Logout", 15, 100, 30, 1500 - 100, 10, label3_Click));
+            lbarray.Add(new LBclass(this, "Login", "Login   /", 15, 90, 30, 1500 - 190, 10, label_Click));
+            lbarray.Add(new LBclass(this, "Signup", "Signup", 15, 90, 30, 1500 - 100, 10, label2_Click));
+            lbarray.Add(new LBclass(this, "Logout", "Logout", 15, 90, 30, 1500 - 100, 10, label3_Click));
 
 
             for (int i = 0; i < lbarray.Count; i++)
@@ -282,7 +282,7 @@ namespace WindowsFormsApp
 
             pictureBox.Image = (Bitmap)WindowsFormsApp.Properties.Resources.ResourceManager.GetObject("logo");
             pictureBox.Location = new Point(1500 - 360, 0);
-            pictureBox.Size = new Size(360, 100);
+            pictureBox.Size = new Size(360, 145);
             pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox.BackColor = Color.FromArgb(201, 253, 223);
             //pictureBox.Paint += new PaintEventHandler(this.pictureBox1_Paint);
@@ -291,7 +291,7 @@ namespace WindowsFormsApp
 
         private void ButtonConfig(Button btn, string image_name)
         {
-            btn.Font = new Font("신명조", 30.0F, FontStyle.Bold);
+            btn.Font = new Font("신명조", 35.0F, FontStyle.Bold);
             btn.ForeColor = Color.White;
             Image btn_myImage;
             btn_myImage = (Image)Properties.Resources.ResourceManager.GetObject(image_name);
@@ -327,13 +327,13 @@ namespace WindowsFormsApp
 
         private void btn2_Click(Object o, EventArgs e)
         {
-
             user2.Show();
             user1.Hide();
             user3.Hide();
             user4.Hide();
             Login.Hide();
             Signup.Hide();
+            user2.List_Views();
         }
 
         private void btn3_Click(Object o, EventArgs e)

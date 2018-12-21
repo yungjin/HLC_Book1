@@ -102,14 +102,13 @@ namespace WindowsFormsApp
         private void btn1_Click(object sender, EventArgs e)
         {
             GetUpdate();
-            lv.Items.Clear();
             List_Views();
         }
         // 리스트뷰 ============================================================================================================================================
-        private void List_Views() 
+        public void List_Views() 
         {
 
-            
+            lv.Items.Clear();
             ArrayList arry = GetSelect();
             foreach (Hashtable ht in arry)
             {
