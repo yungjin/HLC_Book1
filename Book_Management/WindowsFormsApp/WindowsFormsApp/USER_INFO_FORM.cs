@@ -34,6 +34,9 @@ namespace WindowsFormsApp
         string search_category = "";
         TextBox 회원정보검색상자;
         ListView 회원정보검색_리스트뷰;
+        ListView 대여목록_리스트뷰;
+        MySql mysql;
+        string sql;
 
         public USER_INFO_FORM()
         {
@@ -167,22 +170,22 @@ namespace WindowsFormsApp
 
             // 리스트뷰 - 대여목록
             LISTVIEWclass 대여목록_리스트뷰값 = new LISTVIEWclass(this, "대여목록_ListVIew", 700, 350, 20, 407, listView_MouseClick, listview_mousedoubleclick, 5, "", 0, "도서번호", 100, "책 이름", 300, "저자", 150, "출판사", 150);
-            ListView 대여목록_리스트뷰 = comm.listView(대여목록_리스트뷰값);
+            대여목록_리스트뷰 = comm.listView(대여목록_리스트뷰값);
             대여목록_리스트뷰.Font = new Font("Arial", 14, FontStyle.Bold);
 
-            MySql mysql = new MySql();
-            string sql = string.Format("select * from book_info;");
-            ArrayList bookinfoSearch_arry2 = mysql.Select(sql);
-            foreach (Hashtable ht in bookinfoSearch_arry2)
-            {
-                ListViewItem item = new ListViewItem("");
-                item.SubItems.Add(ht["book_number"].ToString());
-                item.SubItems.Add(ht["title"].ToString());
-                item.SubItems.Add(ht["author"].ToString());
-                item.SubItems.Add(ht["publisher"].ToString());
-                item.Font = new Font("Arial", 14, FontStyle.Italic);
-                대여목록_리스트뷰.Items.Add(item);
-            }
+            //mysql = new MySql();
+            //string sql = string.Format("select * from book_info;");
+            //ArrayList bookinfoSearch_arry2 = mysql.Select(sql);
+            //foreach (Hashtable ht in bookinfoSearch_arry2)
+            //{
+            //    ListViewItem item = new ListViewItem("");
+            //    item.SubItems.Add(ht["book_number"].ToString());
+            //    item.SubItems.Add(ht["title"].ToString());
+            //    item.SubItems.Add(ht["author"].ToString());
+            //    item.SubItems.Add(ht["publisher"].ToString());
+            //    item.Font = new Font("Arial", 14, FontStyle.Italic);
+            //    대여목록_리스트뷰.Items.Add(item);
+            //}
 
             Controls.Add(대여목록_리스트뷰);
 
@@ -271,6 +274,21 @@ namespace WindowsFormsApp
                 이름값.Text = ht["name"].ToString();
                 ID값.Text = ht["id"].ToString();
                 블랙리스트값.Text = ht["blacklist"].ToString();
+            }
+
+            대여목록_리스트뷰.Items.Clear();
+            mysql = new MySql();
+            sql = string.Format("select * from book_info where book_number in (select book_number from book_rental where user_number = {0});", user_number);
+            ArrayList bookinfoSearch_arry2 = mysql.Select(sql);
+            foreach (Hashtable ht in bookinfoSearch_arry2)
+            {
+                ListViewItem item = new ListViewItem("");
+                item.SubItems.Add(ht["book_number"].ToString());
+                item.SubItems.Add(ht["title"].ToString());
+                item.SubItems.Add(ht["author"].ToString());
+                item.SubItems.Add(ht["publisher"].ToString());
+                item.Font = new Font("Arial", 14, FontStyle.Italic);
+                대여목록_리스트뷰.Items.Add(item);
             }
         }
 

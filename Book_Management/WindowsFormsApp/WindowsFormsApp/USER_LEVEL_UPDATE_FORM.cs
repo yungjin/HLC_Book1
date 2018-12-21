@@ -239,14 +239,23 @@ namespace WindowsFormsApp
 
             if (button.Name == "설정완료")
             {
+                if(관리자라디오버튼.Checked == false && 회원라디오버튼.Checked == false)
+                {
+                    MessageBox.Show("회원의 권한을 선택해주세요");
+                }
+
                 MessageBox.Show("설정완료");
                 if (관리자라디오버튼.Checked == true)
                 {
                     MessageBox.Show("관리자 권한 최종 선택");
+                    MySql mysql = new MySql();                   
+                    mysql.NonQuery_INSERT(string.Format("update signup set member_rank = 0 where user_number = {0};", 회원번호Temp값));
                 }
                 else if (회원라디오버튼.Checked == true)
                 {
                     MessageBox.Show("회원 권한 최종 선택");
+                    MySql mysql = new MySql();  
+                    mysql.NonQuery_INSERT(string.Format("update signup set member_rank = 1 where user_number = {0};", 회원번호Temp값));
                 }
 
             }
