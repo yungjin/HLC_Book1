@@ -117,8 +117,8 @@ namespace WindowsFormsApp
                 item.SubItems.Add(ht["저자"].ToString());
                 item.SubItems.Add(ht["출판사"].ToString());
                 item.SubItems.Add(ht["대여일"].ToString().Substring(0, 10));
-                item.SubItems.Add(ht["반납일"].ToString().Substring(0, 10));
-                item.SubItems.Add(ht["연체일"].ToString().Substring(0, 10));
+                item.SubItems.Add(ht["반납일"].ToString().Substring(0, 10));             
+                item.SubItems.Add(ht["연체일"].ToString());                
                 item.SubItems.Add(ht["상태"].ToString());
                 lv.Items.Add(item);
             }
@@ -187,11 +187,14 @@ namespace WindowsFormsApp
         {
             
             MySql mysql = new MySql();
-            string sql = string.Format("update book_rental set rental_status = 2 WHERE rental_number = {0};", no);
+            string sql = string.Format("update book_rental set rental_status = 2 WHERE rental_number = {0};", no );
             bool status = mysql.NonQuery_INSERT(sql);
 
             if (status)
             {
+                mysql = new MySql();
+                sql = string.Format("update book_info set availability = '가능' where book_number in (select book_number from book_rental where rental_status = 2);");
+                status = mysql.NonQuery_INSERT(sql);
                 MessageBox.Show("반납성공");
             }
             else

@@ -52,15 +52,14 @@ namespace WindowsFormsApp
             Point_Print(); //좌표 
             //=============
             RENTAL1 = new RENTAL_INFO_FORM(this);
-
             MYinfo = new MY_INFO_FORM(this);
             //=============
             ClientSize = new Size(sX, sY);  // 폼 사이즈 지정.
             //라벨 ==============================================================================================================================================
             ArrayList lbarray = new ArrayList();
-            lbarray.Add(new LBclass(this, "lb_Login", "로그인", 20, 150, 50, 180, 50, label_Click));
-            lbarray.Add(new LBclass(this, "lb_ID", "아이디", 10, 80, 20, 80, 250, label_Click));
-            lbarray.Add(new LBclass(this, "lb_Pass", "비밀번호", 10, 80, 20, 80, 300, label_Click));
+            lbarray.Add(new LBclass(this, "lb_Login", "로그인", 20, 150, 50, 180, 80-20, label_Click));
+            lbarray.Add(new LBclass(this, "lb_ID", "아이디", 10, 80, 20, 80, 250-50, label_Click));
+            lbarray.Add(new LBclass(this, "lb_Pass", "비밀번호", 10, 80, 20, 80, 300-50, label_Click));
 
             for (int i = 0; i < lbarray.Count; i++)
             {
@@ -69,6 +68,7 @@ namespace WindowsFormsApp
 
                 if (lb.Name == "lb_Login")
                 {
+                    lb.ForeColor = Color.Green;
                     lb.Font = new Font("견명조", 32F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(129)));
                 }
 
@@ -78,8 +78,8 @@ namespace WindowsFormsApp
 
 
 
-            Tb1 = comm.txtbox(new TXTBOXclass(this, "ID", "", 150, 20, 175, 245, Tb_click));
-            Tb2 = comm.txtbox(new TXTBOXclass(this, "Pass", "", 150, 20, 175, 295, Tb_click));
+            Tb1 = comm.txtbox(new TXTBOXclass(this, "ID", "", 150, 20, 175, 245-50, Tb_click));
+            Tb2 = comm.txtbox(new TXTBOXclass(this, "Pass", "", 150, 20, 175, 295-50, Tb_click));
             pan1.Controls.Add(Tb1);
             pan1.Controls.Add(Tb2);
 
@@ -87,7 +87,7 @@ namespace WindowsFormsApp
             //=================================================================================================================================================
 
 
-            pan1.Height = 600;
+            pan1.Height = 380;
             pan1.Width = 500;
             pan1.Location = new Point(470, 120);
             pan1.BackColor = Color.FromArgb(218, 234, 244);
@@ -97,8 +97,8 @@ namespace WindowsFormsApp
             //==================================================================================================================================================
             // BTNclass bt1 = new BTNclass(this, "버튼Name", "버튼Text", 가로사이즈, 세로사이즈, 가로포인트, 세로포인트, 버튼클릭이벤트);
             ArrayList btnArray = new ArrayList();
-            btnArray.Add(new BTNclass(this, "로그인", "로그인", 100, 80, 345, 240, btn1_Click));
-            btnArray.Add(new BTNclass(this, "회원가입", "회원가입", 100, 40, 345, 320, btn2_Click));
+            btnArray.Add(new BTNclass(this, "로그인", "로그인", 100, 80, 345, 240-50, btn1_Click));
+            btnArray.Add(new BTNclass(this, "회원가입", "회원가입", 100, 40, 345, 320-50, btn2_Click));
             //btnArray.Add(new BTNclass(this, "뒤로가기", "←", 50, 40, 450, 0, btn3_Click));
 
 

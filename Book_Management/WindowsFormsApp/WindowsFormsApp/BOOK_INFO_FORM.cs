@@ -26,6 +26,7 @@ namespace WindowsFormsApp
         static ToolStripStatusLabel StripLb;
         StatusStrip statusStrip;
         ///////////////////////////////////
+        LOGIN_FORM login_frm;
 
         COMMON_Create_Ctl comm = new COMMON_Create_Ctl();
 
@@ -63,13 +64,13 @@ namespace WindowsFormsApp
         public BOOK_INFO_FORM(MAIN_FORM form)
         {
             InitializeComponent();
-
+            this.form = form;
             Load += BOOK_INFO_FORM_Load;
         }
-
+        
         private void BOOK_INFO_FORM_Load(object sender, EventArgs e)
         {
-            LOGIN_FORM login_frm = new LOGIN_FORM(form);
+            login_frm = new LOGIN_FORM(form);
 
             if (login_frm.Member_rank == 1)
             {
@@ -189,6 +190,7 @@ namespace WindowsFormsApp
                 else if (admin && label.Name == "대여가능여부")
                 {
                     label.Font = new Font(label.Font.Name, 20, FontStyle.Bold);
+
                 }
                 else if (admin && label.Name == "대여자")
                 {
@@ -552,14 +554,42 @@ namespace WindowsFormsApp
 
             Button button = (Button)o;
             
+            
+
+            if(button.Name == "대여버튼")
+            {
+                if (login_frm.Member_rank == 4)
+                {
+                    MessageBox.Show("로그인이 필요한 서비스입니다.");
+                    this.Hide();
+                    form.Login.Show();
+                }
+                else
+                {
+                    if (대여가능여부값.Text == "가능")
+                    {
+                        GetInsert();
+                    }
+                    else MessageBox.Show("대여불가 상태입니다.");
+                }
+            }
 
             /// 입고요청 버튼 설정. 
             if (button.Name == "입고버튼")
             {
-                MessageBox.Show("입고버튼");
-                REQUEST_BOOK_FORM REQUEST_FORM = new REQUEST_BOOK_FORM();
-                REQUEST_FORM.StartPosition = FormStartPosition.CenterParent;
-                REQUEST_FORM.ShowDialog();
+                if(login_frm.Member_rank == 4)
+                {
+                    MessageBox.Show("로그인이 필요한 서비스입니다.");
+                    this.Hide();
+                    form.Login.Show();
+                }
+                else
+                {
+                    REQUEST_BOOK_FORM REQUEST_FORM = new REQUEST_BOOK_FORM();
+                    REQUEST_FORM.StartPosition = FormStartPosition.CenterParent;
+                    REQUEST_FORM.ShowDialog();
+                }
+                
             }
 
             /// 검색버튼 클릭 시 리스트 뷰 넣는 부분 
@@ -652,7 +682,7 @@ namespace WindowsFormsApp
                     출판사값.Text = ht["publisher"].ToString();
                     장르값.Text = ht["genre"].ToString();
                     도서위치값.Text = ht["book_location"].ToString();
-                    책이미지.ImageLocation = "http://ljh5432.iptime.org:81/ImageCollection/" + ht["image_location"].ToString();
+                    책이미지.ImageLocation = ht["image_location"].ToString();
                     간략소개상자.Text = ht["brief_introduction"].ToString();
 
                 }
@@ -710,6 +740,25 @@ namespace WindowsFormsApp
 
                 Controls.Add(책정보검색_리스트뷰);
             }
+        }
+        public void GetInsert()
+        {
+            MySql my = new MySql();
+            string sql = string.Format("INSERT INTO book_rental(book_number, user_number) VALUES({0}, {1}); update book_info set availability = '불가' where book_number = {0};", 번호값.Text, login_frm.User_Number.ToString());
+                                        
+
+            if (my.NonQuery(sql))
+            {
+                MessageBox.Show("대여 완료!");
+
+            }
+
+            else
+            {
+                MessageBox.Show("대여 실패!");
+            }
+
+
         }
 
         private void label_Click(Object o, EventArgs e)
