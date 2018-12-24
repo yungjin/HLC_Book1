@@ -46,7 +46,7 @@ namespace WindowsFormsApp
             Login = new LOGIN_FORM();
 
             //this.Region = Region.FromHrgn(COMMON_Create_Ctl.CreateRoundRectRgn(2, 2, this.Width, this.Height, 15, 15));
-            Point_Print(); //좌표 
+            //Point_Print(); //좌표 
             ClientSize = new Size(sX, sY);  // 폼 사이즈 지정.
             comm = new COMMON_Create_Ctl();
             comm.delay_rental_check();

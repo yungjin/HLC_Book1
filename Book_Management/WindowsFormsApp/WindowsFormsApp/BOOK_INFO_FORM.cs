@@ -98,7 +98,7 @@ namespace WindowsFormsApp
             ClientSize = new Size(sX, sY);  // 폼 사이즈 지정.
 
             /// 좌표 체크시 추가 ///
-            Point_Print();
+            //Point_Print();
 
             COMMON_Create_Ctl create_ctl = new COMMON_Create_Ctl();
 
@@ -485,7 +485,7 @@ namespace WindowsFormsApp
         // 리스트뷰 더블클릭
         private void listview_mousedoubleclick(object sender, MouseEventArgs e)
         {
-            MessageBox.Show("동작확인 : listview_mousedoubleclick");
+           // MessageBox.Show("동작확인 : listview_mousedoubleclick");
 
             int index;
             index = 책정보검색_리스트뷰.FocusedItem.Index;  // 선택돈 아이템 인덱스 번호 얻기
@@ -564,6 +564,7 @@ namespace WindowsFormsApp
                 if (login_frm.Member_rank == 4)
                 {
                     Login_ck = new Login_Check(this);
+                    Login_ck.StartPosition = FormStartPosition.CenterParent;
                     Login_ck.ShowDialog();
                     this.Hide();
                     form.Login.Show();
@@ -584,6 +585,7 @@ namespace WindowsFormsApp
                 if(login_frm.Member_rank == 4)
                 {
                     Login_ck = new Login_Check(this);
+                    Login_ck.StartPosition = FormStartPosition.CenterParent;
                     Login_ck.ShowDialog();
                     this.Hide();
                     form.Login.Show();
@@ -654,7 +656,7 @@ namespace WindowsFormsApp
             }
             else if (button.Name == "수정완료버튼")
             {
-                MessageBox.Show("수정완료");
+               // MessageBox.Show("수정완료");
 
 
                 if (번호값.Text == "번호값" || 텍스트박스_제목값.Text == "" || 텍스트박스_저자값.Text == "" || 텍스트박스_출판사값.Text == "" || 텍스트박스_장르값.Text == "" || 텍스트박스_도서위치값.Text == "" || 간략소개상자.Text == "")
