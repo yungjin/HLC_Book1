@@ -54,7 +54,7 @@ namespace WindowsFormsApp
             this.BackColor = Color.FromArgb(201, 253, 223); //백컬러
             //리스트뷰===============================================================================================================================================
 
-            lv_value = new LISTVIEWclass(this, "ListView1", 1300, 600, 100, 50, listView_MouseClick, listview_mousedoubleclick, 7, "대여번호", 100, "도서명", 200, "저자", 200, "출판사", 200, "대여일", 200, "반납일", 200, "연체일", 200, "상태", 100);
+            lv_value = new LISTVIEWclass(this, "ListView1", 1300, 600, 100, 50, listView_MouseClick, listview_mousedoubleclick, 8, "대여번호", 100, "도서명", 260, "저자", 158, "출판사", 180, "대여일", 200, "반납일", 200, "연체일", 100, "상태", 100);
             lv = comm.listView(lv_value);
             Controls.Add(lv);
             lv.Font = new Font("Arial", 18, FontStyle.Bold);
