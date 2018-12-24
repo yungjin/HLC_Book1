@@ -68,6 +68,8 @@ namespace WindowsFormsApp
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            this.FormBorderStyle = FormBorderStyle.FixedSingle;
+
             //=======================================================================================================
             user1 = new BOOK_INFO_FORM(this);
             login_frm = new LOGIN_FORM(this);
