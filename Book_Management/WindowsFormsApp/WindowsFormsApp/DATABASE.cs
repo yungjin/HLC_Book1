@@ -97,8 +97,16 @@ namespace WindowsFormsApp
                 }
                 else
                 {
-                    //MessageBox.Show("conn 실패");
-                    return null;
+                    try { 
+                        MessageBox.Show("conn 실패");
+                        MySqlCommand comm = new MySqlCommand(sql, conn);
+                        return comm.ExecuteReader();
+                    }
+                    catch
+                    {
+                        return null;
+                    }
+                    
                 }
             }
             catch

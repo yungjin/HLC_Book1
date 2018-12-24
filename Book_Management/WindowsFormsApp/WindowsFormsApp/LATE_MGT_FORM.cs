@@ -26,6 +26,7 @@ namespace WindowsFormsApp
         public static string _Slected_File_RootPath;
         PictureBox 책이미지;
         TextBox 텍스트박스;
+        ListView 연체정보리스트;
 
         public LATE_MGT_FORM()
         {
@@ -66,13 +67,19 @@ namespace WindowsFormsApp
             COMBOBOXclass combobox1 = new COMBOBOXclass(this, "ComboBox1", 100, 100, 721, 12, ComboBox_SelectedIndexChanged, 5, "test1", "test2", "test3", "test4", "test5");
 
 
+            BTNclass 연체정보리플레시버튼값 = new BTNclass(this, "리플레시버튼", "Refresh", 150, 50, 1285, 70, btn_Click);
+            Button 연체정보리플레시버튼 = comm.btn(연체정보리플레시버튼값);
+            연체정보리플레시버튼.Font = new Font("신명조", 20, FontStyle.Bold);
+            Controls.Add(연체정보리플레시버튼);
+
+
             LBclass 연체정보라벨값 = new LBclass(this, "연체정보라벨", "연체자 정보", 30, 250, 50, 30, 50, label_Click);
             Label 연체정보라벨 = comm.lb(연체정보라벨값);
             Controls.Add(연체정보라벨);
 
 
             LISTVIEWclass 연체정보리스트값 = new LISTVIEWclass(this, "연체정보리스트", 1400, 600, 38, 130, listview_mousedoubleclick, listview_mousedoubleclick, 8, "", 0, "회원번호", 200, "연락처", 200, "이름", 200, "도서명", 200, "도서번호", 200, "대여일", 200, "연체일", 200);
-            ListView 연체정보리스트 = comm.listView(연체정보리스트값);
+            연체정보리스트 = comm.listView(연체정보리스트값);
             연체정보리스트.Font = new Font("신명조", 24, FontStyle.Bold);
 
             연체정보리스트.OwnerDraw = true;
@@ -108,6 +115,32 @@ namespace WindowsFormsApp
 
         }
 
+        public void Refresh_ListView()
+        {
+            연체정보리스트.Items.Clear();
+
+            MySql mysql = new MySql();
+            ArrayList arry = mysql.Select("select S.user_number, S.phone_number, S.name, I.title, I.book_number, R.rental_day, TO_DAYS(now()) - TO_DAYS(R.return_schedule) 연체일 from book_info as I inner join book_rental as R on (I.book_number = R.book_number and TO_DAYS(now()) - TO_DAYS(R.return_schedule) > 0 and R.rental_status <> 2) inner join signup as S on (S.user_number = R.user_number);");
+            foreach (Hashtable ht in arry)
+            {
+                ListViewItem item = new ListViewItem("");
+                item.SubItems.Add(ht["user_number"].ToString());
+                item.SubItems.Add(ht["phone_number"].ToString());
+                item.SubItems.Add(ht["name"].ToString());
+                item.SubItems.Add(ht["title"].ToString());
+                item.SubItems.Add(ht["book_number"].ToString());
+                item.SubItems.Add(ht["rental_day"].ToString());
+                item.SubItems.Add(ht["연체일"].ToString());
+
+                연체정보리스트.Items.Add(item);
+
+                for (int i = 0; i < item.SubItems.Count; i++)
+                {
+                    item.SubItems[i].Font = new Font("Arial", 14, FontStyle.Italic);
+                }
+            }
+        }
+
 
         private void listview_mousedoubleclick(object sender, MouseEventArgs e)
         {
@@ -128,15 +161,11 @@ namespace WindowsFormsApp
         {
             MessageBox.Show("동작확인 : btn_Click");
 
-            Button button = (Button)o;
+            Button button = (Button)o;           
 
-            if (button.Name == "등록버튼")
+            if(button.Name == "연체정보라벨")
             {
-                MessageBox.Show("등록버튼");
-            }
-            else if (button.Name == "업로드버튼")
-            {
-                Image_Select();
+                Refresh_ListView();
             }
         }
 
