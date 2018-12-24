@@ -81,7 +81,7 @@ namespace WindowsFormsApp
             this.IsMdiContainer = true;     // MDI 설정.
 
             //좌표 체크시 추가  
-            Point_Print();
+            //Point_Print();
 
             // 컨트롤 객체생성. 
             COMMON_Create_Ctl comm_create_ctl = new COMMON_Create_Ctl();
