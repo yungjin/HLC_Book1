@@ -107,7 +107,7 @@ namespace WindowsFormsApp
             // LBclass lb1 = new LBclass(this, "라벨Name", "라벨Text", 라벨Font사이즈, 가로사이즈, 세로사이즈, 가로포인트, 세로포인트, 라벨클릭이벤트);
             LBclass lb1 = new LBclass(this, "label1", "label_name~", 24, 100, 100, 10, 10, label_Click);
             // PANELclass pn1 = new PANELclass(this, "패널Name", "패널Text", 가로사이즈, 세로사이즈, 가로포인트, 세로포인트, 패널마우스이동이벤트);
-            PANELclass pn1 = new PANELclass(this, "panel1", "panel_txt~", 200, 200, 100, 100, panel_MouseMove);
+            PANELclass pn1 = new PANELclass(this, "panel1", "panel_txt~", 200, 200, 100, 100);
             // TABCTLclass tabctl = new TABCTLclass(this, "탭컨트롤Name", "탭컨트롤Text", 가로사이즈, 세로사이즈, 가로포인트, 세로포인트, 탭높이, 탭컨트롤마우스이동이벤트);
             TABCTLclass tabctl = new TABCTLclass(this, "tabctl1", "tabctl1~", 450, 160, 7, 313, 30, tabctl_MouseMove);
             // TABPAGEclass tabpg1 = new TABPAGEclass(this, "탭페이지Name", "탭페이지Text", 가로사이즈, 세로사이즈, 가로포인트, 세로포인트, 탭페이지마우스이동이벤트);
@@ -122,13 +122,13 @@ namespace WindowsFormsApp
             if (user)
             {
                 // 책정보패널
-                PANELclass 책정보패널값 = new PANELclass(this, "책정보패널", "책정보패널", 550, 600, 10, 10, panel_MouseMove);
+                PANELclass 책정보패널값 = new PANELclass(this, "책정보패널", "책정보패널", 550, 600, 10, 10);
                 책정보패널 = comm.panel(책정보패널값);
             }
             else
             {
                 // 책정보패널
-                PANELclass 책정보패널값 = new PANELclass(this, "책정보패널", "책정보패널", 550, 750, 10, 10, panel_MouseMove);
+                PANELclass 책정보패널값 = new PANELclass(this, "책정보패널", "책정보패널", 550, 750, 10, 10);
                 책정보패널 = comm.panel(책정보패널값);
             }
 
@@ -296,7 +296,7 @@ namespace WindowsFormsApp
             if (user)
             {
                 // 입고요청패널
-                PANELclass 입고요청패널값 = new PANELclass(this, "입고요청패널", "입고요청패널", 550, 160, 10, 610, panel_MouseMove);
+                PANELclass 입고요청패널값 = new PANELclass(this, "입고요청패널", "입고요청패널", 550, 160, 10, 610);
                 Panel 입고요청패널 = comm.panel(입고요청패널값);
 
                 //(좌측상단여백, 우측상단여백, 컨트롤 넓이, 컨트롤 높이, 가로 모서리 원기울기, 세로 모서리 원기울기)
