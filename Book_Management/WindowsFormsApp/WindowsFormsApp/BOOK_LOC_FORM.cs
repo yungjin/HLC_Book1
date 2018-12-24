@@ -27,6 +27,7 @@ namespace WindowsFormsApp
 
         private void BOOK_LOC_FORM_Load(object sender, EventArgs e)
         {
+            this.BackColor = Color.FromArgb(201, 253, 223); //백컬러
             ClientSize = new Size(sX, sY);  // 폼 사이즈 지정.
             FormBorderStyle = FormBorderStyle.None;// 폼 상단 표시줄 제거
             Mape_Load(); //맵 이미지 로드
@@ -37,8 +38,8 @@ namespace WindowsFormsApp
             pictureBox = new PictureBox();
 
             pictureBox.Image = (Bitmap)WindowsFormsApp.Properties.Resources.ResourceManager.GetObject("Map");
-            pictureBox.Location = new Point(1, 1);
-            pictureBox.Size = new Size(1500, 800);
+            pictureBox.Location = new Point(50, 25);
+            pictureBox.Size = new Size(1400, 700);
             pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
             //pictureBox.Paint += new PaintEventHandler(this.pictureBox1_Paint);
             Controls.Add(pictureBox);

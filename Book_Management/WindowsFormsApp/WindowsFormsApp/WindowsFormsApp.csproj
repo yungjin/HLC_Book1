@@ -71,11 +71,23 @@
     <Compile Include="DETAIL_BOOK_FORM.Designer.cs">
       <DependentUpon>DETAIL_BOOK_FORM.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
     <Compile Include="LATE_MGT_FORM.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="LATE_MGT_FORM.Designer.cs">
       <DependentUpon>LATE_MGT_FORM.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Login_Check.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Login_Check.Designer.cs">
+      <DependentUpon>Login_Check.cs</DependentUpon>
     </Compile>
     <Compile Include="LOGIN_FORM.cs">
       <SubType>Form</SubType>
@@ -88,6 +100,12 @@
     </Compile>
     <Compile Include="MY_INFO_FORM.Designer.cs">
       <DependentUpon>MY_INFO_FORM.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Passwod_Check.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Passwod_Check.Designer.cs">
+      <DependentUpon>Passwod_Check.cs</DependentUpon>
     </Compile>
     <Compile Include="RENTAL_INFO_FORM.cs">
       <SubType>Form</SubType>
@@ -157,6 +175,9 @@
     <Compile Include="USER_LEVEL_UPDATE_FORM.Designer.cs">
       <DependentUpon>USER_LEVEL_UPDATE_FORM.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MAIN_FORM.resx">
       <DependentUpon>MAIN_FORM.cs</DependentUpon>
     </EmbeddedResource>
@@ -215,10 +236,10 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Map.png" />
+    <None Include="Resources\logo.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\logo.png" />
+    <None Include="Resources\Map.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

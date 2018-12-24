@@ -19,6 +19,8 @@ namespace WindowsFormsApp
         private int status;
         private int LoginNumber;
         public LOGIN_FORM Login;
+        public bool YN;
+        public Passwod_Check p_Check;
 
         public MY_INFO_FORM()
         {
@@ -60,9 +62,8 @@ namespace WindowsFormsApp
 
             /// 좌표 체크시 추가 ///
             Point_Print();
-
             Login = new LOGIN_FORM();
-
+            
 
 
             COMMON_Create_Ctl comm = new COMMON_Create_Ctl();
@@ -97,6 +98,7 @@ namespace WindowsFormsApp
             Tb7 = comm.txtbox(new TXTBOXclass(this, "email", "", 150, 20, 180, 420 - 1, Tb_click));
             Tb8 = comm.txtbox(new TXTBOXclass(this, "Phon", "", 150, 20, 180, 480 - 1, Tb_click));
 
+            
 
             pan1.Controls.Add(Tb1);
             pan1.Controls.Add(Tb2);
@@ -232,13 +234,24 @@ namespace WindowsFormsApp
         {
             if (btn1.Text == "비밀번호 변경")
             {
-                btn3.Show();
-                Tb2.ReadOnly = false;
+                p_Check = new Passwod_Check(this);
+                p_Check.ShowDialog();
 
+                if (p_Check.Yn)
+                {
+                    btn3.Show();
+                    Tb2.ReadOnly = false;
 
-                btnYn = false;
+                    Tb6.ReadOnly = true;
+                    Tb7.ReadOnly = true;
+                    Tb8.ReadOnly = true;
+                    btnYn = false;
+                    btn2.Text = "정보수정";
+                    btn1.Text = "변경완료";
+                    p_Check.Yn = false;
+                }
+                p_Check.Close();
 
-                btn1.Text = "변경완료";
             }
             else if (btn1.Text == "변경완료")
             {
@@ -251,9 +264,11 @@ namespace WindowsFormsApp
 
                 Tb2.ReadOnly = true;
 
+
                 btnYn = true;
 
                 btn1.Text = "비밀번호 변경";
+                btn2.Text = "정보수정";
                 btn3.Hide();
             }
         }
@@ -262,14 +277,23 @@ namespace WindowsFormsApp
         {
             if (btn2.Text == "정보수정")
             {
-                btn3.Show();
-                Tb6.ReadOnly = false;
-                Tb7.ReadOnly = false;
-                Tb8.ReadOnly = false;
+                p_Check = new Passwod_Check(this);
+                p_Check.ShowDialog();
+                
+                if (p_Check.Yn)
+                {
+                    
+                    btn3.Show();
+                    Tb6.ReadOnly = false;
+                    Tb7.ReadOnly = false;
+                    Tb8.ReadOnly = false;
+                    Tb2.ReadOnly = true;
+                    btnYn = false;
+                    btn1.Text = "비밀번호 변경";
+                    btn2.Text = "수정완료";
+                }
+                p_Check.Close();
 
-                btnYn = false;
-
-                btn2.Text = "수정완료";
             }
             else if (btn2.Text == "수정완료")
             {
@@ -278,9 +302,9 @@ namespace WindowsFormsApp
                 Tb6.ReadOnly = true;
                 Tb7.ReadOnly = true;
                 Tb8.ReadOnly = true;
-
+                
                 btn2.Text = "정보수정";
-
+                btn1.Text = "비밀번호 변경";
                 btnYn = true;
                 btn3.Hide();
             }
@@ -302,6 +326,7 @@ namespace WindowsFormsApp
                 btn1.Text = "비밀번호 변경";
                 btn3.Hide();
                 btnYn = true;
+                
             }
         }
 

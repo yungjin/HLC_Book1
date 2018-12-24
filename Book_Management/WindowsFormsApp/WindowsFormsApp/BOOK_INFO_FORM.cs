@@ -18,7 +18,7 @@ namespace WindowsFormsApp
         bool admin = false;
 
         MAIN_FORM form;
-
+        Login_Check Login_ck;
         string search_category = "";
         int sX = 1500, sY = 800; // 폼 사이즈 지정.
 
@@ -70,6 +70,7 @@ namespace WindowsFormsApp
         
         private void BOOK_INFO_FORM_Load(object sender, EventArgs e)
         {
+            
             login_frm = new LOGIN_FORM(form);
 
             if (login_frm.Member_rank == 1)
@@ -560,7 +561,8 @@ namespace WindowsFormsApp
             {
                 if (login_frm.Member_rank == 4)
                 {
-                    MessageBox.Show("로그인이 필요한 서비스입니다.");
+                    Login_ck = new Login_Check(this);
+                    Login_ck.ShowDialog();
                     this.Hide();
                     form.Login.Show();
                 }
@@ -579,7 +581,8 @@ namespace WindowsFormsApp
             {
                 if(login_frm.Member_rank == 4)
                 {
-                    MessageBox.Show("로그인이 필요한 서비스입니다.");
+                    Login_ck = new Login_Check(this);
+                    Login_ck.ShowDialog();
                     this.Hide();
                     form.Login.Show();
                 }

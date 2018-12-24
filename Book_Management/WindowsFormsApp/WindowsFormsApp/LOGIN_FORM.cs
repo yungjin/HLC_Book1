@@ -22,6 +22,7 @@ namespace WindowsFormsApp
         public static int user_Number;
         public RENTAL_INFO_FORM RENTAL1;
         public MY_INFO_FORM MYinfo;
+        public Passwod_Check p_check;
         public LOGIN_FORM(MAIN_FORM form)
         {
             InitializeComponent();
@@ -53,6 +54,7 @@ namespace WindowsFormsApp
             //=============
             RENTAL1 = new RENTAL_INFO_FORM(this);
             MYinfo = new MY_INFO_FORM(this);
+            p_check = new Passwod_Check(this);
             //=============
             ClientSize = new Size(sX, sY);  // 폼 사이즈 지정.
             //라벨 ==============================================================================================================================================
@@ -97,7 +99,7 @@ namespace WindowsFormsApp
             //==================================================================================================================================================
             // BTNclass bt1 = new BTNclass(this, "버튼Name", "버튼Text", 가로사이즈, 세로사이즈, 가로포인트, 세로포인트, 버튼클릭이벤트);
             ArrayList btnArray = new ArrayList();
-            btnArray.Add(new BTNclass(this, "로그인", "로그인", 100, 80, 345, 240-50, btn1_Click));
+            btnArray.Add(new BTNclass(this, "로그인", "로그인", 100, 80, 345, 240 - 50, btn1_Click));
             btnArray.Add(new BTNclass(this, "회원가입", "회원가입", 100, 40, 345, 320-50, btn2_Click));
             //btnArray.Add(new BTNclass(this, "뒤로가기", "←", 50, 40, 450, 0, btn3_Click));
 
@@ -143,13 +145,13 @@ namespace WindowsFormsApp
         private void btn1_Click(object sender, EventArgs e)
         {
 
-            if (Tb1.Text == ID_Select(Tb1.Text) && Tb2.Text == PW_Select(Tb2.Text))
+            if (ID_Select(Tb1.Text) == PW_Select(Tb2.Text))
             {
                 MessageBox.Show("로그인 성공");
 
                 form.lb_Logout.Show();
                 MySql my = new MySql();
-                string sql = string.Format("select user_number, member_rank from signup where id = '{0}';", Tb1.Text);
+                string sql = string.Format("select user_number, member_rank from signup where id = '{0}' && passwod = '{1}';", Tb1.Text,Tb2.Text);
                 MySqlDataReader sdr = my.Reader(sql);
                 while (sdr.Read())
                 {
@@ -257,7 +259,7 @@ namespace WindowsFormsApp
         {
             string i = ".";
             MySql my = new MySql();
-            string sql = string.Format("select id from signup where id = '{0}';", Idtext);
+            string sql = string.Format("select user_number from signup where id = '{0}';", Idtext);
             MySqlDataReader sdr = my.Reader(sql);
             while (sdr.Read())
             {
@@ -266,14 +268,12 @@ namespace WindowsFormsApp
             return i;
         }
 
-
-
         public string PW_Select(string PWtext)
         {
             string p = ".";
             string sql;
             MySql my = new MySql();
-            sql = string.Format("select passwod from signup where passwod = '{0}';", PWtext);
+            sql = string.Format("select user_number from signup where passwod = '{0}';", PWtext);
             MySqlDataReader sdr = my.Reader(sql);
             while (sdr.Read())
             {
@@ -281,6 +281,29 @@ namespace WindowsFormsApp
             }
             return p;
         }
+
+        //public bool ID_Pass_Select(string Idtext, string PWtext)
+        //{
+        //    try
+        //    {
+        //        string i = ".";
+        //        MySql my = new MySql();
+        //        string sql = string.Format("select user_number from signup where id = '{0}' && passwod = {1};", Idtext, PWtext);
+        //        MySqlDataReader sdr = my.Reader(sql);
+        //        while (sdr.Read())
+        //        {
+        //            i = sdr.GetValue(0).ToString();
+        //        }
+
+        //        return true;
+        //    }
+
+        //    catch
+        //    {
+        //        return false;
+        //    }
+           
+        //}
 
         private void Point_Print()
         {
