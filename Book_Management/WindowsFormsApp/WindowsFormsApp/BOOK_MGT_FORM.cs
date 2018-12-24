@@ -199,10 +199,10 @@ namespace WindowsFormsApp
 
             MySql mysql = new MySql();
 
-            ArrayList Receiving_equest_arry = mysql.Select(string.Format("select S.user_number, S.name, R.title, R.author, R.publisher from signup S inner join Receiving_equest R on (S.user_number = R.user_number);"));
+            ArrayList Receiving_equest_arry = mysql.Select(string.Format("select R.request_number, S.user_number, S.name, R.title, R.author, R.publisher, R.genre from signup S inner join Receiving_equest R on (S.user_number = R.user_number);"));
             foreach (Hashtable ht in Receiving_equest_arry)
             {
-                ListViewItem item = new ListViewItem("");
+                ListViewItem item = new ListViewItem(ht["request_number"].ToString());
                 item.SubItems.Add(ht["user_number"].ToString());
                 item.SubItems.Add(ht["name"].ToString());
                 item.SubItems.Add(ht["title"].ToString());
@@ -236,15 +236,30 @@ namespace WindowsFormsApp
         // 리스트뷰 더블클릭
         private void listview_mousedoubleclick(object sender, MouseEventArgs e)
         {
-            MessageBox.Show("동작확인 : listview_mousedoubleclick");
+            MessageBox.Show("마우스 더블클릭 동작확인");
         }
 
         // 리스트뷰 마우스클릭
         private void listView_MouseClick(object sender, MouseEventArgs e)
         {
-            MessageBox.Show("동작확인 : listView_MouseClick");
+            //MessageBox.Show("동작확인 : listView_MouseClick");            
 
-        }
+            int index;
+            index = 요청입고_리스트뷰.FocusedItem.Index;  // 선택돈 아이템 인덱스 번호 얻기
+            int request_number = Convert.ToInt32(요청입고_리스트뷰.Items[index].SubItems[0].Text); // 인덱스 번호의 n번째 아이템 얻기
+
+            MySql mysql = new MySql();
+
+            ArrayList Receiving_equest_arry = mysql.Select(string.Format("select R.request_number, S.user_number, S.name, R.title, R.author, R.publisher, R.genre from signup S inner join Receiving_equest R on (S.user_number = R.user_number and R.request_number = {0});", request_number));
+            foreach (Hashtable ht in Receiving_equest_arry)
+            {
+                제목값.Text = ht["title"].ToString();
+                저자값.Text = ht["author"].ToString();
+                출판사값.Text = ht["publisher"].ToString();
+                장르값.Text = ht["genre"].ToString();
+                도서위치값.Text = "";
+            }
+        }       
 
 
         // 콤보박스 인덱스 선택
@@ -259,10 +274,10 @@ namespace WindowsFormsApp
 
             MySql mysql = new MySql();
 
-            ArrayList Receiving_equest_arry = mysql.Select(string.Format("select S.user_number, S.name, R.title, R.author, R.publisher from signup S inner join Receiving_equest R on (S.user_number = R.user_number);"));
+            ArrayList Receiving_equest_arry = mysql.Select(string.Format("select R.request_number, S.user_number, S.name, R.title, R.author, R.publisher, R.genre from signup S inner join Receiving_equest R on (S.user_number = R.user_number);"));
             foreach (Hashtable ht in Receiving_equest_arry)
             {
-                ListViewItem item = new ListViewItem("");
+                ListViewItem item = new ListViewItem(ht["request_number"].ToString());
                 item.SubItems.Add(ht["user_number"].ToString());
                 item.SubItems.Add(ht["name"].ToString());
                 item.SubItems.Add(ht["title"].ToString());
