@@ -29,7 +29,7 @@ namespace WindowsFormsApp
         LOGIN_FORM login_frm;
 
         COMMON_Create_Ctl comm = new COMMON_Create_Ctl();
-
+        
         private OpenFileDialog openFileDialog1 = new OpenFileDialog();  // openFileDialog1 변수 선언 및 초기화
         public static string _Slected_File_RootPath;
         PictureBox 책이미지;
@@ -70,7 +70,7 @@ namespace WindowsFormsApp
         
         private void BOOK_INFO_FORM_Load(object sender, EventArgs e)
         {
-            
+            comm.delay_rental_check();
             login_frm = new LOGIN_FORM(form);
 
             if (login_frm.Member_rank == 1)

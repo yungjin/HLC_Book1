@@ -49,6 +49,7 @@ namespace WindowsFormsApp
             Point_Print(); //좌표 
             ClientSize = new Size(sX, sY);  // 폼 사이즈 지정.
             comm = new COMMON_Create_Ctl();
+            comm.delay_rental_check();
             mysql = new MySql();
             this.BackColor = Color.FromArgb(201, 253, 223); //백컬러
             //리스트뷰===============================================================================================================================================
@@ -151,8 +152,8 @@ namespace WindowsFormsApp
             MySql my = new MySql();
             string sql = string.Format("select    R.rental_number 대여번호,	I.title 도서명, I.author 저자, I.publisher 출판사, R.rental_day 대여일, R.return_schedule 반납일," +
                             " case	" +
-                            " when TO_DAYS(now()) - TO_DAYS('2018-12-10') > 0 then '연체됨' " +
-                            " when TO_DAYS(now()) - TO_DAYS('2018-12-10') <= 0 then '연체안됨' " +
+                            " when TO_DAYS(now()) - TO_DAYS(return_schedule) > 0 then '연체됨' " +
+                            " when TO_DAYS(now()) - TO_DAYS(return_schedule) <= 0 then '연체안됨' " +
                             " else '' " +
                             " end 연체일," +
                             " case	" +

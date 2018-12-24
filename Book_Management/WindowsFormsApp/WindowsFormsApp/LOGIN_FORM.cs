@@ -49,6 +49,7 @@ namespace WindowsFormsApp
             FormBorderStyle = FormBorderStyle.None;// 폼 상단 표시줄 제거
 
             COMMON_Create_Ctl comm = new COMMON_Create_Ctl();
+            comm.delay_rental_check();
             this.BackColor = Color.FromArgb(201, 253, 223); //백컬러
             Point_Print(); //좌표 
             //=============
@@ -145,7 +146,7 @@ namespace WindowsFormsApp
         private void btn1_Click(object sender, EventArgs e)
         {
 
-            if (ID_Select(Tb1.Text) == PW_Select(Tb2.Text))
+            if (Tb2.Text == PW_Select(Tb1.Text))
             {
                 MessageBox.Show("로그인 성공");
 
@@ -255,25 +256,25 @@ namespace WindowsFormsApp
 
         }
 
-        public string ID_Select(string Idtext)
-        {
-            string i = ".";
-            MySql my = new MySql();
-            string sql = string.Format("select user_number from signup where id = '{0}';", Idtext);
-            MySqlDataReader sdr = my.Reader(sql);
-            while (sdr.Read())
-            {
-                i = sdr.GetValue(0).ToString();
-            }
-            return i;
-        }
+        //public string ID_Select(string Idtext)
+        //{
+        //    string i = ".";
+        //    MySql my = new MySql();
+        //    string sql = string.Format("select passwod  from signup where id = '{0}';", Idtext);
+        //    MySqlDataReader sdr = my.Reader(sql);
+        //    while (sdr.Read())
+        //    {
+        //        i = sdr.GetValue(0).ToString();
+        //    }
+        //    return i;
+        //}
 
-        public string PW_Select(string PWtext)
+        public string PW_Select(string id)
         {
             string p = ".";
             string sql;
             MySql my = new MySql();
-            sql = string.Format("select user_number from signup where passwod = '{0}';", PWtext);
+            sql = string.Format("select passwod  from signup where id = '{0}';", id);
             MySqlDataReader sdr = my.Reader(sql);
             while (sdr.Read())
             {
@@ -282,28 +283,28 @@ namespace WindowsFormsApp
             return p;
         }
 
-        //public bool ID_Pass_Select(string Idtext, string PWtext)
-        //{
-        //    try
-        //    {
-        //        string i = ".";
-        //        MySql my = new MySql();
-        //        string sql = string.Format("select user_number from signup where id = '{0}' && passwod = {1};", Idtext, PWtext);
-        //        MySqlDataReader sdr = my.Reader(sql);
-        //        while (sdr.Read())
-        //        {
-        //            i = sdr.GetValue(0).ToString();
-        //        }
+        public bool ID_Pass_Select(string Idtext, string PWtext)
+        {
+            try
+            {
+                string i = ".";
+                MySql my = new MySql();
+                string sql = string.Format("select user_number from signup where id = '{0}' && passwod = {1};", Idtext, PWtext);
+                MySqlDataReader sdr = my.Reader(sql);
+                while (sdr.Read())
+                {
+                    i = sdr.GetValue(0).ToString();
+                }
 
-        //        return true;
-        //    }
+                return true;
+            }
 
-        //    catch
-        //    {
-        //        return false;
-        //    }
-           
-        //}
+            catch
+            {
+                return false;
+            }
+
+        }
 
         private void Point_Print()
         {
