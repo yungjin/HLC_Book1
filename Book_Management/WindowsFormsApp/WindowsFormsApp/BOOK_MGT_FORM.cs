@@ -73,7 +73,7 @@ namespace WindowsFormsApp
 
 
             // 책정보패널
-            PANELclass 책정보패널값 = new PANELclass(this, "책정보패널", "책정보패널", 720, 750, 10, 10, panel_MouseMove);
+            PANELclass 책정보패널값 = new PANELclass(this, "책정보패널", "책정보패널", 720, 750, 10, 10);
             Panel 책정보패널 = comm.panel(책정보패널값);
 
 

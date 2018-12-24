@@ -87,7 +87,7 @@ namespace WindowsFormsApp
             COMMON_Create_Ctl comm_create_ctl = new COMMON_Create_Ctl();
 
             // 생성할 패널 정보 객체 생성.
-            PANELclass pn1 = new PANELclass(this, "panel1", "panel_main", 1500, 780, 0, 145, panel_MouseMove);
+            PANELclass pn1 = new PANELclass(this, "panel1", "panel_main", 1500, 780, 0, 145);
 
             panel1 = comm_create_ctl.panel(pn1);  // ex) 판넬만들기 :  create_ctl.CTL명(CTL값);           
             Controls.Add(panel1);  // 원하는 컨트롤에 추가함.
