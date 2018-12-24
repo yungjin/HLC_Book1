@@ -180,9 +180,10 @@ namespace WindowsFormsApp
                     return;
                 }
 
-                MessageBox.Show("등록 - 입고 요청한 user_number로 등록되도록 추후 수정 필요");
+                LOGIN_FORM login = new LOGIN_FORM();
+
                 MySql mysql = new MySql();
-                string sql = string.Format("insert into Receiving_equest(title, author, publisher, genre, user_number) values('{0}', '{1}', '{2}', '{3}', {4});", Textbox1.Text, Textbox2.Text, Textbox3.Text, Textbox4.Text, 1); // 1 : 입고 요청한 user_number 로 등록되도록 변경 필요. 
+                string sql = string.Format("insert into Receiving_equest(title, author, publisher, genre, user_number) values('{0}', '{1}', '{2}', '{3}', {4});", Textbox1.Text, Textbox2.Text, Textbox3.Text, Textbox4.Text, login.User_Number); // 1 : 입고 요청한 user_number 로 등록되도록 변경 필요. 
                 mysql.NonQuery_INSERT(sql);
             }
             else if (button.Name == "취소")

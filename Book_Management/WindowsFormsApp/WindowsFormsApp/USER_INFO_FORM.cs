@@ -50,7 +50,7 @@ namespace WindowsFormsApp
             this.Paint += new PaintEventHandler(this.Form_Paint);
 
 
-            //FormBorderStyle = FormBorderStyle.None; 폼 상단 표시줄 제거
+            FormBorderStyle = FormBorderStyle.None; //폼 상단 표시줄 제거
 
             this.BackColor = Color.FromArgb(201, 253, 223);
 
@@ -60,6 +60,8 @@ namespace WindowsFormsApp
             Point_Print();
 
             COMMON_Create_Ctl create_ctl = new COMMON_Create_Ctl();
+
+            create_ctl.delay_rental_check();
 
             // BTNclass bt1 = new BTNclass(this, "버튼Name", "버튼Text", 가로사이즈, 세로사이즈, 가로포인트, 세로포인트, 버튼클릭이벤트);
             BTNclass bt1 = new BTNclass(this, "Home", "button1", 100, 100, 10, 10, btn_Click);
@@ -169,7 +171,7 @@ namespace WindowsFormsApp
 
 
             // 리스트뷰 - 대여목록
-            LISTVIEWclass 대여목록_리스트뷰값 = new LISTVIEWclass(this, "대여목록_ListVIew", 700, 350, 20, 407, listView_MouseClick, listview_mousedoubleclick, 5, "", 0, "도서번호", 100, "책 이름", 300, "저자", 150, "출판사", 150);
+            LISTVIEWclass 대여목록_리스트뷰값 = new LISTVIEWclass(this, "대여목록_ListVIew", 700, 350, 20, 407, listView_MouseClick, listview_mousedoubleclick, 6, "", 0, "책번호", 70, "책 이름", 260, "저자", 120, "출판사", 120, "대여현황", 125);
             대여목록_리스트뷰 = comm.listView(대여목록_리스트뷰값);
             대여목록_리스트뷰.Font = new Font("Arial", 14, FontStyle.Bold);
 
@@ -199,6 +201,8 @@ namespace WindowsFormsApp
             COMBOBOXclass 검색카테고리값 = new COMBOBOXclass(this, "ComboBox1", 90, 120, 990, 90, ComboBox_SelectedIndexChanged, 2, "이름", "ID");
             ComboBox 콤보박스검색카테고리 = comm.comboBox(검색카테고리값);
             콤보박스검색카테고리.Font = new Font(콤보박스검색카테고리.Font.Name, 22, FontStyle.Regular);
+            콤보박스검색카테고리.DropDownStyle = ComboBoxStyle.DropDownList;
+            콤보박스검색카테고리.SelectedIndex = 0;
             Controls.Add(콤보박스검색카테고리);
 
 
@@ -232,7 +236,7 @@ namespace WindowsFormsApp
                 ListViewItem item = new ListViewItem("");
                 item.SubItems.Add(ht["user_number"].ToString());
                 item.SubItems.Add(ht["name"].ToString());
-                item.SubItems.Add(ht["birthday"].ToString());
+                item.SubItems.Add(ht["birthday"].ToString().Substring(0, 10));
                 item.SubItems.Add(ht["id"].ToString());
                 item.Font = new Font("Arial", 14, FontStyle.Italic);
                 회원정보검색_리스트뷰.Items.Add(item);
@@ -254,12 +258,12 @@ namespace WindowsFormsApp
 
         private void listview_mousedoubleclick(object sender, MouseEventArgs e)
         {
-            MessageBox.Show("동작확인 : listview_mousedoubleclick");
+            //MessageBox.Show("동작확인 : listview_mousedoubleclick");
         }
 
         private void listView_MouseClick(object sender, MouseEventArgs e)
         {
-            MessageBox.Show("동작확인 : listView_MouseClick");
+            //MessageBox.Show("동작확인 : listView_MouseClick");
 
             int index;
             index = 회원정보검색_리스트뷰.FocusedItem.Index;  // 선택돈 아이템 인덱스 번호 얻기
@@ -278,7 +282,7 @@ namespace WindowsFormsApp
 
             대여목록_리스트뷰.Items.Clear();
             mysql = new MySql();
-            sql = string.Format("select * from book_info where book_number in (select book_number from book_rental where user_number = {0});", user_number);
+            sql = string.Format("select	I.book_number, I.title, I.author, I.publisher, case when R.rental_status = 0 then '대여중' when R.rental_status = 1 then '미반납' end as 'rental_status' from	book_info I inner join	book_rental  R on (R.user_number = {0} and I.book_number = R.book_number and R.rental_status <> 2);", user_number);
             ArrayList bookinfoSearch_arry2 = mysql.Select(sql);
             foreach (Hashtable ht in bookinfoSearch_arry2)
             {
@@ -287,6 +291,7 @@ namespace WindowsFormsApp
                 item.SubItems.Add(ht["title"].ToString());
                 item.SubItems.Add(ht["author"].ToString());
                 item.SubItems.Add(ht["publisher"].ToString());
+                item.SubItems.Add(ht["rental_status"].ToString());
                 item.Font = new Font("Arial", 14, FontStyle.Italic);
                 대여목록_리스트뷰.Items.Add(item);
             }
@@ -313,7 +318,7 @@ namespace WindowsFormsApp
 
         private void btn_Click(Object o, EventArgs e)
         {
-            MessageBox.Show("동작확인 : btn_Click");
+            //MessageBox.Show("동작확인 : btn_Click");
 
             Button button = (Button)o;
 
@@ -330,7 +335,7 @@ namespace WindowsFormsApp
                     ListViewItem item = new ListViewItem("");
                     item.SubItems.Add(ht["user_number"].ToString());
                     item.SubItems.Add(ht["name"].ToString());
-                    item.SubItems.Add(ht["birthday"].ToString());
+                    item.SubItems.Add(ht["birthday"].ToString().Substring(0, 10));
                     item.SubItems.Add(ht["id"].ToString());
                     item.Font = new Font("Arial", 14, FontStyle.Italic);
                     회원정보검색_리스트뷰.Items.Add(item);

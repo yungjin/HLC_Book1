@@ -225,6 +225,22 @@ namespace WindowsFormsApp
             return tabpage;
         }
 
+        public void delay_rental_check()
+        {
+            MySql mysql = new MySql();
+            string sql = string.Format("update book_rental set rental_status = 1 where rental_number in (select rental_number from book_rental where (TO_DAYS(now()) - TO_DAYS(return_schedule)) > 0 and rental_status <> 2);");
+            bool status = mysql.NonQuery_INSERT(sql);
+
+            if (status)
+            {
+                //MessageBox.Show("미반납 상태 업데이트 완료");
+            }
+            else
+            {
+                //MessageBox.Show("미반납 상태 업데이트 실패");
+            }
+        }
+
 
         public bool UploadFTPFile(string sourceFilePath, string FileName)
         {

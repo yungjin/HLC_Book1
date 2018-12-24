@@ -36,7 +36,7 @@ namespace WindowsFormsApp
 
         private void LATE_MGT_FORM_Load(object sender, EventArgs e)
         {
-            //FormBorderStyle = FormBorderStyle.None; 폼 상단 표시줄 제거
+            FormBorderStyle = FormBorderStyle.None; // 폼 상단 표시줄 제거
 
             this.BackColor = Color.FromArgb(201, 253, 223);
 
@@ -46,6 +46,7 @@ namespace WindowsFormsApp
             Point_Print();
 
             COMMON_Create_Ctl create_ctl = new COMMON_Create_Ctl();
+            create_ctl.delay_rental_check();
 
             // BTNclass bt1 = new BTNclass(this, "버튼Name", "버튼Text", 가로사이즈, 세로사이즈, 가로포인트, 세로포인트, 버튼클릭이벤트);
             BTNclass bt1 = new BTNclass(this, "Home", "button1", 100, 100, 10, 10, btn_Click);
@@ -82,7 +83,7 @@ namespace WindowsFormsApp
 
             MySql mysql = new MySql();
 
-            ArrayList arry = mysql.Select("select S.user_number, S.phone_number, S.name, I.title, I.book_number, R.rental_day, TO_DAYS(now()) - TO_DAYS(R.return_schedule) 연체일 from book_info as I inner join book_rental as R on (I.book_number = R.book_number and TO_DAYS(now()) - TO_DAYS(R.return_schedule) > 0) inner join signup as S on (S.user_number = R.user_number);");
+            ArrayList arry = mysql.Select("select S.user_number, S.phone_number, S.name, I.title, I.book_number, R.rental_day, TO_DAYS(now()) - TO_DAYS(R.return_schedule) 연체일 from book_info as I inner join book_rental as R on (I.book_number = R.book_number and TO_DAYS(now()) - TO_DAYS(R.return_schedule) > 0 and R.rental_status <> 2) inner join signup as S on (S.user_number = R.user_number);");
             foreach (Hashtable ht in arry)
             {
                 ListViewItem item = new ListViewItem("");

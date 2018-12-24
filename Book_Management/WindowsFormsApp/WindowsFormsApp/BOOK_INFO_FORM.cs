@@ -456,6 +456,8 @@ namespace WindowsFormsApp
 
             콤보박스검색카테고리 = comm.comboBox(검색카테고리값);
             콤보박스검색카테고리.Font = new Font(콤보박스검색카테고리.Font.Name, 27, FontStyle.Regular);
+            콤보박스검색카테고리.DropDownStyle = ComboBoxStyle.DropDownList;
+            콤보박스검색카테고리.SelectedIndex = 0;
             Controls.Add(콤보박스검색카테고리);
 
 
