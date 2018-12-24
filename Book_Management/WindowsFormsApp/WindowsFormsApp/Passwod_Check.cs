@@ -67,12 +67,9 @@ namespace WindowsFormsApp
 
         private void btn1_Click(object sender, EventArgs e) //버튼클릭
         {
-            MessageBox.Show(Login.User_Number.ToString());
-
             if (Tb1.Text == PW_Select(Tb1.Text, Login.User_Number.ToString()))
             {
                 Tb1.Clear();
-                MessageBox.Show("확인완료");
                 this.Close();
                 Yn = true;
             }

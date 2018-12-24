@@ -200,7 +200,7 @@ namespace WindowsFormsApp
             }
             else
             {
-                MessageBox.Show("반납실패");
+                MessageBox.Show("반납실패 관리자에게 문의해 주세요.");
             }
         }
 
