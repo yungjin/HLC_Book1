@@ -119,6 +119,12 @@ namespace WindowsFormsApp
         {
             연체정보리스트.Items.Clear();
 
+            연체정보리스트.OwnerDraw = true;
+            연체정보리스트.DrawColumnHeader += new DrawListViewColumnHeaderEventHandler(lv_DrawColumnHeader);
+
+            //연체정보리스트.BackColor = Color.AliceBlue;  // Color.FromArgb(201, 253, 223); 
+            연체정보리스트.DrawSubItem += new DrawListViewSubItemEventHandler(lv_DrawSubItem);
+
             MySql mysql = new MySql();
             ArrayList arry = mysql.Select("select S.user_number, S.phone_number, S.name, I.title, I.book_number, R.rental_day, TO_DAYS(now()) - TO_DAYS(R.return_schedule) 연체일 from book_info as I inner join book_rental as R on (I.book_number = R.book_number and TO_DAYS(now()) - TO_DAYS(R.return_schedule) > 0 and R.rental_status <> 2) inner join signup as S on (S.user_number = R.user_number);");
             foreach (Hashtable ht in arry)
