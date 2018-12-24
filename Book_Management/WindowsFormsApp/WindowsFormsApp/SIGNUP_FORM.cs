@@ -40,7 +40,7 @@ namespace WindowsFormsApp
             ClientSize = new Size(sX, sY);  // 폼 사이즈 지정.
 
             /// 좌표 체크시 추가 ///
-            Point_Print();
+            //Point_Print();
 
             COMMON_Create_Ctl comm = new COMMON_Create_Ctl();
             ArrayList lbarray = new ArrayList();

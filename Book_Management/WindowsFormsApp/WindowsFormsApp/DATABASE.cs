@@ -119,7 +119,7 @@ namespace WindowsFormsApp
         public ArrayList GetSelect()
         {
             MySql my = new MySql();
-            string sql = "select * from book_info;";
+            string sql = "select book_number, availability, title, author, publisher from book_info;";
             MySqlDataReader sdr = my.Reader(sql);
             //string result = "";
             ArrayList list = new ArrayList();

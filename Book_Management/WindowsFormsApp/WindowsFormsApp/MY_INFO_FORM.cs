@@ -61,7 +61,7 @@ namespace WindowsFormsApp
             FormBorderStyle = FormBorderStyle.None;// 폼 상단 표시줄 제거
 
             /// 좌표 체크시 추가 ///
-            Point_Print();
+            //Point_Print();
             Login = new LOGIN_FORM();
             
 

@@ -57,7 +57,7 @@ namespace WindowsFormsApp
             ClientSize = new Size(sX, sY);  // 폼 사이즈 지정.
 
             /// 좌표 체크시 추가 ///
-            Point_Print();
+            //Point_Print();
 
             COMMON_Create_Ctl create_ctl = new COMMON_Create_Ctl();
 
@@ -375,7 +375,7 @@ namespace WindowsFormsApp
 
         private void radio_btn_Click(Object o, EventArgs e)
         {
-            MessageBox.Show("동작확인 : radio_btn_Click");
+            //MessageBox.Show("동작확인 : radio_btn_Click");
         }
 
         private void picturbox_Click(Object o, EventArgs e)

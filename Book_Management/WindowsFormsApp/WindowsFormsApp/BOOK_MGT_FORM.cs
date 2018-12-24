@@ -46,6 +46,8 @@ namespace WindowsFormsApp
         String 이미지Load경로 = "";
         String 본파일이름 = "";
 
+        int request_number = 0;
+
 
         public BOOK_MGT_FORM()
         {
@@ -65,7 +67,7 @@ namespace WindowsFormsApp
             ClientSize = new Size(sX, sY);  // 폼 사이즈 지정.
 
             /// 좌표 체크시 추가 ///
-            Point_Print();
+            //Point_Print();
 
             COMMON_Create_Ctl create_ctl = new COMMON_Create_Ctl();
 
@@ -158,13 +160,12 @@ namespace WindowsFormsApp
                 }
             }
 
-
-
-
+                       
 
             ArrayList btnarry = new ArrayList();
             btnarry.Add(new BTNclass(this, "등록버튼", "등 록", 120, 50, 575, 670, btn_Click));
             btnarry.Add(new BTNclass(this, "이미지추가버튼", "도서 이미지 추가", 180, 30, 32, 285, btn_Click));
+            btnarry.Add(new BTNclass(this, "요청리스트삭제", "요청 리스트 삭제", 180, 30, 1239, 60, btn_Click));
 
             for (int i = 0; i < btnarry.Count; i++)
             {
@@ -182,9 +183,18 @@ namespace WindowsFormsApp
                 버튼.FlatStyle = FlatStyle.Flat;
                 버튼.ForeColor = Color.White;
                 버튼.Region = Region.FromHrgn(COMMON_Create_Ctl.CreateRoundRectRgn(2, 2, 버튼.Width, 버튼.Height, 18, 18));
-                책정보패널.Controls.Add(버튼);
-            }
 
+                if (버튼.Name == "요청리스트삭제")
+                {
+                    Controls.Add(버튼);
+                }
+                else
+                {
+                    책정보패널.Controls.Add(버튼);
+                }
+                    
+            }
+                                   
 
 
             LBclass 요청입고목록값 = new LBclass(this, "요청입고목록", "입고 요청한 도서 목록", 24, 400, 40, 770, 40, label_Click);
@@ -236,7 +246,7 @@ namespace WindowsFormsApp
         // 리스트뷰 더블클릭
         private void listview_mousedoubleclick(object sender, MouseEventArgs e)
         {
-            MessageBox.Show("마우스 더블클릭 동작확인");
+           // MessageBox.Show("마우스 더블클릭 동작확인");
         }
 
         // 리스트뷰 마우스클릭
@@ -246,7 +256,7 @@ namespace WindowsFormsApp
 
             int index;
             index = 요청입고_리스트뷰.FocusedItem.Index;  // 선택돈 아이템 인덱스 번호 얻기
-            int request_number = Convert.ToInt32(요청입고_리스트뷰.Items[index].SubItems[0].Text); // 인덱스 번호의 n번째 아이템 얻기
+            request_number = Convert.ToInt32(요청입고_리스트뷰.Items[index].SubItems[0].Text); // 인덱스 번호의 n번째 아이템 얻기
 
             MySql mysql = new MySql();
 
@@ -301,13 +311,13 @@ namespace WindowsFormsApp
             /// 입고요청 버튼 설정. 
             if (button.Name == "이미지추가버튼")
             {
-                MessageBox.Show("이미지추가버튼");
+               // MessageBox.Show("이미지추가버튼");
                 WebApi_Image_Select();
                 //Image_Select();
             }
             else if (button.Name == "등록버튼")
             {
-                MessageBox.Show("등록버튼");
+              //  MessageBox.Show("등록버튼");
 
                 if (제목값.Text == "" || 저자값.Text == "" || 출판사값.Text == "" || 장르값.Text == "" || 도서위치값.Text == "" || 간략소개상자.Text == "" || 이미지Load경로 == "" || 본파일이름 == "")
                 {
@@ -315,8 +325,8 @@ namespace WindowsFormsApp
                     return;
                 }
 
-                MessageBox.Show("이미지Load경로 : " + 이미지Load경로);
-                MessageBox.Show("본파일이름 : " + 본파일이름);
+               // MessageBox.Show("이미지Load경로 : " + 이미지Load경로);
+              //  MessageBox.Show("본파일이름 : " + 본파일이름);
 
                 MySql mysql = new MySql();
                 string sql = string.Format("insert into book_info(title, author, publisher, genre, book_location, brief_introduction, image_location, image_FileName) values('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}');", 제목값.Text, 저자값.Text, 출판사값.Text, 장르값.Text, 도서위치값.Text, 간략소개상자.Text, 이미지Load경로, 본파일이름);
@@ -332,11 +342,34 @@ namespace WindowsFormsApp
                 }
             }
 
+            if(button.Name == "요청리스트삭제")
+            {
+                if(request_number == 0)
+                {
+                    MessageBox.Show("삭제 할 리스트를 선택해주세요");
+                    return;
+                }
+
+                MySql mysql = new MySql();
+                string sql = string.Format("delete from Receiving_equest where request_number = {0};", request_number);
+                bool status = mysql.NonQuery_INSERT(sql);
+
+                if (status)
+                {
+                    // MessageBox.Show("등록이 완료 되었습니다.");
+                    list_Refresh();
+                }
+                else
+                {
+                    MessageBox.Show("삭제 중 오류가 발생하였습니다.");
+                }
+            }
+
         }
 
         private void label_Click(Object o, EventArgs e)
         {
-            MessageBox.Show("동작확인 : label_Click");
+           // MessageBox.Show("동작확인 : label_Click");
         }
 
         private void txtbox_Click(Object o, EventArgs e)

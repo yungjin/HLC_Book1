@@ -69,7 +69,7 @@ namespace WindowsFormsApp
             ClientSize = new Size(sX, sY);  // 폼 사이즈 지정.
 
             /// 좌표 체크시 추가 ///
-            Point_Print();
+            //Point_Print();
 
             COMMON_Create_Ctl create_ctl = new COMMON_Create_Ctl();
 
@@ -147,7 +147,20 @@ namespace WindowsFormsApp
 
                 if (textBox.Name == "회원등급값")
                 {
-                    textBox.Text = 회원등급Temp값;
+                    if (회원등급Temp값 == "0")
+                    {
+                        textBox.Text = "관리자";
+                    }
+                    else if (회원등급Temp값 == "1")
+                    {
+                        textBox.Text = "일반회원";
+                    }
+                    else
+                    {
+                        textBox.Text = "비회원";
+                    }
+
+                    
                 }
                 else if (textBox.Name == "회원ID값")
                 {
@@ -244,16 +257,16 @@ namespace WindowsFormsApp
                     MessageBox.Show("회원의 권한을 선택해주세요");
                 }
 
-                MessageBox.Show("설정완료");
+                //MessageBox.Show("설정완료");
                 if (관리자라디오버튼.Checked == true)
                 {
-                    MessageBox.Show("관리자 권한 최종 선택");
+                    MessageBox.Show("관리자 권한 변경 완료");
                     MySql mysql = new MySql();                   
                     mysql.NonQuery_INSERT(string.Format("update signup set member_rank = 0 where user_number = {0};", 회원번호Temp값));
                 }
                 else if (회원라디오버튼.Checked == true)
                 {
-                    MessageBox.Show("회원 권한 최종 선택");
+                    MessageBox.Show("회원 권한 변경 완료");
                     MySql mysql = new MySql();  
                     mysql.NonQuery_INSERT(string.Format("update signup set member_rank = 1 where user_number = {0};", 회원번호Temp값));
                 }
@@ -282,7 +295,7 @@ namespace WindowsFormsApp
 
         private void radio_btn_Click(Object o, EventArgs e)
         {
-            MessageBox.Show("동작확인 : radio_btn_Click");
+            //MessageBox.Show("동작확인 : radio_btn_Click");
 
         }
 
