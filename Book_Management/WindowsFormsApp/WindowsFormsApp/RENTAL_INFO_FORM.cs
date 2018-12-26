@@ -24,11 +24,11 @@ namespace WindowsFormsApp
             InitializeComponent();
             Load += RENTAL_INFO_FORM_Load;
         }
-        public RENTAL_INFO_FORM(LOGIN_FORM Logi)
-        {
-            InitializeComponent();
-            this.Login = Login;
-        }
+        //public RENTAL_INFO_FORM(LOGIN_FORM Logi)
+        //{
+        //    InitializeComponent();
+        //    this.Login = Login;
+        //}
 
         private ListView lv;
         int sX = 1500, sY = 800; // 폼 사이즈 지정.
@@ -163,7 +163,7 @@ namespace WindowsFormsApp
             client.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)");
             client.Encoding = Encoding.UTF8;
 
-            string url = "http://" + webapiUrl  + "/ rental_info_form_GetSelect";
+            string url = "http://" + webapiUrl  + "/rental_info_form_GetSelect";
             string method = "POST";
 
 
