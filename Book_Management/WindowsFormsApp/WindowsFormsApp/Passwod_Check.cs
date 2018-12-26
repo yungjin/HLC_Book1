@@ -17,13 +17,13 @@ using System.Windows.Forms;
 namespace WindowsFormsApp
 {
     public partial class Passwod_Check : Form
-    {
-        string webapiUrl = "192.168.3.88:5000";
-
+    {       
         int sX = 500, sY = 250; // 폼 사이즈 지정.
         public LOGIN_FORM Login;
         public MY_INFO_FORM my;
         public bool Yn = false;
+        string webapiUrl;
+
         public Passwod_Check()
         {
             InitializeComponent();
@@ -48,6 +48,8 @@ namespace WindowsFormsApp
         TextBox Tb1;
         private void Passwod_Check_Load(object sender, EventArgs e)
         {
+            webapiUrl = comm.WebapiUrl;
+
             Login = new LOGIN_FORM();
             my = new MY_INFO_FORM();
 

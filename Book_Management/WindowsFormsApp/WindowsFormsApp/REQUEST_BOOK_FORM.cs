@@ -15,7 +15,7 @@ namespace WindowsFormsApp
 {
     public partial class REQUEST_BOOK_FORM : Form
     {
-        string webapiUrl = "192.168.3.88:5000";
+        string webapiUrl;
 
 
         int sX = 580, sY = 480; // 폼 사이즈 지정.
@@ -40,6 +40,9 @@ namespace WindowsFormsApp
 
         private void REQUEST_BOOK_FORM_Load(object sender, EventArgs e)
         {
+            COMMON_Create_Ctl comm = new COMMON_Create_Ctl();
+            webapiUrl = comm.WebapiUrl;
+
             // 테두리 색깔 추가
             this.Paint += new PaintEventHandler(UserControl1_Paint);
 
@@ -55,7 +58,7 @@ namespace WindowsFormsApp
             /// 좌표 체크시 추가 ///
             //Point_Print();
 
-            COMMON_Create_Ctl comm = new COMMON_Create_Ctl();
+            
 
             /// 라벨 ArrayList
             ArrayList labelArr = new ArrayList();

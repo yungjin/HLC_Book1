@@ -15,7 +15,7 @@ namespace WindowsFormsApp
 {
     public partial class SIGNUP_FORM : Form
     {
-        string webapiUrl = "192.168.3.88:5000";
+        string webapiUrl;
 
         int sX = 1500, sY = 800; // 폼 사이즈 지정.
 
@@ -35,6 +35,8 @@ namespace WindowsFormsApp
         Panel pan1 = new Panel();
         private void SIGNUP_FORM_Load(object sender, EventArgs e)
         {
+            COMMON_Create_Ctl comm = new COMMON_Create_Ctl();
+            webapiUrl = comm.WebapiUrl;
 
             FormBorderStyle = FormBorderStyle.None;// 폼 상단 표시줄 제거
 
@@ -45,7 +47,7 @@ namespace WindowsFormsApp
             /// 좌표 체크시 추가 ///
             //Point_Print();
 
-            COMMON_Create_Ctl comm = new COMMON_Create_Ctl();
+            
             ArrayList lbarray = new ArrayList();
             ArrayList Tbarray = new ArrayList();
             ArrayList btnArray = new ArrayList();

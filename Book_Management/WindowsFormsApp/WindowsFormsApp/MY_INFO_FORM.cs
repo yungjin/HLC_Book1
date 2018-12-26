@@ -19,8 +19,7 @@ namespace WindowsFormsApp
 
     public partial class MY_INFO_FORM : Form
     {
-        string webapiUrl = "192.168.3.88:5000";
-
+        string webapiUrl;
         public LOGIN_FORM Login;
         public bool YN;
         public Passwod_Check p_Check;
@@ -56,6 +55,9 @@ namespace WindowsFormsApp
 
         private void MY_INFO_FORM_Load(object sender, EventArgs e)
         {
+            COMMON_Create_Ctl comm = new COMMON_Create_Ctl();
+            webapiUrl = comm.WebapiUrl;
+
             this.BackColor = Color.FromArgb(201, 253, 223); //백컬러
 
             ClientSize = new Size(sX, sY);  // 폼 사이즈 지정.
@@ -66,9 +68,7 @@ namespace WindowsFormsApp
             //Point_Print();
             Login = new LOGIN_FORM();
 
-
-
-            COMMON_Create_Ctl comm = new COMMON_Create_Ctl();
+            
             ArrayList lbarray = new ArrayList();
             ArrayList Tbarray = new ArrayList();
             ArrayList btnArray = new ArrayList();

@@ -17,9 +17,9 @@ namespace WindowsFormsApp
 {
     public partial class LATE_MGT_FORM : Form
     {
-        int sX = 1500, sY = 800; // 폼 사이즈 지정.
+        string webapiUrl;
 
-        string webapiUrl = "192.168.3.88:5000";
+        int sX = 1500, sY = 800; // 폼 사이즈 지정.
 
         ///////// 좌표 체크시 추가 /////////
         static ToolStripStatusLabel StripLb;
@@ -41,6 +41,8 @@ namespace WindowsFormsApp
 
         private void LATE_MGT_FORM_Load(object sender, EventArgs e)
         {
+            webapiUrl = comm.WebapiUrl;
+
             FormBorderStyle = FormBorderStyle.None; // 폼 상단 표시줄 제거
 
             this.BackColor = Color.FromArgb(201, 253, 223);

@@ -36,7 +36,7 @@ namespace WindowsFormsApp
         //===================================================================================
         COMMON_Create_Ctl comm;
         MySql mysql;
-        string webapiUrl = "192.168.3.88:5000";
+        string webapiUrl;
 
         LISTVIEWclass lv_value;
         ///////// 좌표 체크시 추가 /////////
@@ -46,6 +46,9 @@ namespace WindowsFormsApp
         private string no;
         private void RENTAL_INFO_FORM_Load(object sender, EventArgs e)
         {
+            comm = new COMMON_Create_Ctl();
+            webapiUrl = comm.WebapiUrl;
+
             FormBorderStyle = FormBorderStyle.None;// 폼 상단 표시줄 제거
 
             Login = new LOGIN_FORM();
@@ -53,7 +56,7 @@ namespace WindowsFormsApp
             //this.Region = Region.FromHrgn(COMMON_Create_Ctl.CreateRoundRectRgn(2, 2, this.Width, this.Height, 15, 15));
             //Point_Print(); //좌표 
             ClientSize = new Size(sX, sY);  // 폼 사이즈 지정.
-            comm = new COMMON_Create_Ctl();
+            
             comm.delay_rental_check();
             mysql = new MySql();
             this.BackColor = Color.FromArgb(201, 253, 223); //백컬러

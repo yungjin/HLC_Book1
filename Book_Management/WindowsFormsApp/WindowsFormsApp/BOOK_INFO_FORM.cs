@@ -19,15 +19,15 @@ namespace WindowsFormsApp
 {
     public partial class BOOK_INFO_FORM : Form
     {
+        string webapiUrl;
+
         bool user = true;
         bool admin = false;
 
         MAIN_FORM form;
         Login_Check Login_ck;
         string search_category = "";
-        int sX = 1500, sY = 800; // 폼 사이즈 지정.
-
-        string webapiUrl = "192.168.3.88:5000";
+        int sX = 1500, sY = 800; // 폼 사이즈 지정.        
 
         ///////// 좌표 체크시 추가 /////////
         static ToolStripStatusLabel StripLb;
@@ -35,7 +35,7 @@ namespace WindowsFormsApp
         ///////////////////////////////////
         LOGIN_FORM login_frm;
 
-        COMMON_Create_Ctl comm = new COMMON_Create_Ctl();
+        COMMON_Create_Ctl comm = new COMMON_Create_Ctl();        
 
         private OpenFileDialog openFileDialog1 = new OpenFileDialog();  // openFileDialog1 변수 선언 및 초기화
         public static string _Slected_File_RootPath;
@@ -74,6 +74,7 @@ namespace WindowsFormsApp
 
         private void BOOK_INFO_FORM_Load(object sender, EventArgs e)
         {
+            webapiUrl = comm.WebapiUrl;
 
             comm.delay_rental_check();
             login_frm = new LOGIN_FORM(form);
@@ -450,39 +451,6 @@ namespace WindowsFormsApp
             콤보박스검색카테고리.DropDownStyle = ComboBoxStyle.DropDownList;
             콤보박스검색카테고리.SelectedIndex = 0;
             Controls.Add(콤보박스검색카테고리);
-
-
-            //for (int j = 0; j < 200; j++)
-            //{
-
-
-            //    for (int i = 1; i <= 17; i++)
-            //    {                    
-            //        if (i != 9)
-            //        {
-            //            ArrayList bookinfoSearch_arry = book_info_listview_click_select_post(i.ToString());
-            //            foreach (Hashtable ht in bookinfoSearch_arry)
-            //            {
-            //                번호값.Text = ht["book_number"].ToString();
-            //                제목값.Text = ht["title"].ToString();
-            //                저자값.Text = ht["author"].ToString();
-            //                출판사값.Text = ht["publisher"].ToString();
-            //                장르값.Text = ht["genre"].ToString();
-            //                대여가능여부값.Text = ht["availability"].ToString();
-            //                도서위치값.Text = ht["book_location"].ToString();
-            //                책이미지.ImageLocation = ht["image_location"].ToString();
-            //                간략소개상자.Text = ht["brief_introduction"].ToString();
-
-            //            }
-            //        }
-            //        Delay(3000);
-
-            //    }
-
-            //}
-
-
-
 
 
         }

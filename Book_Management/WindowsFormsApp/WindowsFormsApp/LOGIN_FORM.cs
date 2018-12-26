@@ -20,7 +20,7 @@ namespace WindowsFormsApp
 
     public partial class LOGIN_FORM : Form
     {
-        string webapiUrl = "192.168.3.88:5000";
+        string webapiUrl;
 
         MAIN_FORM form;
         public BOOK_INFO_FORM user1;
@@ -52,9 +52,11 @@ namespace WindowsFormsApp
 
         private void LOGIN_FORM_Load(object sender, EventArgs e)
         {
-            FormBorderStyle = FormBorderStyle.None;// 폼 상단 표시줄 제거
-
             COMMON_Create_Ctl comm = new COMMON_Create_Ctl();
+            webapiUrl = comm.WebapiUrl;
+
+            FormBorderStyle = FormBorderStyle.None;// 폼 상단 표시줄 제거
+            
             comm.delay_rental_check();
             this.BackColor = Color.FromArgb(201, 253, 223); //백컬러
             Point_Print(); //좌표 

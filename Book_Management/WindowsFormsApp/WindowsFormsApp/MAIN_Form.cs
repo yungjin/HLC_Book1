@@ -293,7 +293,7 @@ namespace WindowsFormsApp
 
         private void ButtonConfig(Button btn, string image_name)
         {
-            btn.Font = new Font("신명조", 35.0F, FontStyle.Bold);
+            btn.Font = new Font("신명조", 30.0F, FontStyle.Bold);
             btn.ForeColor = Color.White;
             Image btn_myImage;
             btn_myImage = (Image)Properties.Resources.ResourceManager.GetObject(image_name);
@@ -316,6 +316,7 @@ namespace WindowsFormsApp
         {
 
             user1.Show();
+            user1.Book_Info_ListView_Refresh();
             user2.Hide();
             user3.Hide();
             user4.Hide();
@@ -390,6 +391,7 @@ namespace WindowsFormsApp
             root2.Hide();
             root3.Hide();
             root4.Show();
+            root4.Refresh_ListView();
             Login.Hide();
             Signup.Hide();
 
@@ -450,17 +452,17 @@ namespace WindowsFormsApp
         //===============================================================================================
         private void txtbox_Click(Object o, EventArgs e)
         {
-            MessageBox.Show("동작확인 : txtbox_Click");
+            // MessageBox.Show("동작확인 : txtbox_Click");
         }
 
         private void chkbox_Click(Object o, EventArgs e)
         {
-            MessageBox.Show("동작확인 : chkbox_Click2");
+            // MessageBox.Show("동작확인 : chkbox_Click2");
         }
 
         private void radio_btn_Click(Object o, EventArgs e)
         {
-            MessageBox.Show("동작확인 : radio_btn_Click");
+            // MessageBox.Show("동작확인 : radio_btn_Click");
         }
 
         private void pictureBox1_Paint(Object o, PaintEventArgs e)
@@ -478,29 +480,29 @@ namespace WindowsFormsApp
 
         private void panel_Click(Object o, EventArgs e)
         {
-            MessageBox.Show("동작확인 : panel_Click");
+            // MessageBox.Show("동작확인 : panel_Click");
         }
         private void panel_MouseMove(Object o, MouseEventArgs e)
         {
-            StripLb.Text = "(" + e.X + ", " + e.Y + ")";
+            // StripLb.Text = "(" + e.X + ", " + e.Y + ")";
         }
 
         private void tabctl_Click(Object o, EventArgs e)
         {
-            MessageBox.Show("동작확인 : tabctl_Click");
+            // MessageBox.Show("동작확인 : tabctl_Click");
         }
         private void tabctl_MouseMove(Object o, MouseEventArgs e)
         {
-            StripLb.Text = "(" + e.X + ", " + e.Y + ")";
+            // StripLb.Text = "(" + e.X + ", " + e.Y + ")";
         }
 
         private void tabpage_Click(Object o, EventArgs e)
         {
-            MessageBox.Show("동작확인 : tabpage_Click");
+            // MessageBox.Show("동작확인 : tabpage_Click");
         }
         private void tabpage_MouseMove(Object o, MouseEventArgs e)
         {
-            StripLb.Text = "(" + e.X + ", " + e.Y + ")";
+            // StripLb.Text = "(" + e.X + ", " + e.Y + ")";
         }
 
 
@@ -531,7 +533,7 @@ namespace WindowsFormsApp
 
         private void Current_FORM_MouseMove(object sender, MouseEventArgs e)
         {
-            StripLb.Text = "(" + e.X + ", " + e.Y + ")";
+            // StripLb.Text = "(" + e.X + ", " + e.Y + ")";
         }
         ///////////////////////////////////////////////////////////////////////
     }

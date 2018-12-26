@@ -17,9 +17,9 @@ namespace WindowsFormsApp
 {
     public partial class DETAIL_BOOK_FORM : Form
     {
-        int sX = 500, sY = 400; // 폼 사이즈 지정.
+        string webapiUrl;
 
-        string webapiUrl = "192.168.3.88:5000";
+        int sX = 500, sY = 400; // 폼 사이즈 지정.
 
         ///////// 좌표 체크시 추가 /////////
         static ToolStripStatusLabel StripLb;
@@ -52,6 +52,8 @@ namespace WindowsFormsApp
 
         private void DETAIL_BOOK_FORM_Load(object sender, EventArgs e)
         {
+            webapiUrl = comm.WebapiUrl;
+
             //FormBorderStyle = FormBorderStyle.None; 폼 상단 표시줄 제거
 
             this.BackColor = Color.FromArgb(149, 165, 165);

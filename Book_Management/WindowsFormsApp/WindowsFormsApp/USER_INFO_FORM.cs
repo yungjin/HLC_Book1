@@ -17,7 +17,7 @@ namespace WindowsFormsApp
 {
     public partial class USER_INFO_FORM : Form
     {
-        string webapiUrl = "192.168.3.88:5000";
+        string webapiUrl;
 
         int sX = 1500, sY = 800; // 폼 사이즈 지정.
 
@@ -51,6 +51,8 @@ namespace WindowsFormsApp
 
         private void USER_INFO_FORM_Load(object sender, EventArgs e)
         {
+            webapiUrl = comm.WebapiUrl;
+
             this.Paint += new PaintEventHandler(this.Form_Paint);
 
 
