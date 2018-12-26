@@ -468,7 +468,7 @@ namespace WindowsFormsApp
                 }
                 else
                 {
-                    MessageBox.Show("등록 중 오류가 발생하였습니다.");
+                    MessageBox.Show("등록 중 오류가 발생하였습니다.");   
                 }
             }
 
