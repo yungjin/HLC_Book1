@@ -1,11 +1,15 @@
 ﻿using MySql.Data.MySqlClient;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -15,9 +19,7 @@ namespace WindowsFormsApp
 
     public partial class MY_INFO_FORM : Form
     {
-
-        private int status;
-        private int LoginNumber;
+        string webapiUrl;
         public LOGIN_FORM Login;
         public bool YN;
         public Passwod_Check p_Check;
@@ -45,19 +47,17 @@ namespace WindowsFormsApp
         TextBox Tb1, Tb2, Tb3, Tb4, Tb5, Tb6, Tb7, Tb8, Tb9 = new TextBox();
         Panel pan1 = new Panel();
 
-        Button btn;
         Button btn1;
         Button btn2;
         Button btn3;
-
-        ComboBox combobox1;
-        ComboBox combobox2;
-        ComboBox combobox3;
 
         private bool btnYn = true;
 
         private void MY_INFO_FORM_Load(object sender, EventArgs e)
         {
+            COMMON_Create_Ctl comm = new COMMON_Create_Ctl();
+            webapiUrl = comm.WebapiUrl;
+
             this.BackColor = Color.FromArgb(201, 253, 223); //백컬러
 
             ClientSize = new Size(sX, sY);  // 폼 사이즈 지정.
@@ -67,10 +67,8 @@ namespace WindowsFormsApp
             /// 좌표 체크시 추가 ///
             //Point_Print();
             Login = new LOGIN_FORM();
+
             
-
-
-            COMMON_Create_Ctl comm = new COMMON_Create_Ctl();
             ArrayList lbarray = new ArrayList();
             ArrayList Tbarray = new ArrayList();
             ArrayList btnArray = new ArrayList();
@@ -93,28 +91,17 @@ namespace WindowsFormsApp
             //Tbarray.Add(new TXTBOXclass(this, "Phon", "", 150, 20, 180, 480, Tb_click));
             //Tbarray.Add(new TXTBOXclass(this, "addres", "", 150, 20, 180, 540, Tb_click));
 
-            Tb1 = comm.txtbox(new TXTBOXclass(this, "ID", "", 150, 20, 180, 60 - 1, Tb_click));       
+            Tb1 = comm.txtbox(new TXTBOXclass(this, "ID", "", 150, 20, 180, 60 - 1, Tb_click));
             Tb2 = comm.txtbox(new TXTBOXclass(this, "Pass", "", 150, 20, 180, 120 - 1, Tb_click));
             Tb3 = comm.txtbox(new TXTBOXclass(this, "name", "", 150, 20, 180, 180 - 1, Tb_click));
             Tb4 = comm.txtbox(new TXTBOXclass(this, "Name", "", 150, 20, 180, 240 - 1, Tb_click));
-            Tb5 = comm.txtbox(new TXTBOXclass(this, "Gender", "", 40, 20, 180, 300 - 1, Tb_click));
+            Tb5 = comm.txtbox(new TXTBOXclass(this, "Gender", "", 150, 20, 180, 300 - 1, Tb_click));
             Tb6 = comm.txtbox(new TXTBOXclass(this, "Birth", "", 150, 20, 180, 360 - 1, Tb_click));
             Tb7 = comm.txtbox(new TXTBOXclass(this, "email", "", 150, 20, 180, 420 - 1, Tb_click));
             Tb8 = comm.txtbox(new TXTBOXclass(this, "Phon", "", 150, 20, 180, 480 - 1, Tb_click));
 
-            combobox1 = comm.comboBox(new COMBOBOXclass(this, "ComboBox1", 50, 100, 230, 300 -1 , ComboBox_SelectedIndexChanged, 5, "01", "02", "03", "04", "05"));
-            Tb9 = comm.txtbox(new TXTBOXclass(this, "Gender1", "", 40, 20, 290, 300 - 1, Tb_click));
 
-            combobox1.Items.Add("06");
-            combobox1.Items.Add("07");
-            combobox1.Items.Add("08");
-            combobox1.Items.Add("09");
-            combobox1.Items.Add("10");
-            combobox1.Items.Add("11");
-            combobox1.Items.Add("12");
 
-            pan1.Controls.Add(Tb9);
-            pan1.Controls.Add(combobox1);
             pan1.Controls.Add(Tb1);
             pan1.Controls.Add(Tb2);
             pan1.Controls.Add(Tb3);
@@ -219,11 +206,6 @@ namespace WindowsFormsApp
 
         }
 
-        private void ComboBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
         private void List_View()
         {
             foreach (Hashtable ht in GetSelect(Login.User_Number.ToString()))
@@ -299,10 +281,10 @@ namespace WindowsFormsApp
             {
                 p_Check = new Passwod_Check(this);
                 p_Check.ShowDialog();
-                
+
                 if (p_Check.Yn)
                 {
-                    
+
                     btn3.Show();
                     Tb6.ReadOnly = false;
                     Tb7.ReadOnly = false;
@@ -322,7 +304,7 @@ namespace WindowsFormsApp
                 Tb6.ReadOnly = true;
                 Tb7.ReadOnly = true;
                 Tb8.ReadOnly = true;
-                
+
                 btn2.Text = "정보수정";
                 btn1.Text = "비밀번호 변경";
                 btnYn = true;
@@ -346,7 +328,7 @@ namespace WindowsFormsApp
                 btn1.Text = "비밀번호 변경";
                 btn3.Hide();
                 btnYn = true;
-                
+
             }
         }
 
@@ -370,7 +352,7 @@ namespace WindowsFormsApp
         }
         private void Current_FORM_MouseMove(object sender, MouseEventArgs e)
         {
-            StripLb.Text = "(" + e.X + ", " + e.Y + ")";
+            // StripLb.Text = "(" + e.X + ", " + e.Y + ")";
         }
 
         private void label_Click(object sender, EventArgs e)
@@ -378,12 +360,120 @@ namespace WindowsFormsApp
             throw new NotImplementedException();
         }
 
+        public bool GetUPDATE_API(string email, string Phon, string addres, string user_number)
+        {
+            WebClient client = new WebClient();
+            NameValueCollection data = new NameValueCollection();
+            client.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)");
+            client.Encoding = Encoding.UTF8;
+
+            string url = "http://" + webapiUrl + "/GetUPDATE_API";
+            string method = "POST";
+
+            data.Add("email", email);
+            data.Add("Phon", Phon);
+            data.Add("addres", addres);
+            data.Add("user_number", user_number);
+
+            byte[] result = client.UploadValues(url, method, data);
+            string strResult = Encoding.UTF8.GetString(result);
+
+            bool success_chk;
+            if (strResult == "1")
+            {
+                success_chk = true;
+            }
+            else
+            {
+                success_chk = false;
+            }
+
+            return success_chk;
+        }
+
+        public bool GetUPDATE_Pass_API(string passwod, string user_number)
+        {
+            WebClient client = new WebClient();
+            NameValueCollection data = new NameValueCollection();
+            client.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)");
+            client.Encoding = Encoding.UTF8;
+
+            string url = "http://" + webapiUrl + "/GetUPDATE_Pass_API";
+            string method = "POST";
+
+            data.Add("passwod", passwod);
+            data.Add("user_number", user_number);
+
+            byte[] result = client.UploadValues(url, method, data);
+            string strResult = Encoding.UTF8.GetString(result);
+
+            bool success_chk;
+            if (strResult == "1")
+            {
+                success_chk = true;
+            }
+            else
+            {
+                success_chk = false;
+            }
+
+            return success_chk;
+        }
+
+        public string user_ID_Select_API(string PWtext)
+        {
+            WebClient client = new WebClient();
+            NameValueCollection data = new NameValueCollection();
+            client.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)");
+            client.Encoding = Encoding.UTF8;
+
+            string url = "http://" + webapiUrl + "/user_ID_Select_API";
+            string method = "POST";
+
+            data.Add("PWtext", PWtext);
+
+            byte[] result = client.UploadValues(url, method, data);
+            string strResult = Encoding.UTF8.GetString(result);
+
+            return strResult;
+        }
+
+
+        public ArrayList signup_user_number_GetSelect_API(string user)
+        {
+            WebClient client = new WebClient();
+            NameValueCollection data = new NameValueCollection();
+            client.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)");
+            client.Encoding = Encoding.UTF8;
+
+            string url = "http://" + webapiUrl + "/signup_user_number_GetSelect_API";
+            string method = "POST";
+
+
+            data.Add("user", user);
+
+            byte[] result = client.UploadValues(url, method, data);
+            string strResult = Encoding.UTF8.GetString(result);
+
+            ArrayList jList = JsonConvert.DeserializeObject<ArrayList>(strResult);
+            ArrayList list = new ArrayList();
+            foreach (JObject row in jList)
+            {
+                Hashtable ht = new Hashtable();
+                foreach (JProperty col in row.Properties())
+                {
+                    ht.Add(col.Name, col.Value);
+                }
+                list.Add(ht);
+            }
+
+            return list;
+        }
+
         public void GetUPDATE(string email, string Phon, string addres, string user_number)
         {
 
-            MySql my = new MySql();
-            string sql = string.Format("UPDATE signup set email = '{0}',phone_number = '{1}',address = '{2}' where user_number = {3};", email, Phon, addres, user_number);
-            if (my.NonQuery(sql)) MessageBox.Show("수정 완료");
+            if (GetUPDATE_API(email, Phon, addres, user_number)) MessageBox.Show("수정 완료");
             else MessageBox.Show("수정 실패");
 
         }
@@ -391,49 +481,19 @@ namespace WindowsFormsApp
         public void GetUPDATE_Pass(string passwod, string user_number)
         {
 
-            MySql my = new MySql();
-            string sql = string.Format("UPDATE signup set passwod = '{0}' where user_number = {1};", passwod, user_number);
-            if (my.NonQuery(sql)) MessageBox.Show("수정 완료");
+            if (GetUPDATE_Pass_API(passwod, user_number)) MessageBox.Show("수정 완료");
             else MessageBox.Show("수정 실패");
 
         }
 
         public string user_Select(string PWtext)
         {
-            string p = ".";
-            string sql;
-            MySql my = new MySql();
-            sql = string.Format("select id from signup where passwod = '{0}';", PWtext);
-            MySqlDataReader sdr = my.Reader(sql);
-            while (sdr.Read())
-            {
-                p = sdr.GetValue(0).ToString();
-            }
-
-
-            return p;
+            return user_ID_Select_API(PWtext);
         }
+
         public ArrayList GetSelect(string user)
         {
-            MySql my = new MySql();
-            string sql = string.Format("select * from signup where user_number = {0};", user);
-            MySqlDataReader sdr = my.Reader(sql);
-            //string result = "";
-            ArrayList list = new ArrayList();
-            while (sdr.Read())
-            {
-                Hashtable ht = new Hashtable();
-                for (int i = 0; i < sdr.FieldCount; i++)
-                {
-                    //result += string.Format("{0}\t:\t{1}\t", sdr.GetName(i), sdr.GetValue(i));
-                    ht.Add(sdr.GetName(i), sdr.GetValue(i));
-
-                }
-                //result += "\n";
-                list.Add(ht);
-                Console.WriteLine(list.ToString());
-            }
-            return list;
+            return signup_user_number_GetSelect_API(user);
         }
 
     }

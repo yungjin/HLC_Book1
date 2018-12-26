@@ -1,5 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
@@ -12,11 +16,11 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace WindowsFormsApp
-{
+{    
+
     class COMMON_Create_Ctl
     {
-        string userID = "hlc";
-        string password = "rneldkzkepal1942!";
+        string webapiUrl = "ljh5432.iptime.org:5000";
 
         public ListView listView(LISTVIEWclass lstView_obj)
         {
@@ -38,6 +42,7 @@ namespace WindowsFormsApp
             //listView.BackColor = Color.White;                    
             listView.GridLines = true;
             listView.FullRowSelect = true;
+            listView.MultiSelect = false;
             listView.Location = new Point(lstView_obj.PX, lstView_obj.PY);
             listView.Name = lstView_obj.Name;
             listView.Size = new Size(lstView_obj.SX, lstView_obj.SY);
@@ -227,67 +232,55 @@ namespace WindowsFormsApp
 
         public void delay_rental_check()
         {
-            MySql mysql = new MySql();
-            string sql = string.Format("update book_rental set rental_status = 1 where rental_number in (select rental_number from book_rental where (TO_DAYS(now()) - TO_DAYS(return_schedule)) > 0 and rental_status <> 2);");
-            bool status = mysql.NonQuery_INSERT(sql);
-
-            if (status)
+            try
             {
-                //MessageBox.Show("미반납 상태 업데이트 완료");
+                bool status = common_create_ctl_delay_rental_check();
+
+                if (status)
+                {
+                    // MessageBox.Show("미반납 상태 업데이트 완료");
+                }
+                else
+                {
+                    //MessageBox.Show("미반납 상태 업데이트 실패");
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+
+
+        }
+
+        //public ArrayList common_create_ctl_delay_rental_check()
+        public bool common_create_ctl_delay_rental_check()
+        {
+            WebClient client = new WebClient();
+            NameValueCollection data = new NameValueCollection();
+            client.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)");
+            client.Encoding = Encoding.UTF8;
+
+            string url = "http://" + webapiUrl + "/common_create_ctl_delay_rental_check";
+            string method = "POST";
+
+            data.Add("rental_status", "1");
+
+            byte[] result = client.UploadValues(url, method, data);
+            string strResult = Encoding.UTF8.GetString(result);
+
+            bool success_chk;
+            if (strResult == "1")
+            {
+                success_chk = true;
             }
             else
             {
-                //MessageBox.Show("미반납 상태 업데이트 실패");
+                success_chk = false;
             }
+
+            return success_chk;
         }
-
-
-        public bool UploadFTPFile(string sourceFilePath, string FileName)
-        {
-            try
-            {
-                string targetFileURI = "ftp://ljh5432.iptime.org:1942/";
-                targetFileURI = targetFileURI + FileName;
-
-                //MessageBox.Show("@sourceFilePath : " + @sourceFilePath + ", targetFileURI : " + targetFileURI);
-
-                Uri targetFileUri = new Uri(targetFileURI);
-
-                FtpWebRequest ftpWebRequest = WebRequest.Create(targetFileUri) as FtpWebRequest;
-
-                ftpWebRequest.Credentials = new NetworkCredential(userID, password);
-                ftpWebRequest.Method = WebRequestMethods.Ftp.UploadFile;
-
-                FileStream sourceFileStream = new FileStream(@sourceFilePath, FileMode.Open, FileAccess.Read);
-                Stream targetStream = ftpWebRequest.GetRequestStream();
-
-                byte[] bufferByteArray = new byte[1024];
-
-                while (true)
-                {
-                    int byteCount = sourceFileStream.Read(bufferByteArray, 0, bufferByteArray.Length);
-
-                    if (byteCount == 0)
-                    {
-                        break;
-                    }
-                    targetStream.Write(bufferByteArray, 0, byteCount);
-                }
-                targetStream.Close();
-                sourceFileStream.Close();
-                MessageBox.Show("이미지 업로드 성공");
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show("이미지 업로드 실패");
-                MessageBox.Show("원인 : " + e);
-                return false;
-            }
-
-            return true;
-
-        }
-
 
         public Image ResizeImage(Image image, int width, int height)
         {
@@ -326,6 +319,16 @@ namespace WindowsFormsApp
             int nWidthEllipse,  // height of ellipse
             int nHeightEllipse  // width of ellipse  
         );
+
+
+        public string WebapiUrl
+        {
+            get
+            {
+                return webapiUrl;
+            }            
+        }
+
 
 
     }

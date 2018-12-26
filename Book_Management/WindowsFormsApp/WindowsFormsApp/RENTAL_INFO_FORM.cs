@@ -1,11 +1,15 @@
 ﻿using MySql.Data.MySqlClient;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -25,13 +29,14 @@ namespace WindowsFormsApp
             InitializeComponent();
             this.Login = Login;
         }
-        
+
         private ListView lv;
         int sX = 1500, sY = 800; // 폼 사이즈 지정.
 
         //===================================================================================
         COMMON_Create_Ctl comm;
         MySql mysql;
+        string webapiUrl;
 
         LISTVIEWclass lv_value;
         ///////// 좌표 체크시 추가 /////////
@@ -41,6 +46,9 @@ namespace WindowsFormsApp
         private string no;
         private void RENTAL_INFO_FORM_Load(object sender, EventArgs e)
         {
+            comm = new COMMON_Create_Ctl();
+            webapiUrl = comm.WebapiUrl;
+
             FormBorderStyle = FormBorderStyle.None;// 폼 상단 표시줄 제거
 
             Login = new LOGIN_FORM();
@@ -48,13 +56,13 @@ namespace WindowsFormsApp
             //this.Region = Region.FromHrgn(COMMON_Create_Ctl.CreateRoundRectRgn(2, 2, this.Width, this.Height, 15, 15));
             //Point_Print(); //좌표 
             ClientSize = new Size(sX, sY);  // 폼 사이즈 지정.
-            comm = new COMMON_Create_Ctl();
+            
             comm.delay_rental_check();
             mysql = new MySql();
             this.BackColor = Color.FromArgb(201, 253, 223); //백컬러
             //리스트뷰===============================================================================================================================================
 
-            lv_value = new LISTVIEWclass(this, "ListView1", 1300, 600, 100, 50, listView_MouseClick, listview_mousedoubleclick, 8, "대여번호", 100, "도서명", 260, "저자", 158, "출판사", 180, "대여일", 200, "반납일", 200, "연체일", 100, "상태", 100);
+            lv_value = new LISTVIEWclass(this, "ListView1", 1300, 600, 100, 50, listView_MouseClick, listview_mousedoubleclick, 9, "", 0, "대여번호", 120, "도서명", 260, "저자", 158, "출판사", 180, "대여일", 170, "반납일", 170, "연체일", 120, "상태", 120);
             lv = comm.listView(lv_value);
             Controls.Add(lv);
             lv.Font = new Font("Arial", 18, FontStyle.Bold);
@@ -74,10 +82,10 @@ namespace WindowsFormsApp
             Controls.Add(btn);
             //라벨 ========================================================================================================================================================
             ArrayList lbarray = new ArrayList();
-            lbarray.Add(new LBclass(this, "상태", "상태:", 30, 70, 50, 95, 660, label_Click));
+            lbarray.Add(new LBclass(this, "상태", "상태:", 30, 80, 50, 95, 660, label_Click));
             lbarray.Add(new LBclass(this, "staitus", "대여가능", 15, 100, 20, 170, 668, label_Click));
             lbarray.Add(new LBclass(this, "설명1", "※3회 연체, 7일이상 연체시 대여 불가상태가 됩니다.", 12, 390, 20, 830, 670, label_Click));
-            lbarray.Add(new LBclass(this, "설명2", "해당 도서를 선택후 반납 버튼을 클릭하여 주세요.", 12, 380, 20, 845 ,690, label_Click));
+            lbarray.Add(new LBclass(this, "설명2", "해당 도서를 선택후 반납 버튼을 클릭하여 주세요.", 12, 380, 20, 845, 690, label_Click));
 
             for (int i = 0; i < lbarray.Count; i++)
             {
@@ -94,10 +102,10 @@ namespace WindowsFormsApp
             //=================================================================================================================================================
 
         }
-        
+
         private void label_Click(object sender, EventArgs e)
         {
-         
+
         }
 
         private void btn1_Click(object sender, EventArgs e)
@@ -106,31 +114,32 @@ namespace WindowsFormsApp
             List_Views();
         }
         // 리스트뷰 ============================================================================================================================================
-        public void List_Views() 
+        public void List_Views()
         {
 
             lv.Items.Clear();
             ArrayList arry = GetSelect();
             foreach (Hashtable ht in arry)
             {
-                ListViewItem item = new ListViewItem(ht["대여번호"].ToString());
+                ListViewItem item = new ListViewItem("");
+                item.SubItems.Add(ht["대여번호"].ToString());
                 item.SubItems.Add(ht["도서명"].ToString());
                 item.SubItems.Add(ht["저자"].ToString());
                 item.SubItems.Add(ht["출판사"].ToString());
                 item.SubItems.Add(ht["대여일"].ToString().Substring(0, 10));
-                item.SubItems.Add(ht["반납일"].ToString().Substring(0, 10));             
-                item.SubItems.Add(ht["연체일"].ToString());                
+                item.SubItems.Add(ht["반납일"].ToString().Substring(0, 10));
+                item.SubItems.Add(ht["연체일"].ToString());
                 item.SubItems.Add(ht["상태"].ToString());
                 lv.Items.Add(item);
             }
-             
+
             Controls.Add(lv);
 
         }
         // 리스트뷰 클릭 =====================================================================================================
         private void listview_mousedoubleclick(object sender, MouseEventArgs e)
         {
-            
+
         }
         // 리스트뷰 클릭 =====================================================================================================
         private void listView_MouseClick(object sender, MouseEventArgs e)
@@ -141,66 +150,124 @@ namespace WindowsFormsApp
             for (int i = 0; i < slv.Count; i++)
             {
                 ListViewItem item = slv[i];
-                no = item.SubItems[0].Text;
+                no = item.SubItems[1].Text;
                 //MessageBox.Show(no);
             }
         }
 
-        public ArrayList GetSelect()
+
+        public ArrayList rental_info_form_GetSelect(string user_number)
         {
-            
-            MySql my = new MySql();
-            string sql = string.Format("select    R.rental_number 대여번호,	I.title 도서명, I.author 저자, I.publisher 출판사, R.rental_day 대여일, R.return_schedule 반납일," +
-                            " case	" +
-                            " when TO_DAYS(now()) - TO_DAYS(return_schedule) > 0 then '연체됨' " +
-                            " when TO_DAYS(now()) - TO_DAYS(return_schedule) <= 0 then '연체안됨' " +
-                            " else '' " +
-                            " end 연체일," +
-                            " case	" +
-                            " when R.rental_status = 0 then '대여중' " +
-                            " when R.rental_status = 1 then '반납요망' " +
-                            " else '' " +
-                            " end 상태 " +
-                            " from	book_info as I " +
-                            " inner join book_rental as R on " +
-                            " (I.book_number = R.book_number)" +
-                            "WHERE R.user_number = {0} && (R.rental_status = 1 || R.rental_status = 0);",Login.User_Number.ToString());
-            MySqlDataReader sdr = my.Reader(sql);
-            //string result = "";
+            WebClient client = new WebClient();
+            NameValueCollection data = new NameValueCollection();
+            client.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)");
+            client.Encoding = Encoding.UTF8;
+
+            string url = "http://" + webapiUrl  + "/ rental_info_form_GetSelect";
+            string method = "POST";
+
+
+            data.Add("user_number", user_number);
+
+            byte[] result = client.UploadValues(url, method, data);
+            string strResult = Encoding.UTF8.GetString(result);
+
+            ArrayList jList = JsonConvert.DeserializeObject<ArrayList>(strResult);
             ArrayList list = new ArrayList();
-            while (sdr.Read())
+            foreach (JObject row in jList)
             {
                 Hashtable ht = new Hashtable();
-                for (int i = 0; i < sdr.FieldCount; i++)
+                foreach (JProperty col in row.Properties())
                 {
-                    //result += string.Format("{0}\t:\t{1}\t", sdr.GetName(i), sdr.GetValue(i));
-                    ht.Add(sdr.GetName(i), sdr.GetValue(i));
-
+                    ht.Add(col.Name, col.Value);
                 }
-                //result += "\n";
                 list.Add(ht);
-                Console.WriteLine(list.ToString());
             }
+
             return list;
+        }
+
+        public bool rental_info_book_rental_update(string no)
+        {
+            WebClient client = new WebClient();
+            NameValueCollection data = new NameValueCollection();
+            client.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)");
+            client.Encoding = Encoding.UTF8;
+
+            string url = "http://" + webapiUrl + "/rental_info_book_rental_update";
+            string method = "POST";
+
+            data.Add("no", no);
+
+            byte[] result = client.UploadValues(url, method, data);
+            string strResult = Encoding.UTF8.GetString(result);
+
+            bool success_chk;
+            if (strResult == "1")
+            {
+                success_chk = true;
+            }
+            else
+            {
+                success_chk = false;
+            }
+
+            return success_chk;
+        }
+
+        public bool rental_info_book_info_update(string no)
+        {
+            WebClient client = new WebClient();
+            NameValueCollection data = new NameValueCollection();
+            client.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)");
+            client.Encoding = Encoding.UTF8;
+
+            string url = "http://" + webapiUrl + "/rental_info_book_info_update";
+            string method = "POST";
+
+            data.Add("no", no);
+
+            byte[] result = client.UploadValues(url, method, data);
+            string strResult = Encoding.UTF8.GetString(result);
+
+            bool success_chk;
+            if (strResult == "1")
+            {
+                success_chk = true;
+            }
+            else
+            {
+                success_chk = false;
+            }
+
+            return success_chk;
+        }
+
+        public ArrayList GetSelect()
+        {
+            return rental_info_form_GetSelect(Login.User_Number.ToString());
         }
 
         public void GetUpdate()
         {
-            
-            MySql mysql = new MySql();
-            string sql = string.Format("update book_rental set rental_status = 2 WHERE rental_number = {0};", no );
-            bool status = mysql.NonQuery_INSERT(sql);
+
+            bool status = rental_info_book_rental_update(no);
 
             if (status)
             {
-                mysql = new MySql();
-                sql = string.Format("update book_info set availability = '가능' where book_number in (select book_number from book_rental where rental_status = 2);");
-                status = mysql.NonQuery_INSERT(sql);
-                MessageBox.Show("반납성공");
+
+                if (rental_info_book_info_update(no))
+                {
+                    MessageBox.Show("반납 되었습니다.");
+                }
+                else
+                {
+                    MessageBox.Show("대여상태 가능 업데이트 중 오류 발생.");
+                }
             }
             else
             {
-                MessageBox.Show("반납실패 관리자에게 문의해 주세요.");
+                MessageBox.Show("반납 중 오류 발생.");
             }
         }
 
@@ -224,7 +291,7 @@ namespace WindowsFormsApp
         }
         private void Current_FORM_MouseMove(object sender, MouseEventArgs e)
         {
-            StripLb.Text = "(" + e.X + ", " + e.Y + ")";
+            // StripLb.Text = "(" + e.X + ", " + e.Y + ")";
         }
     }
 }

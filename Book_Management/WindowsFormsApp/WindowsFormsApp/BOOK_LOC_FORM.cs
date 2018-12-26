@@ -17,9 +17,6 @@ namespace WindowsFormsApp
         PictureBox pictureBox;
 
         public BOOK_LOC_FORM()
-
-
-
         {
             InitializeComponent();
             Load += BOOK_LOC_FORM_Load;
