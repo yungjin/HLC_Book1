@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -13,6 +15,7 @@ namespace WindowsFormsApp
 {
     public partial class SIGNUP_FORM : Form
     {
+        string webapiUrl = "192.168.3.88:5000";
 
         int sX = 1500, sY = 800; // 폼 사이즈 지정.
 
@@ -193,26 +196,58 @@ namespace WindowsFormsApp
 
         public void GetInsert(string ID, string Pass, string Name, string Gender, string Birth, string email, string Phon, string addres)
         {
-            MySql my = new MySql();
-            string sql = string.Format("INSERT INTO signup(id,passwod,name,gender,birthday,email,phone_number,address) values ('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}');", ID, Pass, Name, Gender, Birth, email, Phon, addres);
 
-            if (my.NonQuery(sql))
+            if (signup_form_GetInsert(ID, Pass, Name, Gender, Birth, email, Phon, addres))
             {
                 MessageBox.Show("회원가입 완료!");
 
                 this.Hide();
                 main.Login.Show();
             }
-
             else
             {
-                MessageBox.Show("가입실패");
+                MessageBox.Show("가입 실패");
 
 
                 this.Hide();
                 main.user1.Show();
             }
 
+        }
+
+        public bool signup_form_GetInsert(string ID, string Pass, string Name, string Gender, string Birth, string email, string Phon, string addres)
+        {
+            WebClient client = new WebClient();
+            NameValueCollection data = new NameValueCollection();
+            client.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)");
+            client.Encoding = Encoding.UTF8;
+
+            string url = "http://" + webapiUrl + "/signup_form_GetInsert";
+            string method = "POST";
+
+            data.Add("ID", ID);
+            data.Add("Pass", Pass);
+            data.Add("Name", Name);
+            data.Add("Gender", Gender);
+            data.Add("Birth", Birth);
+            data.Add("email", email);
+            data.Add("Phon", Phon);
+            data.Add("addres", addres);
+
+            byte[] result = client.UploadValues(url, method, data);
+            string strResult = Encoding.UTF8.GetString(result);
+
+            bool success_chk;
+            if (strResult == "1")
+            {
+                success_chk = true;
+            }
+            else
+            {
+                success_chk = false;
+            }
+
+            return success_chk;
         }
     }
 }

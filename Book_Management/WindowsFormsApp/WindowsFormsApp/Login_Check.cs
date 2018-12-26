@@ -54,7 +54,7 @@ namespace WindowsFormsApp
 
         private void label_Click(object sender, EventArgs e)
         {
-            
+
         }
     }
 }

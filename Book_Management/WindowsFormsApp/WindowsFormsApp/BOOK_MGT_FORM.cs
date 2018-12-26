@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -17,8 +19,9 @@ namespace WindowsFormsApp
 {
     public partial class BOOK_MGT_FORM : Form
     {
-        string search_category = "";
         int sX = 1500, sY = 800; // 폼 사이즈 지정.
+
+        string webapiUrl = "192.168.3.88:5000";
 
         ///////// 좌표 체크시 추가 /////////
         static ToolStripStatusLabel StripLb;
@@ -30,14 +33,9 @@ namespace WindowsFormsApp
         private OpenFileDialog openFileDialog1 = new OpenFileDialog();  // openFileDialog1 변수 선언 및 초기화
         public static string _Slected_File_RootPath;
         PictureBox 책이미지;
-        ListView 책정보검색_리스트뷰;
-        TextBox 책정보검색상자;
         TextBox 간략소개상자;
-        ComboBox 콤보박스검색카테고리;
         ListView 요청입고_리스트뷰;
 
-        string new_book_number;
-        TextBox 번호값;
         TextBox 제목값;
         TextBox 저자값;
         TextBox 출판사값;
@@ -46,7 +44,7 @@ namespace WindowsFormsApp
         String 이미지Load경로 = "";
         String 본파일이름 = "";
 
-        int request_number = 0;
+        int request_number = 0;       
 
 
         public BOOK_MGT_FORM()
@@ -160,12 +158,12 @@ namespace WindowsFormsApp
                 }
             }
 
-                       
+
 
             ArrayList btnarry = new ArrayList();
             btnarry.Add(new BTNclass(this, "등록버튼", "등 록", 120, 50, 575, 670, btn_Click));
             btnarry.Add(new BTNclass(this, "이미지추가버튼", "도서 이미지 추가", 180, 30, 32, 285, btn_Click));
-            btnarry.Add(new BTNclass(this, "요청리스트삭제", "요청 리스트 삭제", 180, 30, 1239, 60, btn_Click));
+            btnarry.Add(new BTNclass(this, "요청리스트삭제", "요청 리스트 삭제", 180, 40, 1295, 50, btn_Click));
 
             for (int i = 0; i < btnarry.Count; i++)
             {
@@ -186,15 +184,16 @@ namespace WindowsFormsApp
 
                 if (버튼.Name == "요청리스트삭제")
                 {
+                    버튼.Font = new Font(버튼.Font.Name, 13, FontStyle.Bold);
                     Controls.Add(버튼);
                 }
                 else
                 {
                     책정보패널.Controls.Add(버튼);
                 }
-                    
+
             }
-                                   
+
 
 
             LBclass 요청입고목록값 = new LBclass(this, "요청입고목록", "입고 요청한 도서 목록", 24, 400, 40, 770, 40, label_Click);
@@ -209,7 +208,8 @@ namespace WindowsFormsApp
 
             MySql mysql = new MySql();
 
-            ArrayList Receiving_equest_arry = mysql.Select(string.Format("select R.request_number, S.user_number, S.name, R.title, R.author, R.publisher, R.genre from signup S inner join Receiving_equest R on (S.user_number = R.user_number);"));
+
+            ArrayList Receiving_equest_arry = Select_Webapi("request_listview");
             foreach (Hashtable ht in Receiving_equest_arry)
             {
                 ListViewItem item = new ListViewItem(ht["request_number"].ToString());
@@ -230,7 +230,131 @@ namespace WindowsFormsApp
 
         }
 
+        public ArrayList Select_Webapi(string controll_name)
+        {
+            WebClient client = new WebClient();
+            //NameValueCollection data = new NameValueCollection();
+            client.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)");
+            client.Encoding = Encoding.UTF8;    //한글처리
 
+            string url = "http://" + webapiUrl + "/" + controll_name;
+            Stream result = client.OpenRead(url);
+
+            StreamReader sr = new StreamReader(result);
+            string str = sr.ReadToEnd();
+
+            ArrayList jList = JsonConvert.DeserializeObject<ArrayList>(str);
+            ArrayList list = new ArrayList();
+            foreach (JObject row in jList)
+            {
+                Hashtable ht = new Hashtable();
+                foreach (JProperty col in row.Properties())
+                {
+                    ht.Add(col.Name, col.Value);
+                }
+                list.Add(ht);
+            }
+
+            return list;
+        }
+
+        public ArrayList book_mgt_request_listview_click_select_post(string request_number)
+        {
+            WebClient client = new WebClient();
+            NameValueCollection data = new NameValueCollection();
+            client.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)");
+            client.Encoding = Encoding.UTF8;
+
+            string url = "http://" + webapiUrl + "/book_mgt_request_listview_click_select_post";
+            string method = "POST";
+
+
+            data.Add("request_number", request_number);
+
+            byte[] result = client.UploadValues(url, method, data);
+            string strResult = Encoding.UTF8.GetString(result);
+
+            ArrayList jList = JsonConvert.DeserializeObject<ArrayList>(strResult);
+            ArrayList list = new ArrayList();
+            foreach (JObject row in jList)
+            {
+                Hashtable ht = new Hashtable();
+                foreach (JProperty col in row.Properties())
+                {
+                    ht.Add(col.Name, col.Value);
+                }
+                list.Add(ht);
+            }
+
+            return list;
+        }
+
+        public bool book_mgt_register_btn(string title, string author, string publisher, string genre, string book_location, string brief_introduction, string image_location, string image_FileName)
+        {
+            WebClient client = new WebClient();
+            NameValueCollection data = new NameValueCollection();
+            client.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)");
+            client.Encoding = Encoding.UTF8;
+
+            string url = "http://" + webapiUrl + "/book_mgt_register_btn";
+            string method = "POST";
+
+
+            data.Add("title", title);
+            data.Add("author", author);
+            data.Add("publisher", publisher);
+            data.Add("genre", genre);
+            data.Add("book_location", book_location);
+            data.Add("brief_introduction", brief_introduction);
+            data.Add("image_location", image_location);
+            data.Add("image_FileName", image_FileName);
+
+
+            byte[] result = client.UploadValues(url, method, data);
+            string strResult = Encoding.UTF8.GetString(result);
+
+            bool success_chk;
+            if (strResult == "1")
+            {
+                success_chk = true;
+            }
+            else
+            {
+                success_chk = false;
+            }
+
+            return success_chk;
+        }
+
+        public bool request_list_delete(string request_number)
+        {
+            WebClient client = new WebClient();
+            NameValueCollection data = new NameValueCollection();
+            client.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)");
+            client.Encoding = Encoding.UTF8;
+
+            string url = "http://" + webapiUrl + "/request_list_delete";
+            string method = "POST";
+
+
+            data.Add("request_number", request_number);
+
+
+            byte[] result = client.UploadValues(url, method, data);
+            string strResult = Encoding.UTF8.GetString(result);
+
+            bool success_chk;
+            if (strResult == "1")
+            {
+                success_chk = true;
+            }
+            else
+            {
+                success_chk = false;
+            }
+
+            return success_chk;
+        }
 
         ////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -246,7 +370,7 @@ namespace WindowsFormsApp
         // 리스트뷰 더블클릭
         private void listview_mousedoubleclick(object sender, MouseEventArgs e)
         {
-           // MessageBox.Show("마우스 더블클릭 동작확인");
+            // MessageBox.Show("마우스 더블클릭 동작확인");
         }
 
         // 리스트뷰 마우스클릭
@@ -260,7 +384,7 @@ namespace WindowsFormsApp
 
             MySql mysql = new MySql();
 
-            ArrayList Receiving_equest_arry = mysql.Select(string.Format("select R.request_number, S.user_number, S.name, R.title, R.author, R.publisher, R.genre from signup S inner join Receiving_equest R on (S.user_number = R.user_number and R.request_number = {0});", request_number));
+            ArrayList Receiving_equest_arry = book_mgt_request_listview_click_select_post(request_number.ToString());
             foreach (Hashtable ht in Receiving_equest_arry)
             {
                 제목값.Text = ht["title"].ToString();
@@ -269,7 +393,7 @@ namespace WindowsFormsApp
                 장르값.Text = ht["genre"].ToString();
                 도서위치값.Text = "";
             }
-        }       
+        }
 
 
         // 콤보박스 인덱스 선택
@@ -284,7 +408,7 @@ namespace WindowsFormsApp
 
             MySql mysql = new MySql();
 
-            ArrayList Receiving_equest_arry = mysql.Select(string.Format("select R.request_number, S.user_number, S.name, R.title, R.author, R.publisher, R.genre from signup S inner join Receiving_equest R on (S.user_number = R.user_number);"));
+            ArrayList Receiving_equest_arry = Select_Webapi("request_listview");
             foreach (Hashtable ht in Receiving_equest_arry)
             {
                 ListViewItem item = new ListViewItem(ht["request_number"].ToString());
@@ -311,13 +435,13 @@ namespace WindowsFormsApp
             /// 입고요청 버튼 설정. 
             if (button.Name == "이미지추가버튼")
             {
-               // MessageBox.Show("이미지추가버튼");
+                // MessageBox.Show("이미지추가버튼");
                 WebApi_Image_Select();
                 //Image_Select();
             }
             else if (button.Name == "등록버튼")
             {
-              //  MessageBox.Show("등록버튼");
+                //  MessageBox.Show("등록버튼");
 
                 if (제목값.Text == "" || 저자값.Text == "" || 출판사값.Text == "" || 장르값.Text == "" || 도서위치값.Text == "" || 간략소개상자.Text == "" || 이미지Load경로 == "" || 본파일이름 == "")
                 {
@@ -325,12 +449,16 @@ namespace WindowsFormsApp
                     return;
                 }
 
-               // MessageBox.Show("이미지Load경로 : " + 이미지Load경로);
-              //  MessageBox.Show("본파일이름 : " + 본파일이름);
+                // MessageBox.Show("이미지Load경로 : " + 이미지Load경로);
+                //  MessageBox.Show("본파일이름 : " + 본파일이름);
 
                 MySql mysql = new MySql();
-                string sql = string.Format("insert into book_info(title, author, publisher, genre, book_location, brief_introduction, image_location, image_FileName) values('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}');", 제목값.Text, 저자값.Text, 출판사값.Text, 장르값.Text, 도서위치값.Text, 간략소개상자.Text, 이미지Load경로, 본파일이름);
-                bool status = mysql.NonQuery_INSERT(sql);
+
+                string Temp = "";
+                Temp = 간략소개상자.Text.Replace("\'", "\"");
+                간략소개상자.Text = Temp;
+
+                bool status = book_mgt_register_btn(제목값.Text, 저자값.Text, 출판사값.Text, 장르값.Text, 도서위치값.Text, 간략소개상자.Text, 이미지Load경로, 본파일이름);
 
                 if (status)
                 {
@@ -342,26 +470,24 @@ namespace WindowsFormsApp
                 }
             }
 
-            if(button.Name == "요청리스트삭제")
+            if (button.Name == "요청리스트삭제")
             {
-                if(request_number == 0)
+                if (request_number == 0)
                 {
                     MessageBox.Show("삭제 할 리스트를 선택해주세요");
                     return;
                 }
 
                 MySql mysql = new MySql();
-                string sql = string.Format("delete from Receiving_equest where request_number = {0};", request_number);
-                bool status = mysql.NonQuery_INSERT(sql);
+                bool status = request_list_delete(request_number.ToString());
 
                 if (status)
                 {
-                    // MessageBox.Show("등록이 완료 되었습니다.");
                     list_Refresh();
                 }
                 else
                 {
-                    MessageBox.Show("삭제 중 오류가 발생하였습니다.");
+                    MessageBox.Show("요청리스트 삭제 중 오류가 발생하였습니다.");
                 }
             }
 
@@ -369,7 +495,7 @@ namespace WindowsFormsApp
 
         private void label_Click(Object o, EventArgs e)
         {
-           // MessageBox.Show("동작확인 : label_Click");
+            // MessageBox.Show("동작확인 : label_Click");
         }
 
         private void txtbox_Click(Object o, EventArgs e)
@@ -380,44 +506,44 @@ namespace WindowsFormsApp
 
         private void chkbox_Click(Object o, EventArgs e)
         {
-            MessageBox.Show("동작확인 : chkbox_Click2");
+            // MessageBox.Show("동작확인 : chkbox_Click2");
         }
 
         private void radio_btn_Click(Object o, EventArgs e)
         {
-            MessageBox.Show("동작확인 : radio_btn_Click");
+            // MessageBox.Show("동작확인 : radio_btn_Click");
         }
 
         private void picturbox_Click(Object o, EventArgs e)
         {
-            MessageBox.Show("동작확인 : picturbox_Click");
+            // MessageBox.Show("동작확인 : picturbox_Click");
         }
 
         private void panel_Click(Object o, EventArgs e)
         {
-            MessageBox.Show("동작확인 : panel_Click");
+            // MessageBox.Show("동작확인 : panel_Click");
         }
         private void panel_MouseMove(Object o, MouseEventArgs e)
         {
-            StripLb.Text = "(" + e.X + ", " + e.Y + ")";
+            // StripLb.Text = "(" + e.X + ", " + e.Y + ")";
         }
 
         private void tabctl_Click(Object o, EventArgs e)
         {
-            MessageBox.Show("동작확인 : tabctl_Click");
+            //  MessageBox.Show("동작확인 : tabctl_Click");
         }
         private void tabctl_MouseMove(Object o, MouseEventArgs e)
         {
-            StripLb.Text = "(" + e.X + ", " + e.Y + ")";
+            // StripLb.Text = "(" + e.X + ", " + e.Y + ")";
         }
 
         private void tabpage_Click(Object o, EventArgs e)
         {
-            MessageBox.Show("동작확인 : tabpage_Click");
+            // MessageBox.Show("동작확인 : tabpage_Click");
         }
         private void tabpage_MouseMove(Object o, MouseEventArgs e)
         {
-            StripLb.Text = "(" + e.X + ", " + e.Y + ")";
+            //  StripLb.Text = "(" + e.X + ", " + e.Y + ")";
         }
 
         private void WebApi_Image_Select()
@@ -466,38 +592,7 @@ namespace WindowsFormsApp
             }
             else
             {
-                MessageBox.Show("취소");
-            }
-        }
-
-        private void Image_Select()
-        {
-            try
-            {
-                OpenFileDialog openFileDlg = new OpenFileDialog();
-                openFileDlg.DefaultExt = "jpg";
-                openFileDlg.Title = "이미지 업로드";
-                openFileDlg.Filter = "이미지 파일|*.jpg|png 파일|*.png";
-                openFileDialog1.FileName = "";
-                openFileDlg.ShowDialog();
-                if (openFileDlg.FileName.Length > 0)
-                {
-                    foreach (string file_root in openFileDlg.FileNames)
-                    {
-                        _Slected_File_RootPath = file_root;
-                        string fileName = _Slected_File_RootPath.Substring(_Slected_File_RootPath.LastIndexOf("\\") + 1);
-                        fileName = fileName.Replace("#", "샵");
-                        이미지Load경로 = fileName;
-                        //MessageBox.Show("_Slected_File_RootPath : " + _Slected_File_RootPath + ", fileName : " + fileName);
-
-                        comm.UploadFTPFile(_Slected_File_RootPath, fileName);
-                        책이미지.ImageLocation = "http://ljh5432.iptime.org:81/ImageCollection/" + fileName; // fileName : FTP에서 불러올 파일 이름.
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("이미지 지정 실패");
+                // MessageBox.Show("취소");
             }
         }
 
@@ -524,7 +619,7 @@ namespace WindowsFormsApp
         }
         private void Current_FORM_MouseMove(object sender, MouseEventArgs e)
         {
-            StripLb.Text = "(" + e.X + ", " + e.Y + ")";
+            // StripLb.Text = "(" + e.X + ", " + e.Y + ")";
         }
         ///////////////////////////////////////////////////////////////////////
         ///

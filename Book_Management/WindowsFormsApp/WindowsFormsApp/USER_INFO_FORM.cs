@@ -1,10 +1,14 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -13,6 +17,8 @@ namespace WindowsFormsApp
 {
     public partial class USER_INFO_FORM : Form
     {
+        string webapiUrl = "192.168.3.88:5000";
+
         int sX = 1500, sY = 800; // 폼 사이즈 지정.
 
         ///////// 좌표 체크시 추가 /////////
@@ -24,8 +30,6 @@ namespace WindowsFormsApp
 
         private OpenFileDialog openFileDialog1 = new OpenFileDialog();  // openFileDialog1 변수 선언 및 초기화
         public static string _Slected_File_RootPath;
-        PictureBox 책이미지;
-        TextBox 텍스트박스;
         TextBox 회원번호값;
         TextBox 연락처값;
         TextBox 이름값;
@@ -62,23 +66,6 @@ namespace WindowsFormsApp
             COMMON_Create_Ctl create_ctl = new COMMON_Create_Ctl();
 
             create_ctl.delay_rental_check();
-
-            // BTNclass bt1 = new BTNclass(this, "버튼Name", "버튼Text", 가로사이즈, 세로사이즈, 가로포인트, 세로포인트, 버튼클릭이벤트);
-            BTNclass bt1 = new BTNclass(this, "Home", "button1", 100, 100, 10, 10, btn_Click);
-            // LBclass lb1 = new LBclass(this, "라벨Name", "라벨Text", 라벨Font사이즈, 가로사이즈, 세로사이즈, 가로포인트, 세로포인트, 라벨클릭이벤트);
-            LBclass lb1 = new LBclass(this, "label1", "label_name~", 24, 100, 100, 10, 10, label_Click);
-            // PANELclass pn1 = new PANELclass(this, "패널Name", "패널Text", 가로사이즈, 세로사이즈, 가로포인트, 세로포인트, 패널마우스이동이벤트);
-            PANELclass pn1 = new PANELclass(this, "panel1", "panel_txt~", 200, 200, 100, 100);
-            // TABCTLclass tabctl = new TABCTLclass(this, "탭컨트롤Name", "탭컨트롤Text", 가로사이즈, 세로사이즈, 가로포인트, 세로포인트, 탭높이, 탭컨트롤마우스이동이벤트);
-            TABCTLclass tabctl = new TABCTLclass(this, "tabctl1", "tabctl1~", 450, 160, 7, 313, 30, tabctl_MouseMove);
-            // TABPAGEclass tabpg1 = new TABPAGEclass(this, "탭페이지Name", "탭페이지Text", 가로사이즈, 세로사이즈, 가로포인트, 세로포인트, 탭페이지마우스이동이벤트);
-            TABPAGEclass tabpg1 = new TABPAGEclass(this, "tabpage1", "tapage1~", 100, 100, 0, 0, tabpage_MouseMove);
-            // CHKBOXclass bhkbox1 = new CHKBOXclass(this, "체크박스Name", 체크박스Text", 가로사이즈, 세로사이즈, 가로포인트, 세로포인트, 체크박스클릭이벤트);
-            CHKBOXclass chkbox1 = new CHKBOXclass(this, "chkbox1", "chkbox1~", 100, 100, 20, 20, chkbox_Click);
-            // LISTVIEWclass listview1 = new LISTVIEWclass(this, "리스트뷰Name", 가로사이즈, 세로사이즈, 가로포인트, 세로포인트, 리스트뷰더블클릭이벤트, 컬럼갯수, "컬럼1번Name", 컬럼1간격, "컬럼2번Name", 컬럼2간격, "컬럼3번Name", 컬럼3간격, ~ 동일방식 10개 컬럼까지 가능);
-            LISTVIEWclass listview1 = new LISTVIEWclass(this, "ListView1", 500, 500, 10, 10, listview_mousedoubleclick, listview_mousedoubleclick, 3, "col1", 100, "col2", 100, "col3", 100);
-            // COMBOBOXclass combobox1 = new COMBOBOXclass(this, "콤보박스Name", 가로사이즈, 세로사이즈, 가로포인트, 세로포인트, 콤보박스클릭이벤트, 리스트추가갯수, "test1", "test2", "test3", "test4", "test5");
-            COMBOBOXclass combobox1 = new COMBOBOXclass(this, "ComboBox1", 100, 100, 721, 12, ComboBox_SelectedIndexChanged, 5, "test1", "test2", "test3", "test4", "test5");
 
             // 회원정보패널
             PANELclass 회원정보패널값 = new PANELclass(this, "회원정보패널", "회원정보패널", 700, 300, 20, 20);
@@ -174,21 +161,7 @@ namespace WindowsFormsApp
             LISTVIEWclass 대여목록_리스트뷰값 = new LISTVIEWclass(this, "대여목록_ListVIew", 700, 350, 20, 407, listView_MouseClick, listview_mousedoubleclick, 6, "", 0, "책번호", 70, "책 이름", 260, "저자", 120, "출판사", 120, "대여현황", 125);
             대여목록_리스트뷰 = comm.listView(대여목록_리스트뷰값);
             대여목록_리스트뷰.Font = new Font("Arial", 14, FontStyle.Bold);
-
-            //mysql = new MySql();
-            //string sql = string.Format("select * from book_info;");
-            //ArrayList bookinfoSearch_arry2 = mysql.Select(sql);
-            //foreach (Hashtable ht in bookinfoSearch_arry2)
-            //{
-            //    ListViewItem item = new ListViewItem("");
-            //    item.SubItems.Add(ht["book_number"].ToString());
-            //    item.SubItems.Add(ht["title"].ToString());
-            //    item.SubItems.Add(ht["author"].ToString());
-            //    item.SubItems.Add(ht["publisher"].ToString());
-            //    item.Font = new Font("Arial", 14, FontStyle.Italic);
-            //    대여목록_리스트뷰.Items.Add(item);
-            //}
-
+            // 처음은 내용 없음으로 빈칸 출력.
             Controls.Add(대여목록_리스트뷰);
 
             //  회원정보검색 - 라벨
@@ -244,7 +217,96 @@ namespace WindowsFormsApp
             Controls.Add(회원정보검색_리스트뷰);
         }
 
+        public ArrayList user_info_form_user_signup(string user_number)
+        {
+            WebClient client = new WebClient();
+            NameValueCollection data = new NameValueCollection();
+            client.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)");
+            client.Encoding = Encoding.UTF8;
 
+            string url = "http://" + webapiUrl + "/user_info_form_user_signup";
+            string method = "POST";
+
+            data.Add("user_number", user_number);
+
+            byte[] result = client.UploadValues(url, method, data);
+            string strResult = Encoding.UTF8.GetString(result);
+
+            ArrayList jList = JsonConvert.DeserializeObject<ArrayList>(strResult);
+            ArrayList list = new ArrayList();
+            foreach (JObject row in jList)
+            {
+                Hashtable ht = new Hashtable();
+                foreach (JProperty col in row.Properties())
+                {
+                    ht.Add(col.Name, col.Value);
+                }
+                list.Add(ht);
+            }
+
+            return list;
+        }
+
+        public ArrayList user_info_form_user_rental_info(string user_number)
+        {
+            WebClient client = new WebClient();
+            NameValueCollection data = new NameValueCollection();
+            client.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)");
+            client.Encoding = Encoding.UTF8;
+
+            string url = "http://" + webapiUrl + "/user_info_form_user_rental_info";
+            string method = "POST";
+
+            data.Add("user_number", user_number);
+
+            byte[] result = client.UploadValues(url, method, data);
+            string strResult = Encoding.UTF8.GetString(result);
+
+            ArrayList jList = JsonConvert.DeserializeObject<ArrayList>(strResult);
+            ArrayList list = new ArrayList();
+            foreach (JObject row in jList)
+            {
+                Hashtable ht = new Hashtable();
+                foreach (JProperty col in row.Properties())
+                {
+                    ht.Add(col.Name, col.Value);
+                }
+                list.Add(ht);
+            }
+
+            return list;
+        }
+
+        public ArrayList user_info_form_user_info_search(string search_category, string textbox_search)
+        {
+            WebClient client = new WebClient();
+            NameValueCollection data = new NameValueCollection();
+            client.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)");
+            client.Encoding = Encoding.UTF8;
+
+            string url = "http://" + webapiUrl + "/user_info_form_user_info_search";
+            string method = "POST";
+
+            data.Add("search_category", search_category);
+            data.Add("textbox_search", textbox_search);
+
+            byte[] result = client.UploadValues(url, method, data);
+            string strResult = Encoding.UTF8.GetString(result);
+
+            ArrayList jList = JsonConvert.DeserializeObject<ArrayList>(strResult);
+            ArrayList list = new ArrayList();
+            foreach (JObject row in jList)
+            {
+                Hashtable ht = new Hashtable();
+                foreach (JProperty col in row.Properties())
+                {
+                    ht.Add(col.Name, col.Value);
+                }
+                list.Add(ht);
+            }
+
+            return list;
+        }
 
         ////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -269,8 +331,8 @@ namespace WindowsFormsApp
             index = 회원정보검색_리스트뷰.FocusedItem.Index;  // 선택돈 아이템 인덱스 번호 얻기
             int user_number = Convert.ToInt32(회원정보검색_리스트뷰.Items[index].SubItems[1].Text); // 인덱스 번호의 n번째 아이템 얻기
 
-            MySql mysql = new MySql();
-            ArrayList bookinfoSearch_arry = mysql.Select(string.Format("select * from signup where user_number = {0}", user_number));
+
+            ArrayList bookinfoSearch_arry = user_info_form_user_signup(user_number.ToString());
             foreach (Hashtable ht in bookinfoSearch_arry)
             {
                 회원번호값.Text = ht["user_number"].ToString();
@@ -280,10 +342,11 @@ namespace WindowsFormsApp
                 블랙리스트값.Text = ht["blacklist"].ToString();
             }
 
+
+
             대여목록_리스트뷰.Items.Clear();
-            mysql = new MySql();
-            sql = string.Format("select	I.book_number, I.title, I.author, I.publisher, case when R.rental_status = 0 then '대여중' when R.rental_status = 1 then '미반납' end as 'rental_status' from	book_info I inner join	book_rental  R on (R.user_number = {0} and I.book_number = R.book_number and R.rental_status <> 2);", user_number);
-            ArrayList bookinfoSearch_arry2 = mysql.Select(sql);
+
+            ArrayList bookinfoSearch_arry2 = user_info_form_user_rental_info(user_number.ToString());
             foreach (Hashtable ht in bookinfoSearch_arry2)
             {
                 ListViewItem item = new ListViewItem("");
@@ -326,9 +389,8 @@ namespace WindowsFormsApp
             {
                 회원정보검색_리스트뷰.Items.Clear();
 
-                MySql mysql = new MySql();
-                //ArrayList bookinfoSearch_arry = mysql.Select(string.Format("select * from book_info where {0} LIKE '%{1}%'", search_category, 책정보검색상자.Text));
-                ArrayList userinfoSearch_arry = mysql.Select(string.Format("select * from signup where {0} LIKE '%{1}%'", search_category, 회원정보검색상자.Text));
+
+                ArrayList userinfoSearch_arry = user_info_form_user_info_search(search_category, 회원정보검색상자.Text);
 
                 foreach (Hashtable ht in userinfoSearch_arry)
                 {
@@ -359,18 +421,17 @@ namespace WindowsFormsApp
 
         private void label_Click(Object o, EventArgs e)
         {
-            MessageBox.Show("동작확인 : label_Click");
+            // MessageBox.Show("동작확인 : label_Click");
         }
 
         private void txtbox_Click(Object o, EventArgs e)
         {
-            return;
-            MessageBox.Show("동작확인 : txtbox_Click");
+            // MessageBox.Show("동작확인 : txtbox_Click");
         }
 
         private void chkbox_Click(Object o, EventArgs e)
         {
-            MessageBox.Show("동작확인 : chkbox_Click2");
+            // MessageBox.Show("동작확인 : chkbox_Click2");
         }
 
         private void radio_btn_Click(Object o, EventArgs e)
@@ -380,66 +441,34 @@ namespace WindowsFormsApp
 
         private void picturbox_Click(Object o, EventArgs e)
         {
-            MessageBox.Show("동작확인 : picturbox_Click");
+            // MessageBox.Show("동작확인 : picturbox_Click");
         }
 
         private void panel_Click(Object o, EventArgs e)
         {
-            MessageBox.Show("동작확인 : panel_Click");
+            // MessageBox.Show("동작확인 : panel_Click");
         }
         private void panel_MouseMove(Object o, MouseEventArgs e)
         {
-            StripLb.Text = "(" + e.X + ", " + e.Y + ")";
+            // StripLb.Text = "(" + e.X + ", " + e.Y + ")";
         }
 
         private void tabctl_Click(Object o, EventArgs e)
         {
-            MessageBox.Show("동작확인 : tabctl_Click");
+            // MessageBox.Show("동작확인 : tabctl_Click");
         }
         private void tabctl_MouseMove(Object o, MouseEventArgs e)
         {
-            StripLb.Text = "(" + e.X + ", " + e.Y + ")";
+            // StripLb.Text = "(" + e.X + ", " + e.Y + ")";
         }
 
         private void tabpage_Click(Object o, EventArgs e)
         {
-            MessageBox.Show("동작확인 : tabpage_Click");
+            // MessageBox.Show("동작확인 : tabpage_Click");
         }
         private void tabpage_MouseMove(Object o, MouseEventArgs e)
         {
-            StripLb.Text = "(" + e.X + ", " + e.Y + ")";
-        }
-
-
-        private void Image_Select()
-        {
-            try
-            {
-                OpenFileDialog openFileDlg = new OpenFileDialog();
-                openFileDlg.DefaultExt = "jpg";
-                openFileDlg.Title = "이미지 업로드";
-                openFileDlg.Filter = "이미지 파일|*.jpg|png 파일|*.png";
-                openFileDialog1.FileName = "";
-                openFileDlg.ShowDialog();
-                if (openFileDlg.FileName.Length > 0)
-                {
-                    foreach (string file_root in openFileDlg.FileNames)
-                    {
-                        _Slected_File_RootPath = file_root;
-                        string fileName = _Slected_File_RootPath.Substring(_Slected_File_RootPath.LastIndexOf("\\") + 1);
-
-                        //MessageBox.Show("_Slected_File_RootPath : " + _Slected_File_RootPath + ", fileName : " + fileName);
-
-                        comm.UploadFTPFile(_Slected_File_RootPath, fileName);
-                        책이미지.ImageLocation = "http://ljh5432.iptime.org:81/ImageCollection/" + fileName; // fileName : FTP에서 불러올 파일 이름.
-                        텍스트박스.Text = fileName;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("이미지 지정 실패");
-            }
+            // StripLb.Text = "(" + e.X + ", " + e.Y + ")";
         }
 
 

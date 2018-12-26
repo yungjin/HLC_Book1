@@ -138,7 +138,7 @@ namespace WindowsFormsApp
             }
             else if (button.Name == "업로드버튼")
             {
-                Image_Select();
+                MessageBox.Show("업로드버튼");
             }
         }
 
@@ -193,39 +193,6 @@ namespace WindowsFormsApp
         {
             StripLb.Text = "(" + e.X + ", " + e.Y + ")";
         }
-
-
-        private void Image_Select()
-        {
-            try
-            {
-                OpenFileDialog openFileDlg = new OpenFileDialog();
-                openFileDlg.DefaultExt = "jpg";
-                openFileDlg.Title = "이미지 업로드";
-                openFileDlg.Filter = "이미지 파일|*.jpg|png 파일|*.png";
-                openFileDialog1.FileName = "";
-                openFileDlg.ShowDialog();
-                if (openFileDlg.FileName.Length > 0)
-                {
-                    foreach (string file_root in openFileDlg.FileNames)
-                    {
-                        _Slected_File_RootPath = file_root;
-                        string fileName = _Slected_File_RootPath.Substring(_Slected_File_RootPath.LastIndexOf("\\") + 1);
-
-                        //MessageBox.Show("_Slected_File_RootPath : " + _Slected_File_RootPath + ", fileName : " + fileName);
-
-                        comm.UploadFTPFile(_Slected_File_RootPath, fileName);
-                        책이미지.ImageLocation = "http://ljh5432.iptime.org:81/ImageCollection/" + fileName; // fileName : FTP에서 불러올 파일 이름.
-                        텍스트박스.Text = fileName;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("이미지 지정 실패");
-            }
-        }
-
 
         ///////////////////////// 좌표 체크시 추가 /////////////////////////////
 

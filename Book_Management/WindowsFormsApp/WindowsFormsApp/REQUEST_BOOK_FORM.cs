@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -13,6 +15,9 @@ namespace WindowsFormsApp
 {
     public partial class REQUEST_BOOK_FORM : Form
     {
+        string webapiUrl = "192.168.3.88:5000";
+
+
         int sX = 580, sY = 480; // 폼 사이즈 지정.
 
         ///////// 좌표 체크시 추가 /////////
@@ -38,7 +43,6 @@ namespace WindowsFormsApp
             // 테두리 색깔 추가
             this.Paint += new PaintEventHandler(UserControl1_Paint);
 
-
             //(좌측상단여백, 우측상단여백, 컨트롤 넓이, 컨트롤 높이, 가로 모서리 원기울기, 세로 모서리 원기울기)
             //this.Region = Region.FromHrgn(COMMON_Create_Ctl.CreateRoundRectRgn(2, 2, this.Width, this.Height, 15, 15));
 
@@ -50,25 +54,6 @@ namespace WindowsFormsApp
 
             /// 좌표 체크시 추가 ///
             //Point_Print();
-
-            COMMON_Create_Ctl create_ctl = new COMMON_Create_Ctl();
-
-            // BTNclass bt1 = new BTNclass(this, "버튼Name", "버튼Text", 가로사이즈, 세로사이즈, 가로포인트, 세로포인트, 버튼클릭이벤트);
-            BTNclass bt1 = new BTNclass(this, "Home", "button1", 100, 100, 10, 10, btn_Click);
-            // LBclass lb1 = new LBclass(this, "라벨Name", "라벨Text", 라벨Font사이즈, 가로사이즈, 세로사이즈, 가로포인트, 세로포인트, 라벨클릭이벤트);
-            LBclass lb1 = new LBclass(this, "label1", "label_name~", 24, 100, 100, 10, 10, label_Click);
-            // PANELclass pn1 = new PANELclass(this, "패널Name", "패널Text", 가로사이즈, 세로사이즈, 가로포인트, 세로포인트, 패널마우스이동이벤트);
-            PANELclass pn1 = new PANELclass(this, "panel1", "panel_txt~", 200, 200, 100, 100);
-            // TABCTLclass tabctl = new TABCTLclass(this, "탭컨트롤Name", "탭컨트롤Text", 가로사이즈, 세로사이즈, 가로포인트, 세로포인트, 탭높이, 탭컨트롤마우스이동이벤트);
-            TABCTLclass tabctl = new TABCTLclass(this, "tabctl1", "tabctl1~", 450, 160, 7, 313, 30, tabctl_MouseMove);
-            // TABPAGEclass tabpg1 = new TABPAGEclass(this, "탭페이지Name", "탭페이지Text", 가로사이즈, 세로사이즈, 가로포인트, 세로포인트, 탭페이지마우스이동이벤트);
-            TABPAGEclass tabpg1 = new TABPAGEclass(this, "tabpage1", "tapage1~", 100, 100, 0, 0, tabpage_MouseMove);
-            // CHKBOXclass bhkbox1 = new CHKBOXclass(this, "체크박스Name", 체크박스Text", 가로사이즈, 세로사이즈, 가로포인트, 세로포인트, 체크박스클릭이벤트);
-            CHKBOXclass chkbox1 = new CHKBOXclass(this, "chkbox1", "chkbox1~", 100, 100, 20, 20, chkbox_Click);
-            // LISTVIEWclass listview1 = new LISTVIEWclass(this, "리스트뷰Name", 가로사이즈, 세로사이즈, 가로포인트, 세로포인트, 리스트뷰더블클릭이벤트, 컬럼갯수, "컬럼1번Name", 컬럼1간격, "컬럼2번Name", 컬럼2간격, "컬럼3번Name", 컬럼3간격, ~ 동일방식 10개 컬럼까지 가능);
-            LISTVIEWclass listview1 = new LISTVIEWclass(this, "ListView1", 500, 500, 10, 10, listview_mousedoubleclick, listview_mousedoubleclick, 3, "col1", 100, "col2", 100, "col3", 100);
-            // COMBOBOXclass combobox1 = new COMBOBOXclass(this, "콤보박스Name", 가로사이즈, 세로사이즈, 가로포인트, 세로포인트, 콤보박스클릭이벤트, 리스트추가갯수, "test1", "test2", "test3", "test4", "test5");
-            COMBOBOXclass combobox1 = new COMBOBOXclass(this, "ComboBox1", 100, 100, 721, 12, ComboBox_SelectedIndexChanged, 5, "test1", "test2", "test3", "test4", "test5");
 
             COMMON_Create_Ctl comm = new COMMON_Create_Ctl();
 
@@ -154,12 +139,12 @@ namespace WindowsFormsApp
 
         private void listview_mousedoubleclick(object sender, MouseEventArgs e)
         {
-            MessageBox.Show("동작확인 : listview_mousedoubleclick");
+            // MessageBox.Show("동작확인 : listview_mousedoubleclick");
         }
 
         private void listView_MouseClick(object sender, MouseEventArgs e)
         {
-            MessageBox.Show("동작확인 : listView_MouseClick");
+            // MessageBox.Show("동작확인 : listView_MouseClick");
         }
 
         private void ComboBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -182,9 +167,15 @@ namespace WindowsFormsApp
 
                 LOGIN_FORM login = new LOGIN_FORM();
 
-                MySql mysql = new MySql();
-                string sql = string.Format("insert into Receiving_equest(title, author, publisher, genre, user_number) values('{0}', '{1}', '{2}', '{3}', {4});", Textbox1.Text, Textbox2.Text, Textbox3.Text, Textbox4.Text, login.User_Number); // 1 : 입고 요청한 user_number 로 등록되도록 변경 필요. 
-                mysql.NonQuery_INSERT(sql);
+
+                if (request_book_form_request_register(Textbox1.Text, Textbox2.Text, Textbox3.Text, Textbox4.Text, login.User_Number.ToString()))
+                {
+                    MessageBox.Show("요청 완료 되었습니다");
+                }
+                else
+                {
+                    MessageBox.Show("요청 실패");
+                }
             }
             else if (button.Name == "취소")
             {
@@ -192,57 +183,89 @@ namespace WindowsFormsApp
             }
         }
 
+        public bool request_book_form_request_register(string title, string author, string publisher, string genre, string user_number)
+        {
+            WebClient client = new WebClient();
+            NameValueCollection data = new NameValueCollection();
+            client.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)");
+            client.Encoding = Encoding.UTF8;
+
+            string url = "http://" + webapiUrl + "/request_book_form_request_register";
+            string method = "POST";
+
+
+            data.Add("title", title);
+            data.Add("author", author);
+            data.Add("publisher", publisher);
+            data.Add("genre", genre);
+            data.Add("user_number", user_number);
+
+            byte[] result = client.UploadValues(url, method, data);
+            string strResult = Encoding.UTF8.GetString(result);
+
+            bool success_chk;
+            if (strResult == "1")
+            {
+                success_chk = true;
+            }
+            else
+            {
+                success_chk = false;
+            }
+
+            return success_chk;
+        }
+
         private void label_Click(Object o, EventArgs e)
         {
-            MessageBox.Show("동작확인 : label_Click");
+            // MessageBox.Show("동작확인 : label_Click");
         }
 
         private void txtbox_Click(Object o, EventArgs e)
         {
-            return;
-            MessageBox.Show("동작확인 : txtbox_Click");
+            // MessageBox.Show("동작확인 : txtbox_Click");
         }
 
         private void chkbox_Click(Object o, EventArgs e)
         {
-            MessageBox.Show("동작확인 : chkbox_Click2");
+            // MessageBox.Show("동작확인 : chkbox_Click2");
         }
 
         private void radio_btn_Click(Object o, EventArgs e)
         {
-            MessageBox.Show("동작확인 : radio_btn_Click");
+            // MessageBox.Show("동작확인 : radio_btn_Click");
         }
 
         private void picturbox_Click(Object o, EventArgs e)
         {
-            MessageBox.Show("동작확인 : picturbox_Click");
+            // MessageBox.Show("동작확인 : picturbox_Click");
         }
 
         private void panel_Click(Object o, EventArgs e)
         {
-            MessageBox.Show("동작확인 : panel_Click");
+            // MessageBox.Show("동작확인 : panel_Click");
         }
         private void panel_MouseMove(Object o, MouseEventArgs e)
         {
-            StripLb.Text = "(" + e.X + ", " + e.Y + ")";
+            // StripLb.Text = "(" + e.X + ", " + e.Y + ")";
         }
 
         private void tabctl_Click(Object o, EventArgs e)
         {
-            MessageBox.Show("동작확인 : tabctl_Click");
+            // MessageBox.Show("동작확인 : tabctl_Click");
         }
         private void tabctl_MouseMove(Object o, MouseEventArgs e)
         {
-            StripLb.Text = "(" + e.X + ", " + e.Y + ")";
+            // StripLb.Text = "(" + e.X + ", " + e.Y + ")";
         }
 
         private void tabpage_Click(Object o, EventArgs e)
         {
-            MessageBox.Show("동작확인 : tabpage_Click");
+            // MessageBox.Show("동작확인 : tabpage_Click");
         }
         private void tabpage_MouseMove(Object o, MouseEventArgs e)
         {
-            StripLb.Text = "(" + e.X + ", " + e.Y + ")";
+            // StripLb.Text = "(" + e.X + ", " + e.Y + ")";
         }
 
 
@@ -268,7 +291,7 @@ namespace WindowsFormsApp
         }
         private void Current_FORM_MouseMove(object sender, MouseEventArgs e)
         {
-            StripLb.Text = "(" + e.X + ", " + e.Y + ")";
+            // StripLb.Text = "(" + e.X + ", " + e.Y + ")";
         }
         ///////////////////////////////////////////////////////////////////////
         ///
