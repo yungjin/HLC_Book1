@@ -179,8 +179,8 @@ namespace WindowsFormsApp
         {
             if (Tb2.Text == Tb3.Text)
             {
-                Birth = Tb6.Text + "-" + combobox1.Text + "-" + Tb10.Text;
-                GetInsert(Tb1.Text, Tb2.Text, Tb4.Text, Birth, Tb6.Text, Tb7.Text, Tb8.Text, Tb9.Text);
+                //Birth = Tb5.Text + "-" + combobox1.Text + "-" + Tb10.Text;
+                GetInsert(Tb1.Text, Tb2.Text, Tb4.Text, Tb5.Text, Tb6.Text, Tb7.Text, Tb8.Text, Tb9.Text);
             }
             else {
                 fail fail = new fail("아이디 또는 비밀번호가 틀립니다.");
