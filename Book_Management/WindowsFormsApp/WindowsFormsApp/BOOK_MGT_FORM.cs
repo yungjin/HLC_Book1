@@ -447,7 +447,8 @@ namespace WindowsFormsApp
 
                 if (제목값.Text == "" || 저자값.Text == "" || 출판사값.Text == "" || 장르값.Text == "" || 도서위치값.Text == "" || 간략소개상자.Text == "" || 이미지Load경로 == "" || 본파일이름 == "")
                 {
-                    MessageBox.Show("빈칸 및 이미지 파일을 등록해주세요.");
+                    fail fail = new fail("빈칸밑 이미지파일 등록");
+                    fail.ShowDialog();
                     return;
                 }
 
@@ -464,11 +465,13 @@ namespace WindowsFormsApp
 
                 if (status)
                 {
-                    MessageBox.Show("등록이 완료 되었습니다.");
+                    fail fail = new fail("등록 완료");
+                    fail.ShowDialog();
                 }
                 else
                 {
-                    MessageBox.Show("등록 중 오류가 발생하였습니다.");
+                    fail fail = new fail("오류 발생");
+                    fail.ShowDialog();
                 }
             }
 
@@ -476,7 +479,8 @@ namespace WindowsFormsApp
             {
                 if (request_number == 0)
                 {
-                    MessageBox.Show("삭제 할 리스트를 선택해주세요");
+                    fail fail = new fail("삭제 할 리스트를 선택해주세요.");
+                    fail.ShowDialog();
                     return;
                 }
 
@@ -489,7 +493,8 @@ namespace WindowsFormsApp
                 }
                 else
                 {
-                    MessageBox.Show("요청리스트 삭제 중 오류가 발생하였습니다.");
+                    fail fail = new fail("요청리스트 삭제 중 오류가 발생하였습니다.");
+                    fail.ShowDialog();
                 }
             }
 
@@ -581,14 +586,16 @@ namespace WindowsFormsApp
                 {
                     byte[] result = wc.UploadValues("http://ljh5432.iptime.org:5000/imageUpload", "POST", param);
                     string resultStr = Encoding.UTF8.GetString(result);
-                    MessageBox.Show("파일 저장 완료 : " + resultStr);
+                    fail fail = new fail("파일 저장 완료");
+                    fail.ShowDialog();
                     이미지Load경로 = resultStr;
                     책이미지.ImageLocation = resultStr; // Webapi Service wwwroot 경로에 파일이름 위치경로.
 
                 }
                 catch
                 {
-                    MessageBox.Show("파일 저장 중 오류 발생");
+                    fail fail = new fail("저장중 오류 발생");
+                    fail.ShowDialog();
                 }
 
             }

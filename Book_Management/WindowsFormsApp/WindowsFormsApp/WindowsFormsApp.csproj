@@ -64,12 +64,24 @@
       <DependentUpon>BOOK_MGT_FORM.cs</DependentUpon>
     </Compile>
     <Compile Include="BTNclass.cs" />
+    <Compile Include="check.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="check.Designer.cs">
+      <DependentUpon>check.cs</DependentUpon>
+    </Compile>
     <Compile Include="CHKBOXclass.cs" />
     <Compile Include="DETAIL_BOOK_FORM.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="DETAIL_BOOK_FORM.Designer.cs">
       <DependentUpon>DETAIL_BOOK_FORM.cs</DependentUpon>
+    </Compile>
+    <Compile Include="fail.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fail.Designer.cs">
+      <DependentUpon>fail.cs</DependentUpon>
     </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
@@ -175,6 +187,9 @@
     <Compile Include="USER_LEVEL_UPDATE_FORM.Designer.cs">
       <DependentUpon>USER_LEVEL_UPDATE_FORM.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="check.resx">
+      <DependentUpon>check.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>

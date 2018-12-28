@@ -163,7 +163,7 @@ namespace WindowsFormsApp
             client.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)");
             client.Encoding = Encoding.UTF8;
 
-            string url = "http://" + webapiUrl  + "/ rental_info_form_GetSelect";
+            string url = "http://" + webapiUrl  + "/rental_info_form_GetSelect";
             string method = "POST";
 
 
@@ -258,16 +258,18 @@ namespace WindowsFormsApp
 
                 if (rental_info_book_info_update(no))
                 {
-                    MessageBox.Show("반납 되었습니다.");
+                    check check = new check();
+                    check.ShowDialog();
                 }
                 else
                 {
-                    MessageBox.Show("대여상태 가능 업데이트 중 오류 발생.");
+                    MessageBox.Show("상태 업데이트 오류");
                 }
             }
             else
             {
-                MessageBox.Show("반납 중 오류 발생.");
+                fail fail = new fail("반납중 오류발생");
+                fail.ShowDialog();
             }
         }
 

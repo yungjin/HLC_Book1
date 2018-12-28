@@ -217,7 +217,13 @@ namespace WindowsFormsApp
 
             }
 
-            else MessageBox.Show("아이디 또는 비밀번호가 틀립니다.");
+            else
+            {
+                fail fail = new fail("아이디 또는 비밀번호가 틀립니다.");
+                fail.ShowDialog();
+            }
+
+            
         }
 
         public int Member_rank

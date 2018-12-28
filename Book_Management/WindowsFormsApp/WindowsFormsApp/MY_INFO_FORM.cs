@@ -47,6 +47,8 @@ namespace WindowsFormsApp
         TextBox Tb1, Tb2, Tb3, Tb4, Tb5, Tb6, Tb7, Tb8, Tb9 = new TextBox();
         Panel pan1 = new Panel();
 
+        ComboBox combobox1;
+
         Button btn1;
         Button btn2;
         Button btn3;
@@ -100,6 +102,21 @@ namespace WindowsFormsApp
             Tb7 = comm.txtbox(new TXTBOXclass(this, "email", "", 150, 20, 180, 420 - 1, Tb_click));
             Tb8 = comm.txtbox(new TXTBOXclass(this, "Phon", "", 150, 20, 180, 480 - 1, Tb_click));
 
+
+            //combobox1 = comm.comboBox(new COMBOBOXclass(this, "ComboBox1", 50, 100, 230, 300 - 1, ComboBox_SelectedIndexChanged, 5, "01", "02", "03", "04", "05"));
+            //Tb9 = comm.txtbox(new TXTBOXclass(this, "Gender1", "", 40, 20, 290, 300 - 1, Tb_click));
+
+
+            //pan1.Controls.Add(Tb9);
+            //pan1.Controls.Add(combobox1);
+            //combobox1.Items.Add("06");
+            //combobox1.Items.Add("07");
+            //combobox1.Items.Add("08");
+            //combobox1.Items.Add("09");
+            //combobox1.Items.Add("10");
+            //combobox1.Items.Add("11");
+            //combobox1.Items.Add("12");
+            //combobox1.Text = "월";
 
 
             pan1.Controls.Add(Tb1);
@@ -206,6 +223,11 @@ namespace WindowsFormsApp
 
         }
 
+        private void ComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
         private void List_View()
         {
             foreach (Hashtable ht in GetSelect(Login.User_Number.ToString()))
@@ -257,8 +279,7 @@ namespace WindowsFormsApp
             }
             else if (btn1.Text == "변경완료")
             {
-                MessageBox.Show(Tb2.Text);
-                MessageBox.Show(Login.User_Number.ToString());
+                
 
                 GetUPDATE_Pass(Tb2.Text, Login.User_Number.ToString());
 
@@ -473,16 +494,33 @@ namespace WindowsFormsApp
         public void GetUPDATE(string email, string Phon, string addres, string user_number)
         {
 
-            if (GetUPDATE_API(email, Phon, addres, user_number)) MessageBox.Show("수정 완료");
-            else MessageBox.Show("수정 실패");
+            if (GetUPDATE_API(email, Phon, addres, user_number))
+            {
+                check check = new check();
+                check.ShowDialog();
+            }
+            else
+            {
+                fail fail = new fail("수정 실패");
+                fail.ShowDialog();
+            }
+
 
         }
 
         public void GetUPDATE_Pass(string passwod, string user_number)
         {
 
-            if (GetUPDATE_Pass_API(passwod, user_number)) MessageBox.Show("수정 완료");
-            else MessageBox.Show("수정 실패");
+            if (GetUPDATE_Pass_API(passwod, user_number))
+            {
+                check check = new check();
+                check.ShowDialog();
+            }
+            else
+            {
+                fail fail = new fail("수정 실패");
+                fail.ShowDialog();
+            }
 
         }
 

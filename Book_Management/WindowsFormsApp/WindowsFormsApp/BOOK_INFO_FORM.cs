@@ -32,6 +32,7 @@ namespace WindowsFormsApp
         ///////// 좌표 체크시 추가 /////////
         static ToolStripStatusLabel StripLb;
         StatusStrip statusStrip;
+        
         ///////////////////////////////////
         LOGIN_FORM login_frm;
 
@@ -540,6 +541,51 @@ namespace WindowsFormsApp
             return list;
         }
 
+        public string user_blackList_select_post(string user_number)// 유저 블랙리스트 ########################################################################
+        {
+            WebClient client = new WebClient();
+            NameValueCollection data = new NameValueCollection();
+            client.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)");
+            client.Encoding = Encoding.UTF8;
+
+            string url = "http://" + webapiUrl + "/user_blackList_select_post";
+            string method = "POST";
+
+
+            data.Add("user_number", user_number);
+            ArrayList list = new ArrayList();
+
+            try
+            {
+
+                byte[] result = client.UploadValues(url, method, data);
+                string strResult = Encoding.UTF8.GetString(result);
+
+                ArrayList jList = JsonConvert.DeserializeObject<ArrayList>(strResult);
+
+                foreach (JObject row in jList)
+                {
+                    Hashtable ht = new Hashtable();
+                    foreach (JProperty col in row.Properties())
+                    {
+                        ht.Add(col.Name, col.Value);
+                    }
+                    list.Add(ht);
+                }
+
+            }
+            catch (Exception)
+            {
+
+            }
+            string blacklist = "";
+            foreach (Hashtable ht in list) 
+            {
+                blacklist = ht["blacklist"].ToString();
+            }
+            
+            return blacklist;
+        }
 
         public ArrayList book_info_search_category_select_post(string search_category, string search_text)
         {
@@ -750,13 +796,23 @@ namespace WindowsFormsApp
                 {
                     if (대여가능여부값.Text == "가능")
                     {
-                        GetInsert();
+                        string blacklist = user_blackList_select_post(login_frm.User_Number.ToString());
+                        if (blacklist == "Y")
+                        {
+                            fail fail = new fail("현제 블랙리스트 상태입니다.");
+                            fail.ShowDialog();
+                        }
+                        else GetInsert();
                     }
                     else if (번호값.Text == "번호값")
                     {
-                        MessageBox.Show("리스트에서 도서를 선택해주세요.");
+                        fail fail = new fail("리스트에서 도서를 선택해 주세요");
+                        fail.ShowDialog();
                     }
-                    else MessageBox.Show("대여불가 상태입니다.");
+                    else {
+                        fail fail = new fail("대여불가 상태입니다.");
+                        fail.ShowDialog();
+                    }
 
 
                 }
@@ -844,7 +900,8 @@ namespace WindowsFormsApp
 
                 if (번호값.Text == "번호값" || 텍스트박스_제목값.Text == "" || 텍스트박스_저자값.Text == "" || 텍스트박스_출판사값.Text == "" || 텍스트박스_장르값.Text == "" || 텍스트박스_도서위치값.Text == "" || 간략소개상자.Text == "")
                 {
-                    MessageBox.Show("입력칸을 모두 채워주세요.");
+                    fail fail = new fail("입력칸을 모두 채워주세요");
+                    fail.ShowDialog();
                     return;
                 }
 
@@ -856,11 +913,13 @@ namespace WindowsFormsApp
 
                 if (status)
                 {
-                    MessageBox.Show("수정이 완료 되었습니다.");
+                    fail fail = new fail("수정 완료");
+                    fail.ShowDialog();
                 }
                 else
                 {
-                    MessageBox.Show("수정 중 오류가 발생했습니다.");
+                    fail fail = new fail("수정중 오류 발생");
+                    fail.ShowDialog();
                 }
 
 
@@ -904,7 +963,8 @@ namespace WindowsFormsApp
             {
                 if (search_category == "")
                 {
-                    MessageBox.Show("카테고리를 선택 해주세요.");
+                    fail fail = new fail("카테고리를 선택해 주세요.");
+                    fail.ShowDialog();
                     return;
                 }
 
@@ -932,7 +992,7 @@ namespace WindowsFormsApp
         {
             책정보검색_리스트뷰.Items.Clear();
 
-            ArrayList bookinfoSearch_arry = book_info_search_category_select_post("title", 책정보검색상자.Text);
+            ArrayList bookinfoSearch_arry = Select_Webapi("book_info_form_listview");
 
             foreach (Hashtable ht in bookinfoSearch_arry)
             {
@@ -955,14 +1015,15 @@ namespace WindowsFormsApp
 
             if (book_info_insert_book_rental_update(번호값.Text, login_frm.User_Number.ToString()))
             {
-                MessageBox.Show("대여 완료!");
+                check check = new check();
+                check.ShowDialog();
                 Book_Info_ListView_Refresh();
-
             }
 
             else
             {
-                MessageBox.Show("대여 실패!");
+                fail fail = new fail("대여 실패");
+                fail.ShowDialog();
             }
 
 

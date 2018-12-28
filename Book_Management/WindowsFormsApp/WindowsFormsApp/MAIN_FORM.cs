@@ -442,8 +442,8 @@ namespace WindowsFormsApp
             btn5.Hide();
             btn6.Hide();
             btn7.Hide();
+            //MessageBox.Show("로그아웃");
 
-            MessageBox.Show("로그아웃");
             lb_Logout.Hide();
             lb_Login.Show();
             lb_Signup.Show();
