@@ -464,7 +464,8 @@ namespace WindowsFormsApp
             {
                 if (회원번호값.Text == "회원번호값")
                 {
-                    MessageBox.Show("변경 할 회원정보를 오른쪽 리스트에서 선택해주세요");
+                    fail fail = new fail("회원정보를 선택해주세요");
+                    fail.ShowDialog();
                     return;
                 }
                 USER_LEVEL_UPDATE_FORM user_level_update_form = new USER_LEVEL_UPDATE_FORM(회원번호값.Text);
@@ -475,7 +476,8 @@ namespace WindowsFormsApp
             {
                 if(rental_book_number == 0)
                 {
-                    MessageBox.Show("회원을 선택해주시고 반납 할 도서를 선택해주세요.");
+                    fail fail = new fail("회원, 반납 할 도서를 선택해주세요.");
+                    fail.ShowDialog();
                     return;
                 }
                 Book_Return_GetUpdate(rental_book_number.ToString());
@@ -495,7 +497,8 @@ namespace WindowsFormsApp
 
                 if (rental_info_book_info_update(no))
                 {
-                    MessageBox.Show("반납 되었습니다.");
+                    fail fail = new fail("반납 되었습니다.");
+                    fail.ShowDialog();
                     대여목록_리스트뷰.Items.Clear();
 
                     ArrayList bookinfoSearch_arry2 = user_info_form_user_rental_info(listview_user_number.ToString());
@@ -513,12 +516,15 @@ namespace WindowsFormsApp
                 }
                 else
                 {
-                    MessageBox.Show("대여상태 가능 업데이트 중 오류 발생.");
+                    fail fail = new fail("대여상태 가능 업데이트 중 오류 발생.");
+                    fail.ShowDialog();
                 }
             }
             else
             {
-                MessageBox.Show("반납 중 오류 발생.");
+                
+                fail fail = new fail("반납 중 오류 발생.");
+                fail.ShowDialog();
             }
         }
 

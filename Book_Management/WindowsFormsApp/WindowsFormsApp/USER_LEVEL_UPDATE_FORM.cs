@@ -394,7 +394,8 @@ namespace WindowsFormsApp
             {
                 if (관리자라디오버튼.Checked == false && 회원라디오버튼.Checked == false && 블랙리스트라디오버튼.Checked == false && 블랙리스트해제라디오버튼.Checked == false)
                 {
-                    MessageBox.Show("권한 라디오 버튼을 선택해주세요");                    
+                    fail fail = new fail("권한 라디오 버튼을 선택해주세요");
+                    fail.ShowDialog();
 
                 }
 
@@ -403,11 +404,13 @@ namespace WindowsFormsApp
                 {
                     if (user_level_update_form_signup_member_rank_0_set(회원번호Temp값))
                     {
-                        MessageBox.Show("관리자 권한 변경 완료");
+                        fail fail = new fail("관리자 권한 변경 완료");
+                        fail.ShowDialog();
                     }
                     else
                     {
-                        MessageBox.Show("관리자 권한 변경오류 발생");
+                        fail fail = new fail("관리자 권한 변경오류 발생");
+                        fail.ShowDialog();
                     }
 
                 }
@@ -416,11 +419,13 @@ namespace WindowsFormsApp
 
                     if (user_level_update_form_signup_member_rank_1_set(회원번호Temp값))
                     {
-                        MessageBox.Show("회원 권한 변경 완료");
+                        fail fail = new fail("회원 권한 변경 완료");
+                        fail.ShowDialog();
                     }
                     else
                     {
-                        MessageBox.Show("회원 권한 변경오류 발생");
+                        fail fail = new fail("회원 권한 변경오류 발생");
+                        fail.ShowDialog();
                     }
                 }
                 else if (블랙리스트라디오버튼.Checked == true)
@@ -428,11 +433,13 @@ namespace WindowsFormsApp
 
                     if (user_level_update_form_signup_blacklist_Y_set(회원번호Temp값))
                     {
-                        MessageBox.Show("블랙리스트 권한 변경 완료");
+                        fail fail = new fail("블랙리스트 권한 변경 완료");
+                        fail.ShowDialog();
                     }
                     else
                     {
-                        MessageBox.Show("블랙리스트 권한 변경오류 발생");
+                        fail fail = new fail("블랙리스트 권한 변경오류 발생");
+                        fail.ShowDialog();
                     }
                 }
                 else if (블랙리스트해제라디오버튼.Checked == true)
@@ -440,11 +447,13 @@ namespace WindowsFormsApp
 
                     if (user_level_update_form_signup_blacklist_N_set(회원번호Temp값))
                     {
-                        MessageBox.Show("블랙리스트 해제 변경 완료");
+                        fail fail = new fail("블랙리스트 해제 변경 완료");
+                        fail.ShowDialog();
                     }
                     else
                     {
-                        MessageBox.Show("블랙리스트 해제 변경오류 발생");
+                        fail fail = new fail("블랙리스트 해제 변경오류 발생");
+                        fail.ShowDialog();
                     }
                 }
 

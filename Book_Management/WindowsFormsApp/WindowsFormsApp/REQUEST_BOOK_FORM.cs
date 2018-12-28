@@ -164,7 +164,8 @@ namespace WindowsFormsApp
             {
                 if (Textbox1.Text == "" || Textbox2.Text == "" || Textbox3.Text == "" || Textbox4.Text == "")
                 {
-                    MessageBox.Show("입력칸을 모두 채워주세요");
+                    fail fail = new fail("입력칸을 모두 채워주세요");
+                    fail.ShowDialog();
                     return;
                 }
 
@@ -173,11 +174,14 @@ namespace WindowsFormsApp
 
                 if (request_book_form_request_register(Textbox1.Text, Textbox2.Text, Textbox3.Text, Textbox4.Text, login.User_Number.ToString()))
                 {
-                    MessageBox.Show("요청 완료 되었습니다");
+                    fail fail = new fail("요청 완료 되었습니다");
+                    fail.ShowDialog();
+
                 }
                 else
                 {
-                    MessageBox.Show("요청 실패");
+                    fail fail = new fail("요청 실패");
+                    fail.ShowDialog();
                 }
             }
             else if (button.Name == "취소")

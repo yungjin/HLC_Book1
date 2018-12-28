@@ -263,7 +263,8 @@ namespace WindowsFormsApp
                 }
                 else
                 {
-                    MessageBox.Show("상태 업데이트 오류");
+                    fail fail = new fail("상태 업데이트 오류");
+                    fail.ShowDialog();
                 }
             }
             else

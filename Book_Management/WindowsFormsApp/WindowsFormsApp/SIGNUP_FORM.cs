@@ -180,7 +180,6 @@ namespace WindowsFormsApp
             if (Tb2.Text == Tb3.Text)
             {
                 Birth = Tb6.Text + "-" + combobox1.Text + "-" + Tb10.Text;
-                MessageBox.Show(Birth);
                 GetInsert(Tb1.Text, Tb2.Text, Tb4.Text, Birth, Tb6.Text, Tb7.Text, Tb8.Text, Tb9.Text);
             }
             else {

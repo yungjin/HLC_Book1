@@ -23,10 +23,14 @@ namespace WindowsFormsApp
         Panel pan1 = new Panel();
         private void Login_Check_Load(object sender, EventArgs e)
         {
+            FormBorderStyle = FormBorderStyle.None; //폼 상단 표시줄 제거
+            this.StartPosition = FormStartPosition.CenterParent;
+
             COMMON_Create_Ctl comm = new COMMON_Create_Ctl();
             ClientSize = new Size(sX, sY);  // 폼 사이즈 지정.
             //FormBorderStyle = FormBorderStyle.None;// 폼 상단 표시줄 제거
-            this.BackColor = Color.FromArgb(218, 234, 244); //백컬러
+            //this.BackColor = Color.FromArgb(242, 172, 36); //백컬러
+            this.BackColor = Color.FromArgb(255, 205, 66); //백컬러
             Label lb = comm.lb(new LBclass(this, "messeg", "로그인이 필요한 서비스 입니다.", 15, 300, 50, 85, 80 - 20, label_Click));
 
             Button btn = comm.btn(new BTNclass(this, "확인", "확인", 70, 40, 200, 110, btn1_Click));

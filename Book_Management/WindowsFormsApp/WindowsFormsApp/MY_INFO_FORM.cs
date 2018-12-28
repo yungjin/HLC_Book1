@@ -265,7 +265,11 @@ namespace WindowsFormsApp
                 {
                     btn3.Show();
                     Tb2.ReadOnly = false;
-                    Tb2.Text = "";
+                    foreach (Hashtable ht in GetSelect(Login.User_Number.ToString()))
+                    {
+                        Tb2.Text = (ht["passwod"].ToString());
+                    }
+                    Tb5.Text = Tb5.Text.Substring(0, 10);
                     Tb6.ReadOnly = true;
                     Tb7.ReadOnly = true;
                     Tb8.ReadOnly = true;
@@ -305,7 +309,10 @@ namespace WindowsFormsApp
 
                 if (p_Check.Yn)
                 {
-
+                    foreach (Hashtable ht in GetSelect(Login.User_Number.ToString()))
+                    {
+                        Tb2.Text = "************";
+                    }
                     btn3.Show();
                     Tb6.ReadOnly = false;
                     Tb7.ReadOnly = false;

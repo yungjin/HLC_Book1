@@ -88,7 +88,9 @@ namespace WindowsFormsApp
             else
             {
                 Tb1.Clear();
-                MessageBox.Show("인증 실패");
+                fail fail = new fail("인증 실패");
+                fail.ShowDialog();
+
                 Yn = false;
             }
         }
