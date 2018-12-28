@@ -74,15 +74,15 @@ namespace WindowsFormsApp
             //Tbarray.Add(new TXTBOXclass(this, "Phon", "", 150, 20, 180, 480, Tb_click));
             //Tbarray.Add(new TXTBOXclass(this, "addres", "", 150, 20, 180, 540, Tb_click));
 
-            Tb1 = comm.txtbox(new TXTBOXclass(this, "ID", "", 150, 20, 180, 60, Tb_click));
-            Tb2 = comm.txtbox(new TXTBOXclass(this, "Pass", "", 150, 20, 180, 120, Tb_click));
-            Tb3 = comm.txtbox(new TXTBOXclass(this, "PassCon", "", 150, 20, 180, 180, Tb_click));
-            Tb4 = comm.txtbox(new TXTBOXclass(this, "Name", "", 150, 20, 180, 240, Tb_click));
-            Tb5 = comm.txtbox(new TXTBOXclass(this, "Gender", "", 150, 20, 180, 300, Tb_click));
-            Tb6 = comm.txtbox(new TXTBOXclass(this, "Birth", "", 150, 20, 180, 360, Tb_click));
-            Tb7 = comm.txtbox(new TXTBOXclass(this, "email", "", 150, 20, 180, 420, Tb_click));
-            Tb8 = comm.txtbox(new TXTBOXclass(this, "Phon", "", 150, 20, 180, 480, Tb_click));
-            Tb9 = comm.txtbox(new TXTBOXclass(this, "addres", "", 150, 20, 180, 540, Tb_click));
+            Tb1 = comm.txtbox(new TXTBOXclass(this, "ID", "", 200, 20, 180, 60, Tb_click));
+            Tb2 = comm.txtbox(new TXTBOXclass(this, "Pass", "", 200, 20, 180, 120, Tb_click));
+            Tb3 = comm.txtbox(new TXTBOXclass(this, "PassCon", "", 200, 20, 180, 180, Tb_click));
+            Tb4 = comm.txtbox(new TXTBOXclass(this, "Name", "", 200, 20, 180, 240, Tb_click));
+            Tb5 = comm.txtbox(new TXTBOXclass(this, "Gender", "", 200, 20, 180, 300, Tb_click));
+            Tb6 = comm.txtbox(new TXTBOXclass(this, "Birth", "", 200, 20, 180, 360, Tb_click));
+            Tb7 = comm.txtbox(new TXTBOXclass(this, "email", "", 200, 20, 180, 420, Tb_click));
+            Tb8 = comm.txtbox(new TXTBOXclass(this, "Phon", "", 200, 20, 180, 480, Tb_click));
+            Tb9 = comm.txtbox(new TXTBOXclass(this, "addres", "", 200, 20, 180, 540, Tb_click));
 
             //combobox1 = comm.comboBox(new COMBOBOXclass(this, "ComboBox1", 50, 100, 230, 360, ComboBox_SelectedIndexChanged, 5, "01", "02", "03", "04", "05"));
             //Tb10 = comm.txtbox(new TXTBOXclass(this, "Gender1", "", 40, 20, 290, 360, Tb_click));
