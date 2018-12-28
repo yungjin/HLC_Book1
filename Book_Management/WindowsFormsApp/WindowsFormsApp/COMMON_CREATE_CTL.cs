@@ -16,11 +16,11 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace WindowsFormsApp
-{    
+{
 
     class COMMON_Create_Ctl
     {
-        string webapiUrl = "ljh5432.iptime.org:5000";
+        string webapiUrl = "192.168.3.25:5000";
 
         public ListView listView(LISTVIEWclass lstView_obj)
         {
@@ -326,7 +326,7 @@ namespace WindowsFormsApp
             get
             {
                 return webapiUrl;
-            }            
+            }
         }
 
 
