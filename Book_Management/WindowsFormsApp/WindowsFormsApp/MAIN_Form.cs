@@ -337,6 +337,7 @@ namespace WindowsFormsApp
             Login.Hide();
             Signup.Hide();
             user2.List_Views();
+
         }
 
         private void btn3_Click(Object o, EventArgs e)
@@ -366,11 +367,11 @@ namespace WindowsFormsApp
         {
             user1.Hide();
             root2.Show();
+            root2.User_Info_ReFresh();
             root3.Hide();
             root4.Hide();
             Login.Hide();
-            Signup.Hide();
-
+            Signup.Hide();            
 
         }
 
