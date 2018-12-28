@@ -7,6 +7,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -39,6 +40,8 @@ namespace WindowsFormsApp
         TextBox 회원정보검색상자;
         ListView 회원정보검색_리스트뷰;
         ListView 대여목록_리스트뷰;
+        int rental_book_number = 0;
+        int listview_user_number;
         MySql mysql;
         string sql;
 
@@ -70,7 +73,7 @@ namespace WindowsFormsApp
             create_ctl.delay_rental_check();
 
             // 회원정보패널
-            PANELclass 회원정보패널값 = new PANELclass(this, "회원정보패널", "회원정보패널", 700, 300, 20, 20);
+            PANELclass 회원정보패널값 = new PANELclass(this, "회원정보패널", "회원정보패널", 700, 320, 20, 20);
             Panel 회원정보패널 = comm.panel(회원정보패널값);
 
             회원정보패널.Region = Region.FromHrgn(COMMON_Create_Ctl.CreateRoundRectRgn(2, 2, 회원정보패널.Width, 회원정보패널.Height, 15, 15));
@@ -140,17 +143,28 @@ namespace WindowsFormsApp
             }
 
 
-
+            //700, 300, 20, 20
 
             /// 버튼 - 회원정보 변경버튼
-            BTNclass 버튼등급수정값 = new BTNclass(this, "버튼등급수정", "회원 등급 수정", 150, 40, 570, 340, btn_Click);
+            BTNclass 버튼등급수정값 = new BTNclass(this, "버튼등급수정", "회원 등급 수정", 460, 35, 120, 270, btn_Click);
             Button 버튼등급수정 = comm.btn(버튼등급수정값);
             버튼등급수정.BackColor = Color.FromArgb(50, 178, 223);
             버튼등급수정.Font = new Font(버튼등급수정.Font.Name, 12, FontStyle.Bold);
             버튼등급수정.FlatStyle = FlatStyle.Flat;
             버튼등급수정.ForeColor = Color.White;
             버튼등급수정.Region = Region.FromHrgn(COMMON_Create_Ctl.CreateRoundRectRgn(2, 2, 버튼등급수정.Width, 버튼등급수정.Height, 10, 10));
-            Controls.Add(버튼등급수정);
+            회원정보패널.Controls.Add(버튼등급수정);
+
+            /// 버튼 - 회원정보 변경버튼
+            BTNclass 도서반납버튼값 = new BTNclass(this, "도서반납버튼", "도서 반납", 130, 40, 590, 360, btn_Click);
+            Button 도서반납버튼 = comm.btn(도서반납버튼값);
+            도서반납버튼.BackColor = Color.FromArgb(50, 178, 223);
+            도서반납버튼.Font = new Font(도서반납버튼.Font.Name, 12, FontStyle.Bold);
+            도서반납버튼.FlatStyle = FlatStyle.Flat;
+            도서반납버튼.ForeColor = Color.White;
+            도서반납버튼.Region = Region.FromHrgn(COMMON_Create_Ctl.CreateRoundRectRgn(2, 2, 도서반납버튼.Width, 도서반납버튼.Height, 10, 10));
+            Controls.Add(도서반납버튼);
+
 
             /// 라벨 - 대여목록  
             LBclass 대여목록라벨값 = new LBclass(this, "대여목록", "대여 목록", 20, 200, 30, 20, 365, label_Click);
@@ -160,7 +174,7 @@ namespace WindowsFormsApp
 
 
             // 리스트뷰 - 대여목록
-            LISTVIEWclass 대여목록_리스트뷰값 = new LISTVIEWclass(this, "대여목록_ListVIew", 700, 350, 20, 407, listView_MouseClick, listview_mousedoubleclick, 6, "", 0, "책번호", 70, "책 이름", 260, "저자", 120, "출판사", 120, "대여현황", 125);
+            LISTVIEWclass 대여목록_리스트뷰값 = new LISTVIEWclass(this, "대여목록_ListVIew", 700, 350, 20, 407, listView_MouseClick, listview_mousedoubleclick, 6, "", 0, "대여No", 70, "책 이름", 260, "저자", 120, "출판사", 120, "대여현황", 125);
             대여목록_리스트뷰 = comm.listView(대여목록_리스트뷰값);
             대여목록_리스트뷰.Font = new Font("Arial", 14, FontStyle.Bold);
             // 처음은 내용 없음으로 빈칸 출력.
@@ -203,9 +217,7 @@ namespace WindowsFormsApp
             회원정보검색_리스트뷰 = comm.listView(회원정보검색_리스트뷰값);
             회원정보검색_리스트뷰.Font = new Font("Arial", 14, FontStyle.Bold);
 
-            mysql = new MySql();
-            sql = string.Format("select * from signup;");
-            ArrayList signupinfoSearch_arry = mysql.Select(sql);
+            ArrayList signupinfoSearch_arry = Select_signup_info_Webapi();
             foreach (Hashtable ht in signupinfoSearch_arry)
             {
                 ListViewItem item = new ListViewItem("");
@@ -217,6 +229,34 @@ namespace WindowsFormsApp
                 회원정보검색_리스트뷰.Items.Add(item);
             }
             Controls.Add(회원정보검색_리스트뷰);
+        }
+
+        public ArrayList Select_signup_info_Webapi()
+        {
+            WebClient client = new WebClient();
+            //NameValueCollection data = new NameValueCollection();
+            client.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)");
+            client.Encoding = Encoding.UTF8;    //한글처리
+
+            string url = "http://" + webapiUrl + "/Select_signup_info_Webapi";
+            Stream result = client.OpenRead(url);
+
+            StreamReader sr = new StreamReader(result);
+            string str = sr.ReadToEnd();
+
+            ArrayList jList = JsonConvert.DeserializeObject<ArrayList>(str);
+            ArrayList list = new ArrayList();
+            foreach (JObject row in jList)
+            {
+                Hashtable ht = new Hashtable();
+                foreach (JProperty col in row.Properties())
+                {
+                    ht.Add(col.Name, col.Value);
+                }
+                list.Add(ht);
+            }
+
+            return list;
         }
 
         public ArrayList user_info_form_user_signup(string user_number)
@@ -329,12 +369,14 @@ namespace WindowsFormsApp
         {
             //MessageBox.Show("동작확인 : listView_MouseClick");
 
+            ListView listView = (ListView)sender;
+
             int index;
             index = 회원정보검색_리스트뷰.FocusedItem.Index;  // 선택돈 아이템 인덱스 번호 얻기
-            int user_number = Convert.ToInt32(회원정보검색_리스트뷰.Items[index].SubItems[1].Text); // 인덱스 번호의 n번째 아이템 얻기
+            listview_user_number = Convert.ToInt32(회원정보검색_리스트뷰.Items[index].SubItems[1].Text); // 인덱스 번호의 n번째 아이템 얻기
 
 
-            ArrayList bookinfoSearch_arry = user_info_form_user_signup(user_number.ToString());
+            ArrayList bookinfoSearch_arry = user_info_form_user_signup(listview_user_number.ToString());
             foreach (Hashtable ht in bookinfoSearch_arry)
             {
                 회원번호값.Text = ht["user_number"].ToString();
@@ -345,21 +387,32 @@ namespace WindowsFormsApp
             }
 
 
-
-            대여목록_리스트뷰.Items.Clear();
-
-            ArrayList bookinfoSearch_arry2 = user_info_form_user_rental_info(user_number.ToString());
-            foreach (Hashtable ht in bookinfoSearch_arry2)
+            if(listView.Name != "대여목록_ListVIew")
             {
-                ListViewItem item = new ListViewItem("");
-                item.SubItems.Add(ht["book_number"].ToString());
-                item.SubItems.Add(ht["title"].ToString());
-                item.SubItems.Add(ht["author"].ToString());
-                item.SubItems.Add(ht["publisher"].ToString());
-                item.SubItems.Add(ht["rental_status"].ToString());
-                item.Font = new Font("Arial", 14, FontStyle.Italic);
-                대여목록_리스트뷰.Items.Add(item);
+                대여목록_리스트뷰.Items.Clear();
+
+                ArrayList bookinfoSearch_arry2 = user_info_form_user_rental_info(listview_user_number.ToString());
+                foreach (Hashtable ht in bookinfoSearch_arry2)
+                {
+                    ListViewItem item = new ListViewItem("");
+                    item.SubItems.Add(ht["rental_number"].ToString());
+                    item.SubItems.Add(ht["title"].ToString());
+                    item.SubItems.Add(ht["author"].ToString());
+                    item.SubItems.Add(ht["publisher"].ToString());
+                    item.SubItems.Add(ht["rental_status"].ToString());
+                    item.Font = new Font("Arial", 14, FontStyle.Italic);
+                    대여목록_리스트뷰.Items.Add(item);
+                }
             }
+            else if (listView.Name == "대여목록_ListVIew")
+            {
+                int rental_index;
+                rental_index = 대여목록_리스트뷰.FocusedItem.Index;  // 선택돈 아이템 인덱스 번호 얻기
+                rental_book_number = Convert.ToInt32(대여목록_리스트뷰.Items[rental_index].SubItems[1].Text); // 인덱스 번호의 n번째 아이템 얻기                
+            }
+
+
+            
         }
 
         private void ComboBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -418,7 +471,111 @@ namespace WindowsFormsApp
                 user_level_update_form.StartPosition = FormStartPosition.CenterParent;
                 user_level_update_form.ShowDialog();
             }
+            else if(button.Name == "도서반납버튼")
+            {
+                if(rental_book_number == 0)
+                {
+                    MessageBox.Show("회원을 선택해주시고 반납 할 도서를 선택해주세요.");
+                    return;
+                }
+                Book_Return_GetUpdate(rental_book_number.ToString());
 
+            }
+
+
+        }
+
+        public void Book_Return_GetUpdate(string no)
+        {
+
+            bool status = rental_info_book_rental_update(no);
+
+            if (status)
+            {
+
+                if (rental_info_book_info_update(no))
+                {
+                    MessageBox.Show("반납 되었습니다.");
+                    대여목록_리스트뷰.Items.Clear();
+
+                    ArrayList bookinfoSearch_arry2 = user_info_form_user_rental_info(listview_user_number.ToString());
+                    foreach (Hashtable ht in bookinfoSearch_arry2)
+                    {
+                        ListViewItem item = new ListViewItem("");
+                        item.SubItems.Add(ht["rental_number"].ToString());
+                        item.SubItems.Add(ht["title"].ToString());
+                        item.SubItems.Add(ht["author"].ToString());
+                        item.SubItems.Add(ht["publisher"].ToString());
+                        item.SubItems.Add(ht["rental_status"].ToString());
+                        item.Font = new Font("Arial", 14, FontStyle.Italic);
+                        대여목록_리스트뷰.Items.Add(item);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("대여상태 가능 업데이트 중 오류 발생.");
+                }
+            }
+            else
+            {
+                MessageBox.Show("반납 중 오류 발생.");
+            }
+        }
+
+        public bool rental_info_book_rental_update(string no)
+        {
+            WebClient client = new WebClient();
+            NameValueCollection data = new NameValueCollection();
+            client.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)");
+            client.Encoding = Encoding.UTF8;
+
+            string url = "http://" + webapiUrl + "/rental_info_book_rental_update";
+            string method = "POST";
+
+            data.Add("no", no);
+
+            byte[] result = client.UploadValues(url, method, data);
+            string strResult = Encoding.UTF8.GetString(result);
+
+            bool success_chk;
+            if (strResult == "1")
+            {
+                success_chk = true;
+            }
+            else
+            {
+                success_chk = false;
+            }
+
+            return success_chk;
+        }
+
+        public bool rental_info_book_info_update(string no)
+        {
+            WebClient client = new WebClient();
+            NameValueCollection data = new NameValueCollection();
+            client.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)");
+            client.Encoding = Encoding.UTF8;
+
+            string url = "http://" + webapiUrl + "/rental_info_book_info_update";
+            string method = "POST";
+
+            data.Add("no", no);
+
+            byte[] result = client.UploadValues(url, method, data);
+            string strResult = Encoding.UTF8.GetString(result);
+
+            bool success_chk;
+            if (strResult == "1")
+            {
+                success_chk = true;
+            }
+            else
+            {
+                success_chk = false;
+            }
+
+            return success_chk;
         }
 
         private void label_Click(Object o, EventArgs e)
