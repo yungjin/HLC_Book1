@@ -932,7 +932,7 @@ namespace WindowsFormsApp
         {
             책정보검색_리스트뷰.Items.Clear();
 
-            ArrayList bookinfoSearch_arry = book_info_search_category_select_post("title", 책정보검색상자.Text);
+            ArrayList bookinfoSearch_arry = Select_Webapi("book_info_form_listview");
 
             foreach (Hashtable ht in bookinfoSearch_arry)
             {

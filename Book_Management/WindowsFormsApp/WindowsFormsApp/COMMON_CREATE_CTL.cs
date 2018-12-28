@@ -20,7 +20,7 @@ namespace WindowsFormsApp
 
     class COMMON_Create_Ctl
     {
-        string webapiUrl = "ljh5432.iptime.org:5000";
+        string webapiUrl = "192.168.3.88:5000";
 
         public ListView listView(LISTVIEWclass lstView_obj)
         {

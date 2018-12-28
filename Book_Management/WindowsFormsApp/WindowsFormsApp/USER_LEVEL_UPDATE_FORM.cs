@@ -40,6 +40,8 @@ namespace WindowsFormsApp
 
         RadioButton 관리자라디오버튼;
         RadioButton 회원라디오버튼;
+        RadioButton 블랙리스트라디오버튼;
+        RadioButton 블랙리스트해제라디오버튼;
 
         string user_number;
 
@@ -163,8 +165,10 @@ namespace WindowsFormsApp
 
             // 권한 선택 - 라디오 버튼
             ArrayList radio_arry = new ArrayList();
-            radio_arry.Add(new RADIOclass(this, "관리자권한", "관리자 권한", 250, 40, 570, 160, radio_btn_Click));
-            radio_arry.Add(new RADIOclass(this, "회원권한", "회원 권한", 250, 40, 570, 255, radio_btn_Click));
+            radio_arry.Add(new RADIOclass(this, "관리자권한", "관리자 권한", 250, 40, 550, 120, radio_btn_Click));
+            radio_arry.Add(new RADIOclass(this, "회원권한", "회원 권한", 250, 40, 550, 170, radio_btn_Click));
+            radio_arry.Add(new RADIOclass(this, "블랙리스트설정", "블랙리스트 설정", 250, 40, 550, 220, radio_btn_Click));
+            radio_arry.Add(new RADIOclass(this, "블랙리스트해제", "블랙리스트 해제", 250, 40, 550, 270, radio_btn_Click));
 
             for (int i = 0; i < radio_arry.Count; i++)
             {
@@ -183,6 +187,17 @@ namespace WindowsFormsApp
                     회원라디오버튼 = 권한선택라디오;
 
                 }
+                else if (권한선택라디오.Name == "블랙리스트설정")
+                {
+                    블랙리스트라디오버튼 = 권한선택라디오;
+
+                }
+                else if (권한선택라디오.Name == "블랙리스트해제")
+                {
+                    블랙리스트해제라디오버튼 = 권한선택라디오;
+
+                }
+
             }
 
 
@@ -295,6 +310,64 @@ namespace WindowsFormsApp
             return success_chk;
         }
 
+        public bool user_level_update_form_signup_blacklist_Y_set(string user_number)
+        {
+            WebClient client = new WebClient();
+            NameValueCollection data = new NameValueCollection();
+            client.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)");
+            client.Encoding = Encoding.UTF8;
+
+            string url = "http://" + webapiUrl + "/user_level_update_form_signup_blacklist_Y_set";
+            string method = "POST";
+
+
+            data.Add("user_number", user_number);
+
+            byte[] result = client.UploadValues(url, method, data);
+            string strResult = Encoding.UTF8.GetString(result);
+
+            bool success_chk;
+            if (strResult == "1")
+            {
+                success_chk = true;
+            }
+            else
+            {
+                success_chk = false;
+            }
+
+            return success_chk;
+        }
+
+        public bool user_level_update_form_signup_blacklist_N_set(string user_number)
+        {
+            WebClient client = new WebClient();
+            NameValueCollection data = new NameValueCollection();
+            client.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)");
+            client.Encoding = Encoding.UTF8;
+
+            string url = "http://" + webapiUrl + "/user_level_update_form_signup_blacklist_N_set";
+            string method = "POST";
+
+
+            data.Add("user_number", user_number);
+
+            byte[] result = client.UploadValues(url, method, data);
+            string strResult = Encoding.UTF8.GetString(result);
+
+            bool success_chk;
+            if (strResult == "1")
+            {
+                success_chk = true;
+            }
+            else
+            {
+                success_chk = false;
+            }
+
+            return success_chk;
+        }
+
 
         private void listview_mousedoubleclick(object sender, MouseEventArgs e)
         {
@@ -319,9 +392,10 @@ namespace WindowsFormsApp
 
             if (button.Name == "설정완료")
             {
-                if (관리자라디오버튼.Checked == false && 회원라디오버튼.Checked == false)
+                if (관리자라디오버튼.Checked == false && 회원라디오버튼.Checked == false && 블랙리스트라디오버튼.Checked == false && 블랙리스트해제라디오버튼.Checked == false)
                 {
-                    MessageBox.Show("회원의 권한을 선택해주세요");
+                    MessageBox.Show("권한 라디오 버튼을 선택해주세요");                    
+
                 }
 
                 //MessageBox.Show("설정완료");
@@ -347,6 +421,30 @@ namespace WindowsFormsApp
                     else
                     {
                         MessageBox.Show("회원 권한 변경오류 발생");
+                    }
+                }
+                else if (블랙리스트라디오버튼.Checked == true)
+                {
+
+                    if (user_level_update_form_signup_blacklist_Y_set(회원번호Temp값))
+                    {
+                        MessageBox.Show("블랙리스트 권한 변경 완료");
+                    }
+                    else
+                    {
+                        MessageBox.Show("블랙리스트 권한 변경오류 발생");
+                    }
+                }
+                else if (블랙리스트해제라디오버튼.Checked == true)
+                {
+
+                    if (user_level_update_form_signup_blacklist_N_set(회원번호Temp값))
+                    {
+                        MessageBox.Show("블랙리스트 해제 변경 완료");
+                    }
+                    else
+                    {
+                        MessageBox.Show("블랙리스트 해제 변경오류 발생");
                     }
                 }
 
