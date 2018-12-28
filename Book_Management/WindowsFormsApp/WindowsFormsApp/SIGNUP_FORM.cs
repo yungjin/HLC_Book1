@@ -96,6 +96,13 @@ namespace WindowsFormsApp
             //combobox1.Items.Add("12");
             //combobox1.Text = "월";
 
+            DateTimePicker dateTimePicker1 = new DateTimePicker();
+            dateTimePicker1.CustomFormat = "yyyy-MM-dd";
+            dateTimePicker1.Format = DateTimePickerFormat.Custom;
+            dateTimePicker1.MinDate = new DateTime(1900, 6, 20);
+            dateTimePicker1.MaxDate = DateTime.Today;
+            dateTimePicker1.Location = new Point(180, 360);
+            dateTimePicker1.ValueChanged += dateTimePicker1_ValueChanged;
             
 
             //pan1.Controls.Add(Tb10);
@@ -105,7 +112,8 @@ namespace WindowsFormsApp
             pan1.Controls.Add(Tb3);
             pan1.Controls.Add(Tb4);
             pan1.Controls.Add(Tb5);
-            pan1.Controls.Add(Tb6);
+            //pan1.Controls.Add(Tb6);
+            pan1.Controls.Add(dateTimePicker1);
             pan1.Controls.Add(Tb7);
             pan1.Controls.Add(Tb8);
             pan1.Controls.Add(Tb9);
@@ -179,11 +187,17 @@ namespace WindowsFormsApp
         {
             if (Tb2.Text == Tb3.Text)
             {
+                if(Tb1.Text == "" || Tb2.Text == "" || Tb4.Text == "" || Tb5.Text == "" || Tb6.Text == "" || Tb7.Text == "" || Tb8.Text == "" || Tb9.Text == "")
+                {
+                    fail fail = new fail("입력칸을 모두 공백없이 채워주세요.");
+                    fail.ShowDialog();
+                    return;
+                }
                 //Birth = Tb5.Text + "-" + combobox1.Text + "-" + Tb10.Text;
                 GetInsert(Tb1.Text, Tb2.Text, Tb4.Text, Tb5.Text, Tb6.Text, Tb7.Text, Tb8.Text, Tb9.Text);
             }
             else {
-                fail fail = new fail("아이디 또는 비밀번호가 틀립니다.");
+                fail fail = new fail("비밀번호를 확인해주세요.");
                 fail.ShowDialog();
             }
 
@@ -215,6 +229,13 @@ namespace WindowsFormsApp
         private void Current_FORM_MouseMove(object sender, MouseEventArgs e)
         {
             StripLb.Text = "(" + e.X + ", " + e.Y + ")";
+        }
+
+        private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
+        {
+            DateTimePicker dateTimePicker1 = (DateTimePicker)sender;
+            DateTime dt1 = dateTimePicker1.Value;
+            Tb6.Text = dt1.ToShortDateString();
         }
 
         private void label_Click(object sender, EventArgs e)
