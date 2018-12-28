@@ -265,7 +265,7 @@ namespace WindowsFormsApp
                 {
                     btn3.Show();
                     Tb2.ReadOnly = false;
-
+                    Tb2.Text = "";
                     Tb6.ReadOnly = true;
                     Tb7.ReadOnly = true;
                     Tb8.ReadOnly = true;
