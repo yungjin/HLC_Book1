@@ -61,9 +61,9 @@ namespace WindowsFormsApp
             this.BackColor = Color.FromArgb(201, 253, 223); //백컬러
             Point_Print(); //좌표 
             //=============
-            RENTAL1 = new RENTAL_INFO_FORM(this);
-            MYinfo = new MY_INFO_FORM(this);
-            p_check = new Passwod_Check(this);
+            //RENTAL1 = new RENTAL_INFO_FORM(this);
+            //MYinfo = new MY_INFO_FORM(this);
+            //p_check = new Passwod_Check(this);
             //=============
             ClientSize = new Size(sX, sY);  // 폼 사이즈 지정.
             //라벨 ==============================================================================================================================================

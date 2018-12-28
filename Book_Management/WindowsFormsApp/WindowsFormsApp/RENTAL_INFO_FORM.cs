@@ -24,11 +24,11 @@ namespace WindowsFormsApp
             InitializeComponent();
             Load += RENTAL_INFO_FORM_Load;
         }
-        public RENTAL_INFO_FORM(LOGIN_FORM Logi)
-        {
-            InitializeComponent();
-            this.Login = Login;
-        }
+        //public RENTAL_INFO_FORM(LOGIN_FORM Logi)
+        //{
+        //    InitializeComponent();
+        //    this.Login = Login;
+        //}
 
         private ListView lv;
         int sX = 1500, sY = 800; // 폼 사이즈 지정.
