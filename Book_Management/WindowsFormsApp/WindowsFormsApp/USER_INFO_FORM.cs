@@ -259,6 +259,24 @@ namespace WindowsFormsApp
             return list;
         }
 
+        public void User_Info_ReFresh()
+        {
+            회원정보검색_리스트뷰.Items.Clear();
+
+            ArrayList signupinfoSearch_arry = Select_signup_info_Webapi();
+            foreach (Hashtable ht in signupinfoSearch_arry)
+            {
+                ListViewItem item = new ListViewItem("");
+                item.SubItems.Add(ht["user_number"].ToString());
+                item.SubItems.Add(ht["name"].ToString());
+                item.SubItems.Add(ht["birthday"].ToString().Substring(0, 10));
+                item.SubItems.Add(ht["id"].ToString());
+                item.Font = new Font("Arial", 14, FontStyle.Italic);
+                회원정보검색_리스트뷰.Items.Add(item);
+            }
+            Controls.Add(회원정보검색_리스트뷰);
+        }
+
         public ArrayList user_info_form_user_signup(string user_number)
         {
             WebClient client = new WebClient();
@@ -444,6 +462,11 @@ namespace WindowsFormsApp
             {
                 회원정보검색_리스트뷰.Items.Clear();
 
+                if(회원정보검색상자.Text == "")
+                {
+                    MessageBox.Show("검색란에 입력을 확인해주세요.");
+                    return;
+                }
 
                 ArrayList userinfoSearch_arry = user_info_form_user_info_search(search_category, 회원정보검색상자.Text);
 
