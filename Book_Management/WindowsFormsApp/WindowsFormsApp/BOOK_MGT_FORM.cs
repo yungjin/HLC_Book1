@@ -584,7 +584,7 @@ namespace WindowsFormsApp
 
                 try
                 {
-                    byte[] result = wc.UploadValues("http://ljh5432.iptime.org:5000/imageUpload", "POST", param);
+                    byte[] result = wc.UploadValues("http://192.168.3.25:5000/imageUpload", "POST", param);
                     string resultStr = Encoding.UTF8.GetString(result);
                     fail fail = new fail("파일 저장 완료");
                     fail.ShowDialog();
