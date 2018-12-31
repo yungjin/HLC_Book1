@@ -869,6 +869,7 @@ namespace WindowsFormsApp
                 텍스트박스_도서위치값.Show();
 
                 간략소개상자.ReadOnly = false;
+                
             }
             else if (button.Name == "수정취소버튼")
             {
@@ -956,7 +957,9 @@ namespace WindowsFormsApp
                 텍스트박스_장르값.Hide();
                 텍스트박스_도서위치값.Hide();
 
+                Book_Info_ListView_Refresh();
                 간략소개상자.ReadOnly = true;
+
 
             }
             else if (button.Name == "검색버튼") // admin / user 둘다 사용
