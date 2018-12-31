@@ -268,6 +268,9 @@ namespace WindowsFormsApp
                     foreach (Hashtable ht in GetSelect(Login.User_Number.ToString()))
                     {
                         Tb2.Text = (ht["passwod"].ToString());
+                        Tb6.Text = (ht["email"].ToString());
+                        Tb7.Text = (ht["phone_number"].ToString());
+                        Tb8.Text = (ht["address"].ToString());
                     }
                     Tb5.Text = Tb5.Text.Substring(0, 10);
                     Tb6.ReadOnly = true;
