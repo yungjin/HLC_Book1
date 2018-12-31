@@ -470,7 +470,7 @@ namespace WindowsFormsApp
                 }
                 else
                 {
-                    fail fail = new fail("오류 발생");
+                    fail fail = new fail("간략소개 4000자 이하로 입력 후 등록 시도해주세요.");
                     fail.ShowDialog();
                 }
             }
