@@ -343,6 +343,7 @@ namespace WindowsFormsApp
         private void btn3_Click(Object o, EventArgs e)
         {
             user3.Show();
+            user3.List_View();
             user2.Hide();
             user1.Hide();
             user4.Hide();
