@@ -228,7 +228,7 @@ namespace WindowsFormsApp
             throw new NotImplementedException();
         }
 
-        private void List_View()
+        public void List_View()
         {
             foreach (Hashtable ht in GetSelect(Login.User_Number.ToString()))
             {
