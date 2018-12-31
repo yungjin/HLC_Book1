@@ -84,8 +84,6 @@ namespace WindowsFormsApp
             ArrayList lbarray = new ArrayList();
             lbarray.Add(new LBclass(this, "상태", "상태:", 30, 80, 50, 95, 660, label_Click));
             lbarray.Add(new LBclass(this, "staitus", "대여가능", 15, 100, 20, 170, 668, label_Click));
-            lbarray.Add(new LBclass(this, "설명1", "※3회 연체, 7일이상 연체시 대여 불가상태가 됩니다.", 12, 390, 20, 830, 670, label_Click));
-            lbarray.Add(new LBclass(this, "설명2", "해당 도서를 선택후 반납 버튼을 클릭하여 주세요.", 12, 380, 20, 845, 690, label_Click));
 
             for (int i = 0; i < lbarray.Count; i++)
             {
